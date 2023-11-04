@@ -73,14 +73,9 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-#define N 85
-ll matrix[N][N]={0};
-ll dp[N][N]={0};
+#define N 200005
 void solve()
 {
-    ll n,m;cin >> n >> m;
-    FORLL(i,1,n)
-        FORLL(j,1,m) cin >> matrix[i][j];
     
 }
 /*----------Code Area----------*/

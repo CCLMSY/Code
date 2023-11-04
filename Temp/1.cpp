@@ -65,7 +65,7 @@ namespace MOLDULE
 
 #define ONLINE_JUDGE
 #define IO_OPTIMIZE
-// #define MUTIPLE_JUDGE
+#define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
 using namespace DEFINITION;
@@ -73,26 +73,10 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-#define N 105
-ll dp[N*2][N*2]={0};
-void solve(){
-    ll n;
-    cin >> n;
-    deque<ll> head(n);
-    for(auto &t:head) cin >> t;
-    for(auto t:head) head.emplace_back(t);
-    deque<ll> tail=head;
-    tail.emplace_back(tail.front());tail.pop_front();
-    head.emplace_front(0);tail.emplace_front(0);
-    FORLL(len,2,n)
-        FORLL(i,1,n*2-len+1){
-            ll j=i+len-1;
-            FORLL(k,i+1,j)//k作为第二段开头
-                dp[i][j]=max(dp[i][j],dp[i][k-1]+dp[k][j]+head[i]*head[k]*tail[j]);
-        }
-    ll re=0;
-    FORLL(i,1,n) re=max(re,dp[i][i+n-1]);
-    cout << re << endl;
+#define N 200005
+void solve()
+{
+    
 }
 /*----------Code Area----------*/
 
