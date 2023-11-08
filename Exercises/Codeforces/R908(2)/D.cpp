@@ -20,6 +20,7 @@ namespace DEFINITION
     #define RESET(A) memset(A,0,sizeof(A))
     #define ALL(A) A.begin(),A.end()
     #define SORT(A) sort(ALL(A))
+    #define SORT_REV(A) sort(A.rbegin(),A.rend())
     #define Presentation(i,r) " \n"[i==r]
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
@@ -76,20 +77,20 @@ using namespace CCLIB;
 #define N 200005
 void solve()
 {
-    ll n;cin >> n;
-    create_vec(v,n-1);
-    vector<ll> vx;
-    bitset<N> bt;
+    ll m,n;cin >> n >> m;
+    create_vec(a,n);
+    create_vec(b,m);
+    SORT_REV(b);
+    ll op=0;
     FORLL(i,0,n-1){
-        vx.clear();bt.reset();
-        vx.emplace_back(i);bt[i]=1;
-        FORLL(j,0,n-2){
-            vx.emplace_back(vx.back()^v[j]);
-            if(bt[vx.back()]) break;
-            else bt[vx.back()]=1;
-        }
-        if(vx.size()==n) {print_vec(vx);cout << endl;return ;}
+        while(op<m&&b[op]>=a[i]){
+            cout << b[op] << ' ';
+            op++;
+        }cout << a[i] << ' ';
     }
+    FORLL(i,op,m-1) cout << b[i] << ' ';
+    cout << endl;
+    return ;
 }
 /*----------Code Area----------*/
 

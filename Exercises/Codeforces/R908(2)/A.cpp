@@ -77,19 +77,10 @@ using namespace CCLIB;
 void solve()
 {
     ll n;cin >> n;
-    create_vec(v,n-1);
-    vector<ll> vx;
-    bitset<N> bt;
-    FORLL(i,0,n-1){
-        vx.clear();bt.reset();
-        vx.emplace_back(i);bt[i]=1;
-        FORLL(j,0,n-2){
-            vx.emplace_back(vx.back()^v[j]);
-            if(bt[vx.back()]) break;
-            else bt[vx.back()]=1;
-        }
-        if(vx.size()==n) {print_vec(vx);cout << endl;return ;}
-    }
+    string s;cin >> s;
+    cout << s.back() << endl;
+    return ;
+    
 }
 /*----------Code Area----------*/
 

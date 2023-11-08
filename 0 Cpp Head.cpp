@@ -20,6 +20,7 @@ namespace DEFINITION
     #define RESET(A) memset(A,0,sizeof(A))
     #define ALL(A) A.begin(),A.end()
     #define SORT(A) sort(ALL(A))
+    #define SORT_REV(A) sort(A.rbegin(),A.rend())
     #define Presentation(i,r) " \n"[i==r]
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)

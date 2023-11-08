@@ -24,8 +24,8 @@ namespace DEFINITION
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
-    #define NO "NO\n"
-    #define YES "YES\n"
+    #define NO "No\n"
+    #define YES "Yes\n"
     #define endl '\n'
 }
 
@@ -74,22 +74,21 @@ using namespace CCLIB;
 
 /*----------Code Area----------*/
 #define N 200005
+void dicto(ll &a,ll b,ll len){
+    a=(a-b+len)%len;
+}
 void solve()
 {
-    ll n;cin >> n;
-    create_vec(v,n-1);
-    vector<ll> vx;
-    bitset<N> bt;
-    FORLL(i,0,n-1){
-        vx.clear();bt.reset();
-        vx.emplace_back(i);bt[i]=1;
-        FORLL(j,0,n-2){
-            vx.emplace_back(vx.back()^v[j]);
-            if(bt[vx.back()]) break;
-            else bt[vx.back()]=1;
+    ll n,k;cin >> n >> k;
+    create_vec(b,n);
+    ll pos=n-1,ub=min(k,n);
+    FORLL(i,1,ub){
+        if(b[pos]>n){
+            cout << NO;
+            return ;
         }
-        if(vx.size()==n) {print_vec(vx);cout << endl;return ;}
-    }
+        dicto(pos,b[pos],n);
+    }cout << YES;
 }
 /*----------Code Area----------*/
 
