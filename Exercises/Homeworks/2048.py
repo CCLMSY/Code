@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Oct 12 22:21:37 2023
 
-@author: liuxijuan
-"""
 import random
 
 matix = [[0 for i in range(4)] for i in range(4)] #初始化生成一个二维列表
@@ -195,5 +191,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
 
