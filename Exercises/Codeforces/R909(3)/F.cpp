@@ -77,7 +77,14 @@ using namespace CCLIB;
 #define N 200005
 void solve()
 {
-    
+    ll n,q;cin >> n >> q;
+    create_vec(d,q);
+    FORLL(i,1,n-1) cout << i << ' ' << i+1 << endl;
+    ll pre=n-1;
+    for(auto q:d){
+        cout << n << ' ' << pre << ' ' << q << endl;
+        pre=q;
+    }
 }
 /*----------Code Area----------*/
 

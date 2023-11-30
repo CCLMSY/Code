@@ -77,7 +77,9 @@ using namespace CCLIB;
 #define N 200005
 void solve()
 {
-    
+    ll n;cin >> n;
+    if((n+1)%3==0||(n-1)%3==0) cout << "First" << endl;
+    else cout << "Second" << endl;
 }
 /*----------Code Area----------*/
 

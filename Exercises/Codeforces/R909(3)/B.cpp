@@ -77,7 +77,28 @@ using namespace CCLIB;
 #define N 200005
 void solve()
 {
-    
+    ll n;cin >> n;
+    create_vec(v,n);
+    vector<ll> S(1,0);
+    for(auto i:v) S.emplace_back(S.back()+i);
+    vector<ll> p;
+    ll t=1;
+    while(t*t<=n){
+        if(n%t==0){
+            p.emplace_back(t);
+            p.emplace_back(n/t);
+        }
+        t++;
+    }
+    ll ans=0;
+    for(auto i:p){
+        ll mx=0,mn=INF;
+        for(ll j=0;j<n;j+=i){
+            mx=max(mx,S[j+i]-S[j]);
+            mn=min(mn,S[j+i]-S[j]);
+        }
+        ans=max(ans,mx-mn);
+    }cout << ans << endl;
 }
 /*----------Code Area----------*/
 

@@ -77,7 +77,21 @@ using namespace CCLIB;
 #define N 200005
 void solve()
 {
-    
+    ll n;cin >> n;
+    vector<ll> v(n);
+    ll mn=INF;
+    for(auto &x:v){
+        cin >> x;
+        mn=min(mn,x);
+    }
+    ll i=0;
+    while(v[i]!=mn) i++;
+    ll ans=i;
+    i++;
+    while(i<n&&v[i]>=v[i-1]) i++;
+    if(i!=n){
+        cout << "-1" << endl;
+    }else cout << ans << endl;
 }
 /*----------Code Area----------*/
 

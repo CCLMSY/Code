@@ -77,7 +77,14 @@ using namespace CCLIB;
 #define N 200005
 void solve()
 {
-    
+    ll n;cin >> n;
+    create_vec(v,n);
+    ll ans=v[0],cur=v[0];
+    FORLL(i,1,n-1){
+        if((v[i]-v[i-1])%2!=0) cur=max(cur+v[i],v[i]);
+        else cur=v[i];
+        ans=max(ans,cur);
+    }cout << ans << endl;
 }
 /*----------Code Area----------*/
 

@@ -77,7 +77,21 @@ using namespace CCLIB;
 #define N 200005
 void solve()
 {
-    
+    ll n;cin >> n;
+    ll cnt1=0,cnt2=0;
+    map<ll,ll> mp;
+    ll t;
+    FORLL(i,1,n){
+        cin >> t;
+        if(t==1) cnt1++;
+        if(t==2) cnt2++;
+        mp[t]++;
+    }
+    ll ans=0;
+    for(auto x:mp){
+        t=x.second;
+        ans+=t*(t-1)/2;
+    }cout << ans+cnt1*cnt2 << endl;
 }
 /*----------Code Area----------*/
 
