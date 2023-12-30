@@ -18,10 +18,9 @@ namespace DEFINITION
     #define scanfll(a) scanf("%lld",&a)
     #define lowbit(x) ((x)&(-(x)))
     #define RESET(A) memset(A,0,sizeof(A))
-    #define ALL(A) (A).begin(),(A).end()
+    #define ALL(A) A.begin(),A.end()
     #define SORT(A) sort(ALL(A))
-    #define SORT_REV(A) sort((A).rbegin(),(A).rend())
-    #define UNIQUE(A) unique(ALL(A))
+    #define SORT_REV(A) sort(A.rbegin(),A.rend())
     #define Presentation(i,r) " \n"[i==r]
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
@@ -34,6 +33,7 @@ namespace DEFINITION
 namespace CCLIB
 {
     #define create_vec(A,n) vector<ll> A(n);for(auto &x:A) cin >> x;
+    #define print_float(value,digit) cout << fixed << setprecision(digit) << value;
 
     //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解
     ll Exgcd(ll a,ll b,ll &x,ll &y) {if(a==0&&b==0) return -1; if(b==0) {x=1;y=0;return a;} ll d=Exgcd(b,a%b,y,x); y-=a/b*x; return d;}
@@ -47,9 +47,8 @@ namespace CCLIB
     void Get_Nums(string s){ Num.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){Num.emplace_back(t);t=0;flag=0;} if(flag){Num.emplace_back(t);t=0;flag=0;}}
 
     template<class T>
-    void print_vec(T &A){for(auto &x:A) cout << x << " ";cout << endl;}
-    template<class T>
-    void print_float(T value,int digit=10){cout << fixed << setprecision(digit) << value;}
+    void print_vec(const char* msg,const T &A) {cout << msg << endl;copy(ALL(A),ostream_iterator<T>(cout," "));cout << endl;}
+
 }
 
 namespace MOLDULE
@@ -67,7 +66,7 @@ namespace MOLDULE
 
 
 #define ONLINE_JUDGE
-#define FAST_IO
+#define IO_OPTIMIZE
 #define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
@@ -77,9 +76,60 @@ using namespace CCLIB;
 
 /*----------Code Area----------*/
 #define N 200005
+
+struct node{
+    ll index,fa,dep;
+    vector<ll> son;
+    bool operator < (const node &x) const{
+        return dep<x.dep;
+    }
+    bool operator > (const node &x) const{
+        return dep>x.dep;
+    }
+};
+
+void print_pq(priority_queue<node,vector<node> ,less<node>> leaf){
+    cout << "index fa dep" << endl;
+    while(!leaf.empty()){
+        cout << leaf.top().index << " " << leaf.top().fa << " " << leaf.top().dep << endl;
+        leaf.pop();
+    }
+
+}
+
+vector<node> v;
+vector<ll> vdfs;
+void dfs(ll x){
+    vdfs.emplace_back(x);
+    for(auto &i:v[x].son){
+        v[i].dep=v[x].dep+1;
+        dfs(i);
+    }
+}
+
 void solve()
 {
-    
+    ll n;cin >> n;
+    v.clear();v.resize(n+1);
+    v[1].index=1;v[1].dep=1;v[1].fa=0;
+    FORLL(i,2,n){
+        cin >> v[i].fa;
+        v[i].index=i;
+        v[v[i].fa].son.emplace_back(i);
+    }dfs(1);
+    priority_queue<node,vector<node>,less<node>> leaf;
+    FORLL(i,2,n) if(v[i].son.empty()) leaf.push(v[i]);
+    ll re=0,t1,t2;
+    while(leaf.size()>=2){
+        // print_pq(leaf);
+        t1=leaf.top().fa;leaf.pop();
+        v[t1].son.pop_back();
+        t2=leaf.top().fa;leaf.pop();
+        v[t2].son.pop_back();
+        re++;
+        if(v[t1].son.empty()) leaf.push(v[t1]);
+        if(v[t2].son.empty()&&t2!=t1) leaf.push(v[t2]);
+    }cout << re << endl;
 }
 /*----------Code Area----------*/
 
@@ -91,7 +141,7 @@ int main(){
     if(freopen("out.txt", "w", stdout)==NULL) {cout << "Fail opening out.txt!" << endl;return 0;}
 #endif
 
-#ifdef FAST_IO
+#ifdef IO_OPTIMIZE
     ios::sync_with_stdio(false);
     cin.tie(nullptr); cout.tie(nullptr);
 #endif

@@ -18,10 +18,9 @@ namespace DEFINITION
     #define scanfll(a) scanf("%lld",&a)
     #define lowbit(x) ((x)&(-(x)))
     #define RESET(A) memset(A,0,sizeof(A))
-    #define ALL(A) (A).begin(),(A).end()
+    #define ALL(A) A.begin(),A.end()
     #define SORT(A) sort(ALL(A))
-    #define SORT_REV(A) sort((A).rbegin(),(A).rend())
-    #define UNIQUE(A) unique(ALL(A))
+    #define SORT_REV(A) sort(A.rbegin(),A.rend())
     #define Presentation(i,r) " \n"[i==r]
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
@@ -34,6 +33,8 @@ namespace DEFINITION
 namespace CCLIB
 {
     #define create_vec(A,n) vector<ll> A(n);for(auto &x:A) cin >> x;
+    #define print_vec(A) for(auto i:A) cout << i << ' ';cout << endl;
+    #define print_float(value,digit) cout << fixed << setprecision(digit) << value;
 
     //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解
     ll Exgcd(ll a,ll b,ll &x,ll &y) {if(a==0&&b==0) return -1; if(b==0) {x=1;y=0;return a;} ll d=Exgcd(b,a%b,y,x); y-=a/b*x; return d;}
@@ -46,10 +47,7 @@ namespace CCLIB
     vector<ll> Num;
     void Get_Nums(string s){ Num.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){Num.emplace_back(t);t=0;flag=0;} if(flag){Num.emplace_back(t);t=0;flag=0;}}
 
-    template<class T>
-    void print_vec(T &A){for(auto &x:A) cout << x << " ";cout << endl;}
-    template<class T>
-    void print_float(T value,int digit=10){cout << fixed << setprecision(digit) << value;}
+
 }
 
 namespace MOLDULE
@@ -67,7 +65,7 @@ namespace MOLDULE
 
 
 #define ONLINE_JUDGE
-#define FAST_IO
+#define IO_OPTIMIZE
 #define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
@@ -79,7 +77,17 @@ using namespace CCLIB;
 #define N 200005
 void solve()
 {
-    
+    ll n,k;cin >> n >> k;
+    create_vec(a,n);
+    vector<ll> S(n+1);S[0]=0;
+    FORLL(i,1,n) S[i]=S[i-1]+a[i-1];
+    create_vec(b,n);
+    ll mx=0,tmx=0;
+    FORLL(i,0,n-1) if(i+1<=k){
+        tmx=max(tmx,b[i]);
+        mx=max(mx,S[i+1]+(k-(i+1))*tmx);
+    }
+    cout << mx << endl;
 }
 /*----------Code Area----------*/
 
@@ -91,7 +99,7 @@ int main(){
     if(freopen("out.txt", "w", stdout)==NULL) {cout << "Fail opening out.txt!" << endl;return 0;}
 #endif
 
-#ifdef FAST_IO
+#ifdef IO_OPTIMIZE
     ios::sync_with_stdio(false);
     cin.tie(nullptr); cout.tie(nullptr);
 #endif
