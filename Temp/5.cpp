@@ -43,8 +43,8 @@ namespace CCLIB
     void Prepare_Factorium(ll n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=CCLIB::qcpow(Fac[i],MOD-2);}}void Prepare_Combination(ll n){Prepare_Factorium(n);}
     ll Get_Combination(ll m,ll n) {return Get_Mod(Get_Mod(Fac[m]*Fac_inv[m-n])*Fac_inv[n]);}
 
-    vector<ll> Num;
-    void Get_Nums(string s){ Num.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){Num.emplace_back(t);t=0;flag=0;} if(flag){Num.emplace_back(t);t=0;flag=0;}}
+    vector<ll> Nums;
+    void Get_Nums(string s){ Nums.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){Nums.emplace_back(t);t=0;flag=0;} if(flag){Nums.emplace_back(t);t=0;flag=0;}}
 
     template<class T>
     void print_vec(T &A){for(auto &x:A) cout << x << " ";cout << endl;}
@@ -76,10 +76,26 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-#define N 200005
+#define N 300005
+vector<vector<ll>> G;
+vector<ll> fa,ac;
+vector<bitset<N>> f;
+vector<pll> mx;
+
 void solve()
 {
-    
+    ll n,t;cin >> n;
+    G.clear();G.resize(n+1);
+    fa.clear();fa.resize(n+1);
+    ac.clear();ac.resize(n+1);
+    f.clear();f.resize(n+1);
+    mx.clear();mx.resize(n+1);
+    FORLL(i,2,n){
+        cin >> t;
+        G[t].emplace_back(i);
+        fa[i]=t;
+    }
+    FORLL(i,1,n) cin >> ac[i];
 }
 /*----------Code Area----------*/
 

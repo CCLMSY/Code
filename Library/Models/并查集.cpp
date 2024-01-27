@@ -1,3 +1,8 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define ALL(A) (A).begin(),(A).end()
+
 struct DSU{
     vector<ll> parents,size;
 

@@ -33,6 +33,7 @@ namespace DEFINITION
 
 namespace CCLIB
 {
+    ostream &operator<<(ostream &out, const pair<ll,ll> &p) {out << p.first << " " << p.second;return out;}
     #define create_vec(A,n) vector<ll> A(n);for(auto &x:A) cin >> x;
 
     //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解
@@ -43,13 +44,14 @@ namespace CCLIB
     void Prepare_Factorium(ll n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=CCLIB::qcpow(Fac[i],MOD-2);}}void Prepare_Combination(ll n){Prepare_Factorium(n);}
     ll Get_Combination(ll m,ll n) {return Get_Mod(Get_Mod(Fac[m]*Fac_inv[m-n])*Fac_inv[n]);}
 
-    vector<ll> Num;
-    void Get_Nums(string s){ Num.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){Num.emplace_back(t);t=0;flag=0;} if(flag){Num.emplace_back(t);t=0;flag=0;}}
+    vector<ll> Nums;
+    void Get_Nums(string s){ Nums.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){Nums.emplace_back(t);t=0;flag=0;} if(flag){Nums.emplace_back(t);t=0;flag=0;}}
 
     template<class T>
-    void print_vec(T &A){for(auto &x:A) cout << x << " ";cout << endl;}
+    void print_vec(T &A){copy(ALL(A),ostream_iterator<ll>(cout," "));cout << endl;}
     template<class T>
     void print_float(T value,int digit=10){cout << fixed << setprecision(digit) << value;}
+    
 }
 
 namespace MOLDULE
@@ -76,7 +78,57 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-#define N 200005
+#define N 1000005
+
+const ll MAXN = 1e6+7; // 线段树节点数的最大值
+ll n; // 元素个数
+ll a[MAXN]; // 原数组
+ll stree[MAXN << 2]; // 线段树节点
+
+//建线段树
+void build(ll p, ll l, ll r) {
+    //p 表示当前节点在线段树数组中的下标。
+    //对于根节点来说，它的下标为 1，对于任意一个节点 i，它的左子节点下标为 i << 1，右子节点下标为 i << 1 | 1。
+    if (l == r) { // 叶子节点
+        stree[p] = a[l];
+    } else {
+        ll mid = (l + r) >> 1;
+        ll lc = p << 1, rc = p << 1 | 1;
+        build(lc, l, mid); // 左子节点
+        build(rc, mid + 1, r); // 右子节点
+        stree[p] = stree[lc] + stree[rc]; // 合并左右子树的结果
+    }
+}
+
+//更新线段树
+void update(ll p, ll l, ll r, ll x, ll k) {
+    //x：需要更新的原始数组下标
+    //k：更新后的值
+    if (l == r) { // 叶子节点
+        stree[p] = k;
+        a[x]=k;
+    } else {
+        ll mid = (l + r) >> 1;
+        ll lc = p << 1, rc = p << 1 | 1;
+        if (x <= mid) update(lc, l, mid, x, k); // 更新左子树
+        else update(rc, mid + 1, r, x, k); // 更新右子树
+        stree[p] = stree[lc] + stree[rc]; // 合并左右子树的结果
+    }
+}
+
+//查询区间
+ll query(ll p, ll l, ll r, ll ql, ll qr) {
+    if (ql <= l && qr >= r) { // 当前区间被查询区间包含
+        return stree[p];
+    }
+    ll mid = (l + r) >> 1;
+    ll lc = p << 1, rc = p << 1 | 1;
+    ll sum = 0;
+    if (ql <= mid) sum += query(lc, l, mid, ql, qr); // 查询左子树
+    if (qr > mid) sum += query(rc, mid + 1, r, ql, qr); // 查询右子树
+    return sum;
+}
+
 void solve()
 {
     
