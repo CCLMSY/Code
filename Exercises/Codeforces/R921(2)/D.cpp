@@ -76,14 +76,37 @@ namespace MOLDULE
 //#define CHECK_OUT_TIME
 
 using namespace DEFINITION;
-//using namespace MOLDULE;
+using namespace MOLDULE;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
 #define N 200005
 void solve()
 {
-    
+    ll n,m,k;cin >> n >> m >> k;
+    ll sw=0,t,inv2=inv(2);
+    ll p=mul(2,inv(mul(n,n-1)));
+    FORLL(i,1,m){
+        cin >> t >> t;
+        cin >> t;
+        addto(sw,t);
+    }
+    vector<ll> A;A.pb(0);
+    FORLL(i,1,k){
+        t=add(mul(sw,i),mul(mul(inv2,m),mul(sub(i,1),i)));
+        A.pb(t);
+    }
+    vector<ll> P;P.pb(0);
+    FORLL(i,1,k){
+        t=Get_Combination(k,i);
+        t=mul(t,mul(qcpow(p,i),qcpow(sub(1,p),sub(k,i))));
+        P.pb(t);
+    }
+    ll Exp=0;
+    FORLL(i,1,k){
+        Exp=add(Exp,mul(A[i],P[i]));
+    }
+    cout << Exp << endl;
 }
 /*----------Code Area----------*/
 
@@ -102,6 +125,7 @@ int main(){
 
 #ifdef MUTIPLE_JUDGE
     long T; cin >> T;
+    Prepare_Combination(N);
     while(T--) solve();
 #else
     solve();

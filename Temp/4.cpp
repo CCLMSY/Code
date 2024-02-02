@@ -3,14 +3,14 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
-const double eps=1e-8;
-const double goden_radio=1.618033988749895;
 const long long INF=0x3fffffffffffffff;
 /*----------Consts----------*/
 
 typedef long long ll;
+typedef long double ld;
 typedef pair<ll,ll> pll;
 
 namespace DEFINITION
@@ -26,6 +26,7 @@ namespace DEFINITION
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
+    #define pb push_back
     #define NO "NO\n"
     #define YES "YES\n"
     #define endl '\n'
@@ -33,10 +34,12 @@ namespace DEFINITION
 
 namespace CCLIB
 {
+    ostream& operator<<(ostream &out, const pair<ll,ll> &p) {out << '(' << p.first << ',' << p.second << ')';return out;}
     #define create_vec(A,n) vector<ll> A(n);for(auto &x:A) cin >> x;
 
     //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解
     ll Exgcd(ll a,ll b,ll &x,ll &y) {if(a==0&&b==0) return -1; if(b==0) {x=1;y=0;return a;} ll d=Exgcd(b,a%b,y,x); y-=a/b*x; return d;}
+
     ll qcpow(ll x, ll b) {ll ret = 1;x=Get_Mod(x);for(; b; b >>= 1, x = 1ll * x * x % MOD) if(b & 1) ret = Get_Mod(1ll*ret*x); return ret;}
 
     vector<ll> Fac,Fac_inv;
@@ -47,9 +50,10 @@ namespace CCLIB
     void Get_Nums(string s){ Nums.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){Nums.emplace_back(t);t=0;flag=0;} if(flag){Nums.emplace_back(t);t=0;flag=0;}}
 
     template<class T>
-    void print_vec(T &A){for(auto &x:A) cout << x << " ";cout << endl;}
+    void print_vec(const T &A){for(auto &x:A) cout << x << ' ';cout << endl;}
     template<class T>
     void print_float(T value,int digit=10){cout << fixed << setprecision(digit) << value;}
+    
 }
 
 namespace MOLDULE
@@ -77,18 +81,8 @@ using namespace CCLIB;
 
 /*----------Code Area----------*/
 #define N 200005
-bool isSqr(ll x){
-    double t=sqrt(x);
-    return fabs(t-floor(t))<eps;
-}
-vector<ll> v;
-bool Find1(ll n){
-    
-}
-bool Find9(ll n){
-    
-}
-void solve(){
+void solve()
+{
     
 }
 /*----------Code Area----------*/

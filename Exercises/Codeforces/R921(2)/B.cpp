@@ -26,7 +26,6 @@ namespace DEFINITION
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
-    #define pb push_back
     #define NO "NO\n"
     #define YES "YES\n"
     #define endl '\n'
@@ -81,9 +80,24 @@ using namespace CCLIB;
 
 /*----------Code Area----------*/
 #define N 200005
+vector<ll> v;
+ll Get_ans(ll x,ll q){
+    v.clear();
+    ll ub=sqrt(x)+1;
+    ll ans=-1;
+    FORLL(i,1,ub){
+        if(x%i==0){
+            if(i>ans&&i<=q) ans=i;
+            if(i*i!=x)
+                if(x/i>ans&&x/i<=q) ans=x/i;
+        }
+    }return ans;
+}
 void solve()
 {
-    
+    ll x,n;cin >> x >> n;
+    ll q=x/n;
+    cout << Get_ans(x,q) << endl;
 }
 /*----------Code Area----------*/
 

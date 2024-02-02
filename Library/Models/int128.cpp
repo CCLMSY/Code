@@ -9,8 +9,7 @@ struct int128{
     int128(ll _val):value(_val){}
     int128(__int128_t _val):value(_val){}
 
-    static int128 read() {
-        string input;cin >> input;
+    static int128 trans(string input) {
         bool isNegative = false;
         if (input[0] == '-') {isNegative = true;input = input.substr(1);}
         __int128_t result=0;
@@ -30,8 +29,19 @@ struct int128{
     int128 operator - (const int128 &b)const{return value-b.value;}
     int128 operator * (const int128 &b)const{return value*b.value;}
     int128 operator / (const int128 &b)const{return value/b.value;}
-
 };
+
+istream& operator>>(istream& in,int128& x){
+    string Input;
+    in >> Input;
+    x.trans(Input);
+    return in;
+}
+
+ostream& operator<<(ostream& out,const int128& x){
+    x.print();
+    return out;
+}
 
 int main(){
     int128 i;

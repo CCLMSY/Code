@@ -26,7 +26,6 @@ namespace DEFINITION
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
-    #define pb push_back
     #define NO "NO\n"
     #define YES "YES\n"
     #define endl '\n'
@@ -71,7 +70,7 @@ namespace MOLDULE
 
 
 #define ONLINE_JUDGE
-#define FAST_IO
+// #define FAST_IO
 #define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
@@ -83,7 +82,33 @@ using namespace CCLIB;
 #define N 200005
 void solve()
 {
-    
+    ll n,k,m;cin >> n >> k >> m;
+    string s;cin >> s;
+    ll cnt1,cnt2;cnt1=cnt2=0;
+    map<char,ll> mp;
+    string ans="";
+    FORLL(i,0,m-1){
+        if(mp[s[i]]==0) cnt1++;
+        mp[s[i]]++;
+        if(cnt1==k){
+            cnt2++;
+            mp.clear();
+            cnt1=0;
+            ans.push_back(s[i]);
+        }
+    }
+    if(cnt2>=n){
+        cout << YES;
+    }else{
+        cout << NO;
+        for(char c='a';c<'a'+k;c++){
+            if(mp[c]==0){
+                while(ans.length()<n) ans.push_back(c);
+                break;
+            }
+        }
+        cout << ans << endl;
+    }
 }
 /*----------Code Area----------*/
 

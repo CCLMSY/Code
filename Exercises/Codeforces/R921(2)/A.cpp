@@ -26,7 +26,6 @@ namespace DEFINITION
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
-    #define pb push_back
     #define NO "NO\n"
     #define YES "YES\n"
     #define endl '\n'
@@ -83,7 +82,11 @@ using namespace CCLIB;
 #define N 200005
 void solve()
 {
-    
+    ll n,k;cin >> n >> k;
+    string s="";
+    FORLL(i,0,k-1) s+=char('a'+i);
+    FORLL(i,1,n) cout << s;
+    cout << endl;
 }
 /*----------Code Area----------*/
 
