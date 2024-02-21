@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -27,8 +27,8 @@ namespace DEFINITION
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
     #define pb push_back
-    #define NO "No\n"
-    #define YES "Yes\n"
+    #define NO "NO\n"
+    #define YES "YES\n"
     #define endl '\n'
 }
 
@@ -65,8 +65,8 @@ namespace MOLDULE
     inline ll subto(ll &x, ll y) {return x = sub(x, y);}
     inline ll mul(ll x, ll y) {return Get_Mod(1ll*x * y);}
     inline ll multo(ll &x, ll y) {return x = mul(x, y);}
-    inline ll mdiv(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
-    inline ll mdivto(ll &x, ll y) {return x = mdiv(x, y);}
+    inline ll div(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
+    inline ll divto(ll &x, ll y) {return x = div(x, y);}
 }
 
 
@@ -80,10 +80,37 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+#define N 200005
 void solve()
 {
-    
+    ll n,m,k;cin >> n >> m >> k;
+    create_vec(a,n);
+    create_vec(b,m);
+    ll oa,ob,bt;
+    oa=ob=bt=0;
+    SORT(a);SORT(b);
+    ll t;
+    vector<ll>::iterator ita,itb;
+    FORLL(i,1,k){
+        ita=lower_bound(ALL(a),i);
+        itb=lower_bound(ALL(b),i);
+        t=0;
+        if(ita!=a.end()&&*ita==i) t++;
+        if(itb!=b.end()&&*itb==i) t+=2;
+        if(t==0){
+            cout << NO;
+            return;
+        }else if(t==1){
+            oa++;
+        }else if(t==2){
+            ob++;
+        }else{
+            bt++;
+        }
+    }
+    if(oa+bt<k/2) cout << NO;
+    else if(ob+bt<k/2) cout << NO;
+    else cout << YES;
 }
 /*----------Code Area----------*/
 

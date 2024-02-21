@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -27,8 +27,8 @@ namespace DEFINITION
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
     #define pb push_back
-    #define NO "No\n"
-    #define YES "Yes\n"
+    #define NO "NO\n"
+    #define YES "YES\n"
     #define endl '\n'
 }
 
@@ -65,14 +65,14 @@ namespace MOLDULE
     inline ll subto(ll &x, ll y) {return x = sub(x, y);}
     inline ll mul(ll x, ll y) {return Get_Mod(1ll*x * y);}
     inline ll multo(ll &x, ll y) {return x = mul(x, y);}
-    inline ll mdiv(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
-    inline ll mdivto(ll &x, ll y) {return x = mdiv(x, y);}
+    inline ll div(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
+    inline ll divto(ll &x, ll y) {return x = div(x, y);}
 }
 
 
 #define ONLINE_JUDGE
 #define FAST_IO
-#define MUTIPLE_JUDGE
+// #define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
 using namespace DEFINITION;
@@ -80,10 +80,47 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+#define N 200005
+vector<ll> DM;
+void pre(){
+    ll t=1;
+    DM.pb(1);
+    FORLL(i,1,19){
+        t*=10;
+        DM.pb(t%36);
+    }
+}
+int dig(ll x){
+    int ret=0;
+    while(x){
+        x/=10;
+        ret++;
+    }
+    return ret;
+}
 void solve()
 {
-    
+    pre();
+    ll n;cin >> n;
+    ll t;pll tp;
+    map<ll,int> mp; //mp[i]表示余数为i的个数
+    vector<pll> v;
+    FORLL(i,1,n){
+        cin >> t;
+        tp=make_pair(t%36,dig(t));
+        v.pb(tp);
+        mp[t%36]++;
+    }
+    ll ans=0;
+    for(auto &x:v){
+        t=x.second;
+        FORLL(i,0,35){
+            if((i*DM[t]+x.first)%36==0){
+                ans+=mp[i];
+                if(i==x.first) ans--;
+            }
+        }
+    }cout << ans << endl;
 }
 /*----------Code Area----------*/
 

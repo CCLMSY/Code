@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -80,10 +80,26 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+#define N 200005
+vector<array<ll,3>> cmp;
+int pending(array<ll,4> a){
+    for(auto [x,y,o]:cmp){
+        if(o==1) { if(a[x]>=a[y]) return 0; }
+        else { if(a[x]<a[y]) return 0; }
+    }return 1;
+}
 void solve()
 {
-    
+    ll n,x,y,o;
+    cin >> n;
+    cmp.clear();
+    FORLL(i,1,n){
+        cin >> x >> y >> o;
+        cmp.pb({x,y,o});
+    }
+    int ans=0;
+    FORLL(i,1,3) FORLL(j,1,3) FORLL(k,1,3) ans|=pending({0,i,j,k});
+    cout << (ans?YES:NO);
 }
 /*----------Code Area----------*/
 

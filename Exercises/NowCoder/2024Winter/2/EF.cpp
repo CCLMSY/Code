@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -27,8 +27,8 @@ namespace DEFINITION
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
     #define pb push_back
-    #define NO "No\n"
-    #define YES "Yes\n"
+    #define NO "NO\n"
+    #define YES "YES\n"
     #define endl '\n'
 }
 
@@ -65,8 +65,8 @@ namespace MOLDULE
     inline ll subto(ll &x, ll y) {return x = sub(x, y);}
     inline ll mul(ll x, ll y) {return Get_Mod(1ll*x * y);}
     inline ll multo(ll &x, ll y) {return x = mul(x, y);}
-    inline ll mdiv(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
-    inline ll mdivto(ll &x, ll y) {return x = mdiv(x, y);}
+    inline ll div(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
+    inline ll divto(ll &x, ll y) {return x = div(x, y);}
 }
 
 
@@ -80,10 +80,33 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+#define N 200005
 void solve()
 {
-    
+    ll n,t;cin >> n;
+    vector<ll> v,sc;//sc[i]记录位置i之前出现过的颜色数量
+    v.pb(0);sc.pb(0);
+    map<ll,int> mp;
+    FORLL(i,1,n){
+        cin >> t;
+        v.pb(t);
+        if(mp[t]==0) {sc.pb(sc[i-1]+1);mp[t]++;}
+        else sc.pb(sc[i-1]);
+    }
+    mp.clear();
+    t=0;//t记录当前的颜色数量
+    ll r=n,ans=0;//r记录当前剩余宝石数量
+    FORLL_rev(i,n,1){
+        if(mp[v[i]]==0){
+            t++;
+            mp[v[i]]=1;      
+        }
+        if(t==sc[r]){
+            ans++;
+            t=0;mp.clear();
+            r=i-1;
+        }
+    }cout << ans << endl;
 }
 /*----------Code Area----------*/
 

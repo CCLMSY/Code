@@ -10,7 +10,7 @@ struct DSU{
 
     ll find(ll x){ return (parents[x]==x)?x:(parents[x]=find(parents[x])); }
     
-    void merge(ll a,ll b){
+    void merge(ll a,ll b){//merge a into b
         a=find(a);b=find(b);
         if(a==b) return ;
         if (size[a]>size[b]) swap(a,b);

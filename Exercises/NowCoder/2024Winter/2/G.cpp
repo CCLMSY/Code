@@ -71,7 +71,7 @@ namespace MOLDULE
 
 
 #define ONLINE_JUDGE
-#define FAST_IO
+// #define FAST_IO
 #define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
@@ -81,52 +81,60 @@ using namespace CCLIB;
 
 /*----------Code Area----------*/
 #define N 200005
-void solve()
-{
-    ll n,m,t,tm;cin >> n >> m;
-    create_vec(a,n);
-    vector<pll> q,tq;
-    ll u,v;
-    FORLL(i,1,m){
-        cin >> u >> v;
-        if(u>v) swap(u,v);
-        if(u==1) a[0]+=3;
-        else q.pb({u,v});
-    }   
-    for(auto x:q){
-        if(a[x.first-1]>a[0]) {a[x.first-1]+=3;continue;}
-        if(a[x.second-1]>a[0]) {a[x.second-1]+=3;continue;}
-        tq.pb(x);
+#define lowbit(x) ((x)&(-(x)))//取最后一个1所在位置的权值
+struct BITree{//树状数组，下标i从1开始
+    vector<ll> Data;
+    explicit BITree(ll n):Data(n*2+5,0) {}
+    void update(ll i,ll dif)
+    {//给予i增量dif,维护树状数组，O(logn)
+        while(i<Data.size()){
+            Data[i]+=dif;
+            i+=lowbit(i);
+        }
     }
-    q=tq;tq.clear();
-    for(auto x:q){
-        if(a[x.first-1]<=a[0]-1&&a[x.second-1]<=a[0]-1) {a[x.first-1]++;a[x.second-1]++;continue;}
-        tq.pb(x);
+    ll presum(ll i)
+    {//查询前缀和sum[i]，O(logn)
+        ll sum=0;
+        while(i){
+            sum+=Data[i];
+            i-=lowbit(i);
+        }
+        return sum;
     }
-    q=tq;tq.clear();
-    for(auto x:q){
-        if(a[x.first-1]<=a[0]-3) {a[x.first-1]+=3;continue;}
-        if(a[x.second-1]<=a[0]-3) {a[x.second-1]+=3;continue;}
-        tq.pb(x);
+    ll query(ll l,ll r){//查询区间和
+        return presum(r)-presum(l-1);
     }
-    q=tq;tq.clear();
-    SORT(q);
-    map<ll,ll> mp;
-    while(q.size()){
-        mp.clear();t=tm=0;
-        for(auto x:q) {mp[x.first]++;mp[x.second]++;}
-        FORLL(i,1,n) if(mp[i]>tm) {tm=mp[i];t=i;}
-        for(auto x:q){
-            if(x.first==t||x.second==t){
-                a[t-1]+=3;
-                continue;
+    ll operator[](ll index){//下标调用元素
+        return query(index,index);
+    }
+};
+void solve(){
+    ll n,Q,t;
+    cin >> n >> Q;
+    BITree bt(n);
+    for(ll i=1;i<=n;i++){
+        cin >> t;
+        bt.update(i,t);//维护原数组，实现单点修改，区间查询
+    }//建树O(nlogn)
+    ll ans;
+    while(Q--){
+        int op;
+        ll l,r;
+        cin >> op >> l >> r;
+        if(op==1){
+            r=r-bt.query(l,l);
+            bt.update(l,r);
+            t=1;
+        }else{
+            ans=-INF;
+            FORLL_rev(i,r,l+1){
+                if(ans>=bt.query(l,i)) break;
+                ans=max(ans,bt.query(l,i-1)-bt.query(i,i));
             }
-            tq.pb(x);
-        }q=tq;tq.clear();
+            cout << ans << endl;
+            t=1;
+        }
     }
-    ll ans=0;
-    for(auto x:a) if(x>a[0]) ans++;
-    cout << ans+1 << endl;
 }
 /*----------Code Area----------*/
 

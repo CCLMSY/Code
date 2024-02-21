@@ -27,8 +27,8 @@ namespace DEFINITION
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
     #define pb push_back
-    #define NO "NO\n"
-    #define YES "YES\n"
+    #define NO "No\n"
+    #define YES "Yes\n"
     #define endl '\n'
 }
 
@@ -65,8 +65,8 @@ namespace MOLDULE
     inline ll subto(ll &x, ll y) {return x = sub(x, y);}
     inline ll mul(ll x, ll y) {return Get_Mod(1ll*x * y);}
     inline ll multo(ll &x, ll y) {return x = mul(x, y);}
-    inline ll div(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
-    inline ll divto(ll &x, ll y) {return x = div(x, y);}
+    inline ll mdiv(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
+    inline ll mdivto(ll &x, ll y) {return x = mdiv(x, y);}
 }
 
 
@@ -76,46 +76,38 @@ namespace MOLDULE
 //#define CHECK_OUT_TIME
 
 using namespace DEFINITION;
-using namespace MOLDULE;
+//using namespace MOLDULE;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-#define N 100005
-
-// ll Get_ans(ll n,ll m)
-// {
-//     vector<ll> dp[2];
-//     dp[0].resize(m+1);
-//     dp[1].resize(m+1);
-//     dp[0][0]=1;
-//     FORLL(i,1,n)
-//     {
-//         dp[i&1][0]=0;
-//         FORLL(j,1,m)
-//         {
-//             dp[i&1][j]=add(mul(j,dp[(i-1)&1][j]),dp[(i-1)&1][j-1]);
-//         }
-//     }
-//     return dp[n&1][m];
-// }   
-
-ll pown[N]={0};
+const ll N = 1e3+5;
+void fixMax(set<ll> &mx){
+    while(mx.size()>1) mx.erase(mx.begin());
+}
+void fixMin(set<ll,greater<ll>> &mn){
+    while(mn.size()>1) mn.erase(mn.begin());
+}
 
 void solve()
 {
-    ll m,n;cin >> n >> m;
-    if(n<m) {cout << 0 << endl;return;}
-    //S(n,m) = SUM(i=0->m){[(-1)^(m-i) * i^n] / [i! * (m-i)!]}
-    FORLL(i,1,m){
-        pown[i]=qcpow(i,n);
+    ll n;cin >> n;
+    create_vec(a,n);
+    vector<ll> dp(n+1,0);
+    FORLL(i,1,n){
+        set<ll> mx[6];
+        set<ll,greater<ll>> mn[6];
+        FORLL(j,i,n){
+            for(auto &x:mx[5]) dp[j]=max(dp[j],dp[i-1]+(x-a[j])); 
+            // for(auto &x:mn[5]) dp[j]=max(dp[j],dp[i-1]+(x-a[j]));
+            FORLL_rev(k,5,2){
+                if(k&1){
+                    for(auto &x:mx[k]) {}
+                }else{
+
+                }
+            }
+        }
     }
-    Prepare_Factorium(m);
-    ll ans=0;
-    FORLL(i,0,m){
-        ll t=mul(pown[i],mul(Fac_inv[i],Fac_inv[m-i]));
-        if((m-i)&1) t=MOD-t;
-        addto(ans,t);
-    }cout << ans << endl;
 }
 /*----------Code Area----------*/
 

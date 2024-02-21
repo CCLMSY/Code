@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -72,7 +72,7 @@ namespace MOLDULE
 
 #define ONLINE_JUDGE
 #define FAST_IO
-#define MUTIPLE_JUDGE
+// #define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
 using namespace DEFINITION;
@@ -80,10 +80,30 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+#define N 200005
 void solve()
 {
-    
+    ll n,m,x,y;cin >> n >> m >> x >> y;
+    x--;y--;
+    vector<string> mp(n);
+    FORLL(i,0,n-1) cin >> mp[i];
+    ll p,q;cin >> p >> q;
+    vector<pll> op(q);
+    FORLL(i,0,q-1) cin >> op[i].first >> op[i].second;
+    char tc;
+    while(p--){
+        FORLL(i,0,q-1){
+            if(op[i].first==1){//行向右循环移动一次
+                tc=mp[op[i].second-1][m-1];
+                FORLL_rev(j,m-1,1) mp[op[i].second-1][j]=mp[op[i].second-1][j-1];
+                mp[op[i].second-1][0]=tc;
+            }else{//列向下循环移动一次
+                tc=mp[n-1][op[i].second-1];
+                FORLL_rev(j,n-1,1) mp[j][op[i].second-1]=mp[j-1][op[i].second-1];
+                mp[0][op[i].second-1]=tc;
+            }
+        }
+    }cout << mp[x][y] << endl;
 }
 /*----------Code Area----------*/
 

@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -27,8 +27,8 @@ namespace DEFINITION
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
     #define pb push_back
-    #define NO "No\n"
-    #define YES "Yes\n"
+    #define NO "NO\n"
+    #define YES "YES\n"
     #define endl '\n'
 }
 
@@ -65,8 +65,8 @@ namespace MOLDULE
     inline ll subto(ll &x, ll y) {return x = sub(x, y);}
     inline ll mul(ll x, ll y) {return Get_Mod(1ll*x * y);}
     inline ll multo(ll &x, ll y) {return x = mul(x, y);}
-    inline ll mdiv(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
-    inline ll mdivto(ll &x, ll y) {return x = mdiv(x, y);}
+    inline ll div(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
+    inline ll divto(ll &x, ll y) {return x = div(x, y);}
 }
 
 
@@ -76,14 +76,58 @@ namespace MOLDULE
 //#define CHECK_OUT_TIME
 
 using namespace DEFINITION;
-//using namespace MOLDULE;
+using namespace MOLDULE;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+#define N 5000005
+struct edge {
+  ll v, w;
+};
+
+struct node {
+  ll dis, u;
+  bool operator>(const node& a) const { return dis > a.dis; }
+};
+
+vector<edge> e[N];
+ll dis[N], vis[N];
+priority_queue<node, vector<node>, greater<node> > q;
+
+void dijkstra(ll n, ll s) {
+    FORLL(i,0,n){
+        dis[i] = INF;
+        vis[i] = 0;
+    }
+    dis[s] = 0;
+    q.push({0, s});
+    while (!q.empty()) {
+        ll u = q.top().u;
+        q.pop();
+        if (vis[u]) continue;
+        vis[u] = 1;
+        for (auto ed : e[u]) {
+            ll v = ed.v, w = ed.w;
+            if (dis[v] > dis[u] + w) {
+                dis[v] = dis[u] + w;
+                q.push({dis[v], v});
+            }
+        }
+    }
+}
 void solve()
 {
-    
+    ll n,m,k;cin >> n >> m >> k;
+    ll a,b,t;
+    FORLL(i,0,n) e[i].clear();
+    FORLL(i,1,m)
+    {
+        cin >> a >> b;
+        FORLL(i,0,n-1) e[i].push_back((edge){(i+a)%n,b});
+    }
+    dijkstra(n,0);
+    if(dis[n-k]==INF) cout << -1 << endl;
+    else cout << dis[n-k] << endl;
 }
 /*----------Code Area----------*/
 

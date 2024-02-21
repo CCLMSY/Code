@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-80;
+const double eps=1e-2;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -27,8 +27,8 @@ namespace DEFINITION
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
     #define pb push_back
-    #define NO "NO\n"
-    #define YES "YES\n"
+    #define NO "No\n"
+    #define YES "Yes\n"
     #define endl '\n'
 }
 
@@ -65,14 +65,14 @@ namespace MOLDULE
     inline ll subto(ll &x, ll y) {return x = sub(x, y);}
     inline ll mul(ll x, ll y) {return Get_Mod(1ll*x * y);}
     inline ll multo(ll &x, ll y) {return x = mul(x, y);}
-    inline ll div(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
-    inline ll divto(ll &x, ll y) {return x = div(x, y);}
+    inline ll mdiv(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
+    inline ll mdivto(ll &x, ll y) {return x = mdiv(x, y);}
 }
 
 
 #define ONLINE_JUDGE
 #define FAST_IO
-#define MUTIPLE_JUDGE
+// #define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
 using namespace DEFINITION;
@@ -84,22 +84,23 @@ using namespace CCLIB;
 void solve()
 {
     ll n;cin >> n;
-    string s;cin >> s;
-    ll cnt1,cnt2;cnt1=cnt2=0;
-    for(auto c:s){
-        if(cnt1==0&&c=='D') cnt1++;
-        if(cnt1==1&&c=='F') cnt1++;
-        if(cnt1==2&&c=='S') cnt1++;
-        if(cnt2==0&&c=='d') cnt2++;
-        if(cnt2==1&&c=='f') cnt2++;
-        if(cnt2==2&&c=='s') cnt2++;
-    }
-    if(cnt1>2) cout << 1;
-    else cout << 0;
-    cout << ' ';
-    if(cnt2>2) cout << 1;
-    else cout << 0;
-    cout << endl;
+    ll sum=0,t;
+    FORLL(i,1,n) {cin >> t;sum+=t;}
+    if(n==1) {cout << 1 << endl;return;}
+    ll ub=sqrt(sum)+1;
+    ll ans=0;
+    FORLL(i,1,ub){
+        if(i*i>sum) break;
+        if(sum%i==0){
+            t=sum/i;
+            if(t==i){
+                if(t>=n) ans++;
+            }else{
+                if(t>=n) ans++;
+                if(i>=n) ans++;
+            }
+        }
+    }cout << ans << endl;
 }
 /*----------Code Area----------*/
 

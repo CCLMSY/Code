@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -72,7 +72,7 @@ namespace MOLDULE
 
 #define ONLINE_JUDGE
 #define FAST_IO
-#define MUTIPLE_JUDGE
+// #define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
 using namespace DEFINITION;
@@ -80,10 +80,17 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+#define N 200005
 void solve()
 {
-    
+    ll n,t;cin >> n;
+    ll ans=0;
+    FORLL(i,1,n){
+        cin >> t;
+        ans+=t-1;
+    }
+    if(ans%2) cout << "gui" << endl;
+    else cout << "sweet" << endl;
 }
 /*----------Code Area----------*/
 

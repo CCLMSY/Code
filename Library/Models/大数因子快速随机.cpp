@@ -2,6 +2,7 @@
 //Pollard_rho 大数因子分解快速随机算法
 //Miller-Rabin 素数性测试算法
 using namespace std;
+typedef long long ll;
 ll qcpow_p(ll a,ll b,ll p){
 	ll ret=1;
 	for(;b;b>>=1,a=(__int128)a*a%p)

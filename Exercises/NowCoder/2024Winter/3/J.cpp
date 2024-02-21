@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -27,8 +27,8 @@ namespace DEFINITION
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
     #define pb push_back
-    #define NO "No\n"
-    #define YES "Yes\n"
+    #define NO "NO\n"
+    #define YES "YES\n"
     #define endl '\n'
 }
 
@@ -72,18 +72,47 @@ namespace MOLDULE
 
 #define ONLINE_JUDGE
 #define FAST_IO
-#define MUTIPLE_JUDGE
+// #define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
 using namespace DEFINITION;
-//using namespace MOLDULE;
+using namespace MOLDULE;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+#define N 200005
 void solve()
 {
-    
+    ll n,m,k;cin >> n >> m >> k;
+    vector<vector<ll>> G(n+m+1);
+    vector<ll> deg(n+m+1);
+    ll u,v;
+    FORLL(i,1,k)
+    {
+        cin >> u >> v;  
+        G[u].pb(n+v);
+        G[n+v].pb(u);
+        deg[u]++;
+        deg[n+v]++;
+    }
+    ll ansn,ansm,t;
+    ansn=ansm=0;
+    FORLL(i,1,n){
+        t=1;
+        for(auto &x:G[i]){
+            multo(t,mdiv(deg[x]-1,deg[x]));
+        }
+        addto(ansn,sub(1,t));
+    }
+    FORLL(i,n+1,n+m){
+        t=1;
+        for(auto &x:G[i]){
+            multo(t,mdiv(deg[x]-1,deg[x]));
+        }
+        addto(ansm,sub(1,t));
+    }
+    cout << "modint" << endl;
+    cout << ansn << ' ' << ansm << endl;
 }
 /*----------Code Area----------*/
 

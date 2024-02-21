@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -27,8 +27,8 @@ namespace DEFINITION
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
     #define pb push_back
-    #define NO "No\n"
-    #define YES "Yes\n"
+    #define NO "NO\n"
+    #define YES "YES\n"
     #define endl '\n'
 }
 
@@ -65,14 +65,14 @@ namespace MOLDULE
     inline ll subto(ll &x, ll y) {return x = sub(x, y);}
     inline ll mul(ll x, ll y) {return Get_Mod(1ll*x * y);}
     inline ll multo(ll &x, ll y) {return x = mul(x, y);}
-    inline ll mdiv(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
-    inline ll mdivto(ll &x, ll y) {return x = mdiv(x, y);}
+    inline ll div(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
+    inline ll divto(ll &x, ll y) {return x = div(x, y);}
 }
 
 
 #define ONLINE_JUDGE
-#define FAST_IO
-#define MUTIPLE_JUDGE
+// #define FAST_IO
+// #define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
 using namespace DEFINITION;
@@ -80,10 +80,63 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+#define N 200005
 void solve()
 {
+    ll n,m;cin >> n >> m;
+    string sa,sb,ts;cin >> sa >> sb;
+    reverse(ALL(sb));
+    if(n<m){
+        swap(n,m);
+        swap(sa,sb);
+    }
+    string osa=sa,osb=sb;
+
+    ll head,tail;head=tail=0;
+    while(head<m&&sa[head]==sb[head]) head++;
+    while(tail<m&&sa[n-tail-1]==sb[m-tail-1]) tail++;
+
+    if(head==0||tail==0){
+        cout << "-1" << endl;
+        return ;
+    }
+
+    //Manacher
+    ts="#"; for(auto c:sa) {ts+=c;ts+='#';} sa=ts;
+    ts="#"; for(auto c:sb) {ts+=c;ts+='#';} sb=ts;
+    vector<ll> da(n*2+1),db(m*2+1);
+    da[0]=db[0]=1;
+    ll r=0,p=0;
+    FORLL(i,1,n*2){
+        if(i<r) da[i]=min(da[2*p-i],r-i);
+        else da[i]=1;
+        while(i-da[i]>=0&&i+da[i]<=n*2&&sa[i-da[i]]==sa[i+da[i]]) da[i]++;
+        if(i+da[i]>r) {r=i+da[i];p=i;}
+    }
     
+    cout << "sa: "; print_vec(sa);
+    cout << "da: "; print_vec(da);
+
+    vector<ll> prea,preb,sufa,sufb;
+    for(ll i=1;i<=n;i++){
+        if(da[i]==i+1&&i<=head) prea.pb(i-1);
+        if(da[n*2-i]==i+1&&i<=tail) sufa.pb(n-i);
+    }
+
+    SORT(sufa);
+
+    cout << "osa: " << osa << endl;
+    cout << "prea: "; print_vec(prea);
+    cout << "sufa: "; print_vec(sufa);
+
+    ll ans=INF;
+    vector<ll>::iterator it;
+    for(auto &x:prea){
+        it=upper_bound(ALL(sufa),x);
+        if(it!=sufa.end()) ans=min(ans,(*it)-(x+1));
+        else break;
+    }
+    cout << 2*(n-ans) << endl;
 }
 /*----------Code Area----------*/
 

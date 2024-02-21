@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -27,8 +27,8 @@ namespace DEFINITION
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
     #define pb push_back
-    #define NO "No\n"
-    #define YES "Yes\n"
+    #define NO "NO\n"
+    #define YES "YES\n"
     #define endl '\n'
 }
 
@@ -65,8 +65,8 @@ namespace MOLDULE
     inline ll subto(ll &x, ll y) {return x = sub(x, y);}
     inline ll mul(ll x, ll y) {return Get_Mod(1ll*x * y);}
     inline ll multo(ll &x, ll y) {return x = mul(x, y);}
-    inline ll mdiv(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
-    inline ll mdivto(ll &x, ll y) {return x = mdiv(x, y);}
+    inline ll div(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
+    inline ll divto(ll &x, ll y) {return x = div(x, y);}
 }
 
 
@@ -80,10 +80,48 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
-void solve()
-{
-    
+#define N 200005
+ll n,y;
+string sx;
+vector<int> ub;//记录待定字符的取值上界
+int pending(vector<int>& vk){
+    ll x=0;
+    if(n>1)
+        if(sx[0]=='0') return 0;
+        else if(isalpha(sx[0])&&vk[sx[0]-'a']==0) return 0;
+        else if(sx[0]=='_'&&vk[4]==0) return 0;//不含前导0
+    FORLL(i,0,3) if(ub[i])
+        FORLL(j,i+1,3) if(ub[j]&&vk[i]==vk[j]) return 0;//不同字母取值不同
+    for(auto c:sx){
+        x*=10;
+        if(isdigit(c)) x+=c-'0';
+        else if(isalpha(c)) x+=vk[c-'a'];
+        else x+=vk[4];
+    }
+    if(x%8) return 0;//不是8的倍数
+    if(x>y) return 0;//大于y
+    return 1;
+}
+void solve(){
+    string sy;
+    cin >> n >> sx >> sy;
+    y=stoll(sy);
+    ub.clear();
+    ub.resize(10,0);
+    for(auto c:sx) switch(c){
+        case 'a':ub[0]=9;break;
+        case 'b':ub[1]=9;break;
+        case 'c':ub[2]=9;break;
+        case 'd':ub[3]=9;break;
+        case '_':ub[4]=9;break;
+    }
+    vector<int> vk;
+    ll ans=0;
+    FORLL(a,0,ub[0]) FORLL(b,0,ub[1]) FORLL(c,0,ub[2]) FORLL(d,0,ub[3]) FORLL(e,0,ub[4]){
+        vk.clear();
+        vk.pb(a);vk.pb(b);vk.pb(c);vk.pb(d);vk.pb(e);
+        ans+=pending(vk);
+    }cout << ans << endl;
 }
 /*----------Code Area----------*/
 

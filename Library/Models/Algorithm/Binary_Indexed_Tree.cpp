@@ -32,9 +32,8 @@ struct BITree{//树状数组，下标i从1开始
         return presum(r)-presum(l-1);
     }
 
-    ll operator[](ll index){//下标调用前缀和
-        //if(index>(Data.size()-5/2)||index<0) throw out_of_range("Index out of range.");
-        return presum(index);
+    ll operator[](ll index){//下标调用元素（只读）
+        return query(index,index);
     }
 };
 

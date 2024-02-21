@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -72,7 +72,7 @@ namespace MOLDULE
 
 #define ONLINE_JUDGE
 #define FAST_IO
-#define MUTIPLE_JUDGE
+// #define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
 using namespace DEFINITION;
@@ -80,10 +80,34 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+#define N 505
 void solve()
 {
-    
+    ll n,m;
+    char mp[N][N]={0};
+    cin >> n >> m;
+    FORLL(i,1,n) FORLL(j,1,m) cin >> mp[i][j];
+    ll pre[N][N]={0};
+    FORLL(i,1,n){
+        FORLL(j,1,m){
+            if(mp[i][j]=='*'){
+                if(pre[i][j-1]) pre[i][j]=pre[i][j-1];
+                else pre[i][j]=j;
+            }
+            else pre[i][j]=0;
+        }
+    }
+    // FORLL(i,1,n) FORLL(j,1,m) cout << pre[i][j] << " \n"[j==m];//test
+    ll ans=0,t;
+    FORLL(i,1,n) FORLL(j,1,m) if(mp[i][j]=='*'){
+        ll l=j-1,r=j+1,d=i+1;
+        while(l>=1&&r<=m&&d<=n&&mp[d][l]=='*'&&mp[d][r]=='*'){
+            t=0;
+            if(pre[d][r]<=l) t=1;
+            if(t) ans++;
+            l--;r++;d++;
+        }
+    }cout << ans << endl;
 }
 /*----------Code Area----------*/
 

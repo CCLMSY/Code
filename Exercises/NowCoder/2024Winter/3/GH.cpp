@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -27,8 +27,8 @@ namespace DEFINITION
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
     #define pb push_back
-    #define NO "No\n"
-    #define YES "Yes\n"
+    #define NO "NO\n"
+    #define YES "YES\n"
     #define endl '\n'
 }
 
@@ -65,8 +65,8 @@ namespace MOLDULE
     inline ll subto(ll &x, ll y) {return x = sub(x, y);}
     inline ll mul(ll x, ll y) {return Get_Mod(1ll*x * y);}
     inline ll multo(ll &x, ll y) {return x = mul(x, y);}
-    inline ll mdiv(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
-    inline ll mdivto(ll &x, ll y) {return x = mdiv(x, y);}
+    inline ll div(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
+    inline ll divto(ll &x, ll y) {return x = div(x, y);}
 }
 
 
@@ -80,10 +80,61 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+#define N 200005
 void solve()
 {
-    
+    ll n;cin >> n;
+    int x,y,z;
+    int fl=1;
+    int lt[5][5];
+    FORLL(i,1,3) FORLL(j,1,3) lt[i][j]=-1;
+    FORLL(i,1,3) lt[i][i]=0;
+    FORLL(i,1,n)
+    {
+        cin >> x >> y >> z;
+        if(fl){
+            if(z==1){// x y 1
+                if(lt[y][x]==1) {fl=0;continue;}// y x 1
+                if(lt[x][y]==0) {fl=0;continue;}// x y 0
+                lt[x][y]=1;lt[y][x]=0;
+                switch (x+y)
+                {
+                    case 3: z=3;break;
+                    case 4: z=2;break;
+                    case 5: z=1;break;
+                }//z=6-x-y
+                if(lt[y][z]==1){ //y z 1 => x z 1
+                    if(lt[z][x]==1) {fl=0;continue;} //z x 1
+                    if(lt[x][z]==0) {fl=0;continue;} //x z 0
+                    lt[x][z]=1;lt[z][x]=0;
+                }
+                if(lt[z][x]==1){ //z x 1 => z y 1
+                    if(lt[y][z]==1) {fl=0;continue;} //y z 1
+                    if(lt[z][y]==0) {fl=0;continue;} //z y 0
+                    lt[z][y]=1;lt[y][z]=0;
+                }
+            }else{
+                if(lt[x][y]==1) {fl=0;continue;}// x y 1
+                lt[x][y]=0;
+                switch(x+y)
+                {
+                    case 3: z=3;break;
+                    case 4: z=2;break;
+                    case 5: z=1;break;
+                }//z=6-x-y
+                if(lt[y][z]==0){//y z 0 => x z 0
+                    if(lt[x][z]==1) {fl=0;continue;} 
+                    lt[x][z]=0;
+                }
+                if(lt[z][x]==0){//z x 0 => z y 0
+                    if(lt[z][y]==1) {fl=0;continue;} 
+                    lt[z][y]=0;
+                }
+            }
+        }
+    }
+    if(fl) cout << "Yes" << endl;
+    else cout << "No" << endl;
 }
 /*----------Code Area----------*/
 

@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-80;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -27,8 +27,8 @@ namespace DEFINITION
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
     #define pb push_back
-    #define NO "No\n"
-    #define YES "Yes\n"
+    #define NO "NO\n"
+    #define YES "YES\n"
     #define endl '\n'
 }
 
@@ -65,8 +65,8 @@ namespace MOLDULE
     inline ll subto(ll &x, ll y) {return x = sub(x, y);}
     inline ll mul(ll x, ll y) {return Get_Mod(1ll*x * y);}
     inline ll multo(ll &x, ll y) {return x = mul(x, y);}
-    inline ll mdiv(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
-    inline ll mdivto(ll &x, ll y) {return x = mdiv(x, y);}
+    inline ll div(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
+    inline ll divto(ll &x, ll y) {return x = div(x, y);}
 }
 
 
@@ -80,10 +80,83 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+#define N 200005
+ll n,m;
+vector<vector<pll>> G;
+vector<ll> vis;
+ll minw;//最小权
+vector<ll> vans;
 void solve()
 {
-    
+    cin >> n >> m;
+    G.clear();G.resize(m+1);
+    vis.clear();vis.resize(m+1,0);
+    minw=INF;vans.clear();
+    FORLL(i,1,m)
+    {
+        ll u,v,w;
+        cin >> u >> v >> w;
+        G[u].pb(make_pair(v,w));
+        G[v].pb(make_pair(u,w));
+    }
+    vector<ll> vbfs,vtmp,vminw(m+1,INF);
+    vector<ll> fa(m+1,0);
+    vector<ll>::iterator it;
+    ll pre=0;
+    FORLL(i,1,n) if(vis[i]==0)
+    {
+        // vpath[i].push_back(i);
+        vbfs.push_back(i);
+        vis[i]=1;
+        while(vbfs.size())
+        {
+            for(auto &u:vbfs)
+            {
+                vtmp.clear();
+                for(auto &x:G[u])
+                {
+                    ll v=x.first,w=x.second;
+                    if(v==pre) continue;//不走回头路(不走上一步
+                    if(vis[v]==0)
+                    {
+                        vis[v]=1;
+                        vtmp.push_back(v);
+                        fa[v]=u;
+                        vminw[v]=min(vminw[u],w);//记录最小权
+                    }else{
+                        if(min({x.second,vminw[u],vminw[v]})<minw)
+                        {
+                            minw=min({x.second,vminw[u],vminw[v]});
+                            vector<ll> pathu,pathv,uuu;
+                            ll tmp=u;
+                            while(tmp)
+                            {
+                                pathu.push_back(tmp);
+                                tmp=fa[tmp];
+                            }
+                            tmp=v;
+                            while(tmp)
+                            {
+                                pathv.push_back(tmp);
+                                tmp=fa[tmp];
+                            }
+                            reverse(ALL(pathu));
+                            uuu=pathu;SORT(uuu);
+                            while(pathv.size()&&(it=lower_bound(ALL(uuu),pathv.back()))!=uuu.end()&&*it==pathv.back())
+                            {
+                                pathv.pop_back();
+                            }
+                            vans=pathu;
+                            vans.insert(vans.end(),ALL(pathv));
+                        }
+                    }
+                }
+                pre=u;
+                vbfs=vtmp;
+            }
+        }
+    }cout << minw << ' ' << vans.size() << endl;
+    FORLL(i,0,vans.size()-1) cout << vans[i] << Presentation(i,vans.size()-1);
 }
 /*----------Code Area----------*/
 
