@@ -1,3 +1,6 @@
+#include<bits/stdc++.h>
+using namespace std;
+
 //高精度正整数计算
 namespace CCHA
 {

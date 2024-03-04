@@ -83,7 +83,12 @@ using namespace CCLIB;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n,x;cin >> n >> x;
+    if((x+n)%2){
+        cout << "-1" << endl;
+        return;
+    }
+    cout << (x+n)/2 << ' ' << (n-x)/2 << endl;
 }
 /*----------Code Area----------*/
 

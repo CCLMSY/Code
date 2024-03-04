@@ -74,10 +74,10 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll MAXN = 2e2+7; // 线段树节点数的最大值
+const ll N = 2e2+7; // 线段树节点数的最大值
 ll n; // 元素个数
-ll a[MAXN]; // 原数组
-ll stree[MAXN << 2]; // 线段树节点
+ll a[N]; // 原数组
+ll stree[N << 2]; // 线段树节点
 
 //建线段树
 void build(ll p, ll l, ll r) {

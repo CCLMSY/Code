@@ -27,8 +27,9 @@ namespace DEFINITION
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
     #define pb push_back
-    #define NO "No\n"
-    #define YES "Yes\n"
+    #define NO cout << "NO\n"
+    #define YES cout << "YES\n"
+    #define EXIT cout << "-1\n"
     #define endl '\n'
 }
 

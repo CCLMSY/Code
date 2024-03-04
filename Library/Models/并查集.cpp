@@ -1,20 +1,24 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-#define ALL(A) (A).begin(),(A).end()
 
-struct DSU{
-    vector<ll> parents,size;
+struct DSU
+{
+    vector<ll> parents, size;
 
-    explicit DSU(ll n):parents(n+1),size(n+1,1) {iota(ALL(parents),0);}
+    explicit DSU(ll n) : parents(n + 1), size(n + 1, 1) { iota(parents.begin(), parents.end(), 0); }
 
-    ll find(ll x){ return (parents[x]==x)?x:(parents[x]=find(parents[x])); }
-    
-    void merge(ll a,ll b){//merge a into b
-        a=find(a);b=find(b);
-        if(a==b) return ;
-        if (size[a]>size[b]) swap(a,b);
-        parents[a]=b;
-        size[a]+=size[b];
+    ll find(ll x) { return (parents[x] == x) ? x : (parents[x] = find(parents[x])); }
+
+    void merge(ll a, ll b)
+    { // merge a into b
+        a = find(a);
+        b = find(b);
+        if (a == b)
+            return;
+        if (size[a] > size[b])
+            swap(a, b);
+        parents[a] = b;
+        size[a] += size[b];
     }
 };

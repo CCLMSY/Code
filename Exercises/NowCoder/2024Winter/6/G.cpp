@@ -27,8 +27,9 @@ namespace DEFINITION
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
     #define pb push_back
-    #define NO "No\n"
-    #define YES "Yes\n"
+    #define NO cout << "NO\n"
+    #define YES cout << "YES\n"
+    #define EXIT cout << "-1\n"
     #define endl '\n'
 }
 
@@ -71,7 +72,7 @@ namespace MOLDULE
 
 
 #define ONLINE_JUDGE
-#define FAST_IO
+// #define FAST_IO
 #define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
@@ -83,7 +84,53 @@ using namespace CCLIB;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n,S,k;cin >> n >> S >> k;
+    if(n==1){
+        if(k==0) cout << S << endl;
+        else cout << "-1\n";
+        return ;
+    }
+    if(n==2){
+        if(k==0) cout << S/2 << " " << S-S/2 << endl;
+        else cout << "-1\n";
+        return ;
+    }
+    if(k==0){
+        FORLL(i,1,n-1) cout << "1" << ' ';
+        cout << S-n+1 << endl;
+        return ;
+    }
+    if(n<2*k+1) {cout << "-1\n";return ;}
+    if(k&&S<n+k+1) {cout << "-1\n";return ;}
+    ll t=(S-(n-(k+1)))/(k+1);
+    vector<ll> ans;
+    FORLL(i,1,k){
+        ans.pb(t);
+        ans.pb(1);
+        S-=t+1;
+    }ans.pb(t); S-=t;
+    if(ans.size()>=n){
+        t=S/(n/2);
+        FORLL(i,0,n/2-1){
+            ans[i*2+1]+=t;
+            S-=t;
+        }
+        t=0;
+        while(S){
+            ans[t*2+1]++;
+            S--;
+            t++;
+        }
+        if(n>1&&ans[1]>=ans[0]) {cout << "-1\n";return ;}
+    }else{
+        t=ans.size();
+        while(ans.size()<n){
+            ans.pb(1);
+            S--;
+        }
+        ans[t]+=S;
+    }
+    FORLL(i,0,n-1) cout << ans[i] << " \n"[i==n-1];
 }
 /*----------Code Area----------*/
 

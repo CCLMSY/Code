@@ -72,8 +72,8 @@ namespace MOLDULE
 
 
 #define ONLINE_JUDGE
-#define FAST_IO
-#define MUTIPLE_JUDGE
+// #define FAST_IO
+// #define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
 using namespace DEFINITION;
@@ -81,10 +81,52 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+const ll N = 505;
+ll a[18][N][N]={0},S[18][N][N]={0};
+string red[6]={"red","rde","erd","erd","dre","der"};
 void solve()
 {
-    
+    ll n,m,q;cin >> n >> m >> q;
+    vector<string> mp(n);
+    FORLL(i,0,n-1) cin >> mp[i];
+    FORLL(i,0,n-1){
+        FORLL(j,0,m-1){
+            FORLL(k,0,5){
+                if(mp[i][j]==red[k][(i+j+0)%3]) {a[k*3+0][i][j]=0;a[k*3+1][i][j]=a[k*3+2][i][j]=1;}
+                if(mp[i][j]==red[k][(i+j+1)%3]) {a[k*3+1][i][j]=0;a[k*3+0][i][j]=a[k*3+2][i][j]=1;}
+                if(mp[i][j]==red[k][(i+j+2)%3]) {a[k*3+2][i][j]=0;a[k*3+0][i][j]=a[k*3+1][i][j]=1;}
+            }
+        }
+    }
+    FORLL(i,1,n) FORLL(j,1,m) FORLL(k,0,17) S[k][i][j]=S[k][i][j-1]+a[k][i-1][j-1];
+    FORLL(i,1,n) FORLL(j,1,m) FORLL(k,0,17) S[k][i][j]=S[k][i][j]+S[k][i-1][j];
+
+    // FORLL(k,0,17){ FORLL(i,0,n-1) FORLL(j,0,m-1) cout << a[k][i][j] << Presentation(j,m-1); cout << endl; }
+    // FORLL(k,0,17){ FORLL(i,1,n) FORLL(j,1,m) cout << S[k][i][j] << Presentation(j,m); cout << endl; }
+
+    ll x_1,y_1,x_2,y_2;
+    while(q--){
+        cin >> x_1 >> y_1 >> x_2 >> y_2;
+
+        if((x_2-x_1)<2&&(y_2-y_1)<2){
+            x_1--;y_1--;x_2--;y_2--;
+            if(x_2-x_1==0&&y_2-y_1==0) {cout << 0 << endl;continue;}
+            if(x_2-x_1==0) {cout << (mp[x_1][y_1]==mp[x_1][y_2] ? 1 : 0); cout << endl;continue;}
+            if(y_2-y_1==0) {cout << (mp[x_1][y_1]==mp[x_2][y_1] ? 1 : 0); cout << endl;continue;}
+            if(mp[x_1][y_1]==mp[x_2][y_2]&&mp[x_1][y_1]==mp[x_1][y_2]&&mp[x_1][y_1]==mp[x_2][y_1]) {cout << 2 << endl;continue;}
+            if((mp[x_1][y_1]==mp[x_1][y_2]&&mp[x_2][y_1]==mp[x_2][y_2])||(mp[x_1][y_1]==mp[x_2][y_1]&&mp[x_1][y_2]==mp[x_2][y_2])) {cout << 2 << endl;continue;}
+            if(mp[x_1][y_1]==mp[x_1][y_2]||mp[x_1][y_1]==mp[x_2][y_1]||mp[x_2][y_2]==mp[x_1][y_2]||mp[x_2][y_2]==mp[x_2][y_1]) {cout << 1 << endl;continue;}
+            cout << 0 << endl; continue;
+        }
+
+        x_1--;y_1--;
+        ll ans=INF;
+        FORLL(k,0,17){
+            ll t=S[k][x_2][y_2]-S[k][x_1][y_2]-S[k][x_2][y_1]+S[k][x_1][y_1];
+            ans=min(ans,t);
+        }
+        cout << ans << endl;
+    }
 }
 /*----------Code Area----------*/
 

@@ -81,39 +81,20 @@ using namespace CCLIB;
 
 /*----------Code Area----------*/
 #define N 100005
-
-// ll Get_ans(ll n,ll m)
-// {
-//     vector<ll> dp[2];
-//     dp[0].resize(m+1);
-//     dp[1].resize(m+1);
-//     dp[0][0]=1;
-//     FORLL(i,1,n)
-//     {
-//         dp[i&1][0]=0;
-//         FORLL(j,1,m)
-//         {
-//             dp[i&1][j]=add(mul(j,dp[(i-1)&1][j]),dp[(i-1)&1][j-1]);
-//         }
-//     }
-//     return dp[n&1][m];
-// }   
-
-ll pown[N]={0};
+ll Get_Stirling(ll n,ll m){
+    ll ans=0;
+    if(n<m) return 0;
+    Prepare_Combination(m);
+    FORLL(i,0,m){
+        ll t=mul(qcpow(i,n),mul(Fac_inv[i],Fac_inv[m-i]));
+        if((m-i)&1) t=MOD-t;
+        addto(ans,t);
+    }return ans;
+}
 void solve()
 {
     ll m,n;cin >> n >> m;
-    if(n<m) {cout << 0 << endl;return;}
-    FORLL(i,0,m){
-        pown[i]=qcpow(i,n);
-    }
-    Prepare_Factorium(m);
-    ll ans=0;
-    FORLL(i,0,m){
-        ll t=mul(pown[i],mul(Fac_inv[i],Fac_inv[m-i]));
-        if((m-i)&1) t=MOD-t;
-        addto(ans,t);
-    }cout << ans << endl;
+    cout << Get_Stirling(n,m) << endl;
 }
 /*----------Code Area----------*/
 
