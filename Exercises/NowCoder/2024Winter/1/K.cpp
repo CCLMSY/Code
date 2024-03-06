@@ -2,7 +2,7 @@
 using namespace std;
 
 /*----------Consts----------*/
-const long MOD=1e9+7;
+const long MOD=998244353;
 const double eps=1e-6;
 
 const double pi = acos(-1.0);
@@ -25,22 +25,25 @@ namespace DEFINITION
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
+    #define pb push_back
     #define NO cout << "NO\n"
     #define YES cout << "YES\n"
+    #define EXIT cout << "-1\n"
     #define endl '\n'
 }
 
 namespace CCLIB
 {
-    #define create_vec(A,n) vector<ll> A(n);for(auto &x:A) cin >> x;
     ostream& operator<<(ostream &out, const pair<ll,ll> &p) {out << '(' << p.first << ',' << p.second << ')';return out;}
+    #define create_vec(A,n) vector<ll> A(n);for(auto &x:A) cin >> x;
 
-    //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解;通解为x=x0+k*b/d,y=y0-k*a/d;
+    //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解
     ll Exgcd(ll a,ll b,ll &x,ll &y) {if(a==0&&b==0) return -1; if(b==0) {x=1;y=0;return a;} ll d=Exgcd(b,a%b,y,x); y-=a/b*x; return d;}
-    ll qcpow(ll a,ll b,ll p=MOD){ll ret=1;a=Get_Mod(a);for (;b;b>>=1,a=a*a%p) if(b&1) ret=ret*a%p;return ret;}
+
+    ll qcpow(ll x, ll b) {ll ret = 1;x=Get_Mod(x);for(; b; b >>= 1, x = 1ll * x * x % MOD) if(b & 1) ret = Get_Mod(1ll*ret*x); return ret;}
 
     vector<ll> Fac,Fac_inv;
-    void Prepare_Factorium(ll n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=qcpow(Fac[i],MOD-2);}}void Prepare_Combination(ll n){Prepare_Factorium(n);}
+    void Prepare_Factorium(ll n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=CCLIB::qcpow(Fac[i],MOD-2);}}void Prepare_Combination(ll n){Prepare_Factorium(n);}
     ll Get_Combination(ll m,ll n) {return Get_Mod(Get_Mod(Fac[m]*Fac_inv[m-n])*Fac_inv[n]);}
 
     vector<ll> Nums;
@@ -53,6 +56,16 @@ namespace CCLIB
     
 }
 
+#define ONLINE_JUDGE
+// #define FAST_IO
+// #define MUTIPLE_JUDGE
+//#define CHECK_OUT_TIME
+
+using namespace DEFINITION;
+using namespace CCLIB;
+
+/*----------Code Area----------*/
+const ll N = 200005;
 template<ll P=0>
 class MLL{
 private:
@@ -92,21 +105,38 @@ public:
     friend bool operator<(MLL a, MLL b)  { return a.val <  b.val; }
     friend bool operator>(MLL a, MLL b)  { return a.val >  b.val; }
 }; template<> ll MLL<>::Mod = MOD;
-
-
-#define ONLINE_JUDGE
-#define FAST_IO
-#define MUTIPLE_JUDGE
-//#define CHECK_OUT_TIME
-
-using namespace DEFINITION;
-using namespace CCLIB;
-
-/*----------Code Area----------*/
-const ll N = 200005;
 void solve()
 {
-    
+    ll n;cin >> n ;
+    vector<ll> a(n);
+    vector<string> s(n);
+    FORLL(i,0,n-1){
+        cin >> a[i] >> s[i];
+        a[i]--;
+    }
+    MLL ans=1;
+    vector<int> vis(n,-1);
+    FORLL(i,0,n-1){
+        ll j=i;
+        while(vis[j]==-1){
+            vis[j]=i;
+            j=a[j];
+        }
+        if(vis[j]!=i) continue;
+        vector<ll> cycle;//环
+        ll k=j;
+        do{
+            cycle.push_back(k);
+            k=a[k];
+        }while(k!=j);
+        ll res=0,t;
+        FORLL(i,0,4){
+            t=i;
+            for(auto x:cycle) t=s[x][t]-'A';
+            if(t==i) res++;
+        }
+        ans*=res;
+    }cout << ans << endl;
 }
 /*----------Code Area----------*/
 

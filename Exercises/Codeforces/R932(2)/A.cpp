@@ -84,7 +84,21 @@ using namespace CCLIB;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n;cin >> n;
+    string s;cin >> s;
+    ll len = s.length();
+    FORLL(i,0,len/2)
+        if(s[i]>s[len-i-1]) {
+        reverse(ALL(s));
+        n--;
+        break;
+        }else if(s[i]<s[len-i-1]) break;
+    if(n%2){
+        string ts=s;
+        reverse(ALL(ts));
+        s+=ts;
+    }
+    cout << s << endl;
 }
 /*----------Code Area----------*/
 

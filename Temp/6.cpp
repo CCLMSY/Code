@@ -17,7 +17,6 @@ namespace DEFINITION
 {
     #define scanfll(a) scanf("%lld",&a)
     #define lowbit(x) ((x)&(-(x)))
-    #define RESET(A) memset(A,0,sizeof(A))
     #define ALL(A) (A).begin(),(A).end()
     #define SORT(A) sort(ALL(A))
     #define SORT_REV(A) sort((A).rbegin(),(A).rend())
@@ -26,25 +25,22 @@ namespace DEFINITION
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)+MOD)%MOD)
-    #define pb push_back
     #define NO cout << "NO\n"
     #define YES cout << "YES\n"
-    #define EXIT cout << "-1\n"
     #define endl '\n'
 }
 
 namespace CCLIB
 {
-    ostream& operator<<(ostream &out, const pair<ll,ll> &p) {out << '(' << p.first << ',' << p.second << ')';return out;}
     #define create_vec(A,n) vector<ll> A(n);for(auto &x:A) cin >> x;
+    ostream& operator<<(ostream &out, const pair<ll,ll> &p) {out << '(' << p.first << ',' << p.second << ')';return out;}
 
-    //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解
+    //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解;通解为x=x0+k*b/d,y=y0-k*a/d;
     ll Exgcd(ll a,ll b,ll &x,ll &y) {if(a==0&&b==0) return -1; if(b==0) {x=1;y=0;return a;} ll d=Exgcd(b,a%b,y,x); y-=a/b*x; return d;}
-
-    ll qcpow(ll x, ll b) {ll ret = 1;x=Get_Mod(x);for(; b; b >>= 1, x = 1ll * x * x % MOD) if(b & 1) ret = Get_Mod(1ll*ret*x); return ret;}
+    ll qcpow(ll a,ll b,ll p=MOD){ll ret=1;a=Get_Mod(a);for (;b;b>>=1,a=a*a%p) if(b&1) ret=ret*a%p;return ret;}
 
     vector<ll> Fac,Fac_inv;
-    void Prepare_Factorium(ll n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=CCLIB::qcpow(Fac[i],MOD-2);}}void Prepare_Combination(ll n){Prepare_Factorium(n);}
+    void Prepare_Factorium(ll n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=qcpow(Fac[i],MOD-2);}}void Prepare_Combination(ll n){Prepare_Factorium(n);}
     ll Get_Combination(ll m,ll n) {return Get_Mod(Get_Mod(Fac[m]*Fac_inv[m-n])*Fac_inv[n]);}
 
     vector<ll> Nums;
@@ -57,18 +53,45 @@ namespace CCLIB
     
 }
 
-namespace MOLDULE
-{
-    inline ll inv(ll x) {return CCLIB::qcpow(x,MOD-2);}
-    inline ll add(ll x, ll y) {return Get_Mod(x + y);}
-    inline ll addto(ll &x, ll y) {return x = add(x, y);}
-    inline ll sub(ll x, ll y) {return Get_Mod(x - y);}
-    inline ll subto(ll &x, ll y) {return x = sub(x, y);}
-    inline ll mul(ll x, ll y) {return Get_Mod(1ll*x * y);}
-    inline ll multo(ll &x, ll y) {return x = mul(x, y);}
-    inline ll mdiv(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
-    inline ll mdivto(ll &x, ll y) {return x = mdiv(x, y);}
-}
+template<ll P=0>
+class MLL{
+private:
+    constexpr ll norm(ll x) const { return x<0?x+Mod:x; }
+    constexpr ll mult(ll x,ll y) const { return norm(x*y-x*y/Mod*Mod); }
+    MLL qcpow(MLL a,ll b) const { MLL res = 1; for(;b;b>>=1,a*=a) if(b&1) res*=a; return res; }
+
+public:
+    ll val;
+    static ll Mod;
+
+    constexpr MLL():val(0){if(P>0) Mod = P;}
+    constexpr MLL(ll x){ if(P>0) Mod = P; val=norm(x%Mod); }
+    constexpr static void setMod(ll Mod_){ Mod=Mod_; }
+
+    explicit constexpr operator ll() const { return val; }
+    constexpr MLL operator-() const { MLL res; res.val = norm(Mod-val); return res; }
+    constexpr MLL inv() const { return qcpow(*this,Mod-2); }
+    
+    constexpr MLL &operator+=(MLL rhs) & { val = norm(val+rhs.val); return *this; }
+    constexpr MLL &operator-=(MLL rhs) & { val = norm(val-rhs.val); return *this; }
+    constexpr MLL &operator*=(MLL rhs) & { val = mult(val,rhs.val); return *this; }
+    constexpr MLL &operator/=(MLL rhs) & { val = mult(val,rhs.inv()); return *this; }
+    constexpr MLL &operator%=(MLL rhs) & { val = norm(val%rhs.val); return *this; }
+    
+    friend constexpr MLL operator+(MLL lhs, MLL rhs) { MLL res = lhs; res += rhs; return res; }
+    friend constexpr MLL operator-(MLL lhs, MLL rhs) { MLL res = lhs; res -= rhs; return res; }
+    friend constexpr MLL operator*(MLL lhs, MLL rhs) { MLL res = lhs; res *= rhs; return res; }
+    friend constexpr MLL operator/(MLL lhs, MLL rhs) { MLL res = lhs; res /= rhs; return res; }
+    friend constexpr MLL operator%(MLL lhs, MLL rhs) { MLL res = lhs; res %= rhs; return res; }
+
+    friend ostream &operator<<(ostream &out, const MLL &a) { out << a.val; return out; }
+    friend istream &operator>>(istream &in, MLL &a) { in >> a.val; return in; }
+
+    friend bool operator==(MLL a, MLL b) { return a.val == b.val; }
+    friend bool operator!=(MLL a, MLL b) { return a.val != b.val; }
+    friend bool operator<(MLL a, MLL b)  { return a.val <  b.val; }
+    friend bool operator>(MLL a, MLL b)  { return a.val >  b.val; }
+}; template<> ll MLL<>::Mod = MOD;
 
 
 #define ONLINE_JUDGE
@@ -77,7 +100,6 @@ namespace MOLDULE
 //#define CHECK_OUT_TIME
 
 using namespace DEFINITION;
-//using namespace MOLDULE;
 using namespace CCLIB;
 
 /*----------Code Area----------*/
@@ -88,7 +110,7 @@ void solve()
 }
 /*----------Code Area----------*/
 
-int main(){
+signed main(){
     int clk = clock();
 
 #ifndef ONLINE_JUDGE
