@@ -93,7 +93,7 @@ using namespace CCLIB;
 
 #define ONLINE_JUDGE
 #define FAST_IO
-// #define MUTIPLE_JUDGE
+#define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
 typedef MODLL<ll(1e9+7)> mll;
@@ -102,7 +102,31 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n,m,k,t;cin >> n >> m >> k;
+    ll mxdif=0,mxdif2=0,mxi=-1;
+    vector<ll> a(n); cin >> a[0];
+    FORLL(i,1,n-1){
+        cin >> a[i];
+        if(a[i]-a[i-1]>=mxdif){
+            mxdif2=mxdif;
+            mxdif=a[i]-a[i-1];
+            mxi=i-1;
+        }else if(a[i]-a[i-1]>mxdif2){
+            mxdif2=a[i]-a[i-1];
+        }
+    }
+    set<ll> b,c;
+    FORLL(i,1,m){ cin >> t; b.insert(t); }
+    FORLL(i,1,k){ cin >> t; c.insert(t); }
+    if(b.size()>c.size()) swap(b,c);
+    ll ans=mxdif;
+    for(auto &x:b){
+        auto itl=c.lower_bound(a[mxi]-x);
+        auto itr=c.upper_bound(a[mxi+1]-x);
+        for(auto it=itl;it!=itr;it++){
+            ans=min(ans,max(((*it)+x)-a[mxi],a[mxi+1]-((*it)+x)));
+        }
+    }cout << max(ans,mxdif2) << endl;
 }
 /*----------Code Area----------*/
 

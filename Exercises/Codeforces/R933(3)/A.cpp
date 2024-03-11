@@ -93,7 +93,7 @@ using namespace CCLIB;
 
 #define ONLINE_JUDGE
 #define FAST_IO
-// #define MUTIPLE_JUDGE
+#define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
 typedef MODLL<ll(1e9+7)> mll;
@@ -102,7 +102,16 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n,m,k;cin >> n >> m >> k;
+    vector<ll> a(n),b(m);
+    for(auto &x:a) cin >> x;
+    SORT(a);
+    ll cnt=0,t;
+    while(m--){
+        cin >> t;
+        auto it=upper_bound(ALL(a),k-t);
+        cnt+=distance(a.begin(),it);
+    }cout << cnt << endl;
 }
 /*----------Code Area----------*/
 

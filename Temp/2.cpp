@@ -2,7 +2,7 @@
 using namespace std;
 
 /*----------Consts----------*/
-const long MOD=1e9+7;
+const long long MOD=1e9+7;
 const double eps=1e-6;
 
 const double pi = acos(-1.0);
@@ -37,7 +37,7 @@ namespace CCLIB
 
     //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解;通解为x=x0+k*b/d,y=y0-k*a/d;
     ll Exgcd(ll a,ll b,ll &x,ll &y) {if(a==0&&b==0) return -1; if(b==0) {x=1;y=0;return a;} ll d=Exgcd(b,a%b,y,x); y-=a/b*x; return d;}
-    ll qcpow(ll a,ll b,ll p=MOD){ll ret=1;a=Get_Mod(a);for (;b;b>>=1,a=a*a%p) if(b&1) ret=ret*a%p;return ret;}
+    ll qcpow(ll a,ll b,ll p=INF){ll ret=1;a=Get_Mod(a);for (;b;b>>=1,a=a*a%p) if(b&1) ret=ret*a%p;return ret;}
 
     vector<ll> Fac,Fac_inv;
     void Prepare_Factorium(ll n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=qcpow(Fac[i],MOD-2);}}void Prepare_Combination(ll n){Prepare_Factorium(n);}
@@ -53,54 +53,50 @@ namespace CCLIB
     
 }
 
-template<ll P=0>
-class MLL{
+template<const ll P>
+class MODLL{
 private:
     constexpr ll norm(ll x) const { return x<0?x+Mod:x; }
     constexpr ll mult(ll x,ll y) const { return norm(x*y-x*y/Mod*Mod); }
-    MLL qcpow(MLL a,ll b) const { MLL res = 1; for(;b;b>>=1,a*=a) if(b&1) res*=a; return res; }
 
 public:
-    ll val;
-    static ll Mod;
-
-    constexpr MLL():val(0){if(P>0) Mod = P;}
-    constexpr MLL(ll x){ if(P>0) Mod = P; val=norm(x%Mod); }
+    ll val; const static ll Mod=P;
+    constexpr MODLL():val(0){}
+    constexpr MODLL(ll x):val(norm(x)){}
     constexpr static void setMod(ll Mod_){ Mod=Mod_; }
-
     explicit constexpr operator ll() const { return val; }
-    constexpr MLL operator-() const { MLL res; res.val = norm(Mod-val); return res; }
-    constexpr MLL inv() const { return qcpow(*this,Mod-2); }
-    
-    constexpr MLL &operator+=(MLL rhs) & { val = norm(val+rhs.val); return *this; }
-    constexpr MLL &operator-=(MLL rhs) & { val = norm(val-rhs.val); return *this; }
-    constexpr MLL &operator*=(MLL rhs) & { val = mult(val,rhs.val); return *this; }
-    constexpr MLL &operator/=(MLL rhs) & { val = mult(val,rhs.inv()); return *this; }
-    constexpr MLL &operator%=(MLL rhs) & { val = norm(val%rhs.val); return *this; }
-    
-    friend constexpr MLL operator+(MLL lhs, MLL rhs) { MLL res = lhs; res += rhs; return res; }
-    friend constexpr MLL operator-(MLL lhs, MLL rhs) { MLL res = lhs; res -= rhs; return res; }
-    friend constexpr MLL operator*(MLL lhs, MLL rhs) { MLL res = lhs; res *= rhs; return res; }
-    friend constexpr MLL operator/(MLL lhs, MLL rhs) { MLL res = lhs; res /= rhs; return res; }
-    friend constexpr MLL operator%(MLL lhs, MLL rhs) { MLL res = lhs; res %= rhs; return res; }
-
-    friend ostream &operator<<(ostream &out, const MLL &a) { out << a.val; return out; }
-    friend istream &operator>>(istream &in, MLL &a) { in >> a.val; return in; }
-
-    friend bool operator==(MLL a, MLL b) { return a.val == b.val; }
-    friend bool operator!=(MLL a, MLL b) { return a.val != b.val; }
-    friend bool operator<(MLL a, MLL b)  { return a.val <  b.val; }
-    friend bool operator>(MLL a, MLL b)  { return a.val >  b.val; }
-}; template<> ll MLL<>::Mod = MOD;
-
-
-#define ONLINE_JUDGE
-#define FAST_IO
-#define MUTIPLE_JUDGE
-//#define CHECK_OUT_TIME
+    constexpr MODLL operator-() const { MODLL res; res.val = norm(Mod-val); return res; }
+    constexpr MODLL inv() const { ll a=val,b=Mod,u=1,v=0;
+        while(b!=0){ ll t=a/b; a-=t*b; swap(a,b); u-=t*v; swap(u,v); }
+        return MODLL(u);}
+    constexpr MODLL pow(ll b) { MODLL res = 1,a = *this; for(;b;b>>=1,a*=a) if(b&1) res*=a; return res; }
+    constexpr MODLL &operator+=(MODLL rhs) & { val = norm(val+rhs.val); return *this; }
+    constexpr MODLL &operator-=(MODLL rhs) & { val = norm(val-rhs.val); return *this; }
+    constexpr MODLL &operator*=(MODLL rhs) & { val = mult(val,rhs.val); return *this; }
+    constexpr MODLL &operator/=(MODLL rhs) & { val = mult(val,rhs.inv()); return *this; }
+    constexpr MODLL &operator%=(MODLL rhs) & { val = norm(val%rhs.val); return *this; }
+    friend constexpr MODLL operator+(MODLL lhs, MODLL rhs) { MODLL res = lhs; res += rhs; return res; }
+    friend constexpr MODLL operator-(MODLL lhs, MODLL rhs) { MODLL res = lhs; res -= rhs; return res; }
+    friend constexpr MODLL operator*(MODLL lhs, MODLL rhs) { MODLL res = lhs; res *= rhs; return res; }
+    friend constexpr MODLL operator/(MODLL lhs, MODLL rhs) { MODLL res = lhs; res /= rhs; return res; }
+    friend constexpr MODLL operator%(MODLL lhs, MODLL rhs) { MODLL res = lhs; res %= rhs; return res; }
+    friend ostream &operator<<(ostream &out, const MODLL &a) { out << a.val; return out; }
+    friend istream &operator>>(istream &in, MODLL &a) { in >> a.val; return in; }
+    friend bool operator==(MODLL a, MODLL b) { return a.val == b.val; }
+    friend bool operator!=(MODLL a, MODLL b) { return a.val != b.val; }
+    friend bool operator<(MODLL a, MODLL b)  { return a.val <  b.val; }
+    friend bool operator>(MODLL a, MODLL b)  { return a.val >  b.val; }
+};
 
 using namespace DEFINITION;
 using namespace CCLIB;
+
+#define ONLINE_JUDGE
+#define FAST_IO
+// #define MUTIPLE_JUDGE
+//#define CHECK_OUT_TIME
+
+typedef MODLL<ll(1e9+7)> mll;
 
 /*----------Code Area----------*/
 const ll N = 200005;

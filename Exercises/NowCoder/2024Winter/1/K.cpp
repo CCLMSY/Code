@@ -67,44 +67,44 @@ using namespace CCLIB;
 /*----------Code Area----------*/
 const ll N = 200005;
 template<ll P=0>
-class MLL{
+class mll{
 private:
     constexpr ll norm(ll x) const { return x<0?x+Mod:x; }
     constexpr ll mult(ll x,ll y) const { return norm(x*y-x*y/Mod*Mod); }
-    MLL qcpow(MLL a,ll b) const { MLL res = 1; for(;b;b>>=1,a*=a) if(b&1) res*=a; return res; }
+    mll qcpow(mll a,ll b) const { mll res = 1; for(;b;b>>=1,a*=a) if(b&1) res*=a; return res; }
 
 public:
     ll val;
     static ll Mod;
 
-    constexpr MLL():val(0){if(P>0) Mod = P;}
-    constexpr MLL(ll x){ if(P>0) Mod = P; val=norm(x%Mod); }
+    constexpr mll():val(0){if(P>0) Mod = P;}
+    constexpr mll(ll x){ if(P>0) Mod = P; val=norm(x%Mod); }
     constexpr static void setMod(ll Mod_){ Mod=Mod_; }
 
     explicit constexpr operator ll() const { return val; }
-    constexpr MLL operator-() const { MLL res; res.val = norm(Mod-val); return res; }
-    constexpr MLL inv() const { return qcpow(*this,Mod-2); }
+    constexpr mll operator-() const { mll res; res.val = norm(Mod-val); return res; }
+    constexpr mll inv() const { return qcpow(*this,Mod-2); }
     
-    constexpr MLL &operator+=(MLL rhs) & { val = norm(val+rhs.val); return *this; }
-    constexpr MLL &operator-=(MLL rhs) & { val = norm(val-rhs.val); return *this; }
-    constexpr MLL &operator*=(MLL rhs) & { val = mult(val,rhs.val); return *this; }
-    constexpr MLL &operator/=(MLL rhs) & { val = mult(val,rhs.inv()); return *this; }
-    constexpr MLL &operator%=(MLL rhs) & { val = norm(val%rhs.val); return *this; }
+    constexpr mll &operator+=(mll rhs) & { val = norm(val+rhs.val); return *this; }
+    constexpr mll &operator-=(mll rhs) & { val = norm(val-rhs.val); return *this; }
+    constexpr mll &operator*=(mll rhs) & { val = mult(val,rhs.val); return *this; }
+    constexpr mll &operator/=(mll rhs) & { val = mult(val,rhs.inv()); return *this; }
+    constexpr mll &operator%=(mll rhs) & { val = norm(val%rhs.val); return *this; }
     
-    friend constexpr MLL operator+(MLL lhs, MLL rhs) { MLL res = lhs; res += rhs; return res; }
-    friend constexpr MLL operator-(MLL lhs, MLL rhs) { MLL res = lhs; res -= rhs; return res; }
-    friend constexpr MLL operator*(MLL lhs, MLL rhs) { MLL res = lhs; res *= rhs; return res; }
-    friend constexpr MLL operator/(MLL lhs, MLL rhs) { MLL res = lhs; res /= rhs; return res; }
-    friend constexpr MLL operator%(MLL lhs, MLL rhs) { MLL res = lhs; res %= rhs; return res; }
+    friend constexpr mll operator+(mll lhs, mll rhs) { MLL res = lhs; res += rhs; return res; }
+    friend constexpr mll operator-(mll lhs, mll rhs) { MLL res = lhs; res -= rhs; return res; }
+    friend constexpr mll operator*(mll lhs, mll rhs) { MLL res = lhs; res *= rhs; return res; }
+    friend constexpr mll operator/(mll lhs, mll rhs) { MLL res = lhs; res /= rhs; return res; }
+    friend constexpr mll operator%(mll lhs, mll rhs) { MLL res = lhs; res %= rhs; return res; }
 
-    friend ostream &operator<<(ostream &out, const MLL &a) { out << a.val; return out; }
-    friend istream &operator>>(istream &in, MLL &a) { in >> a.val; return in; }
+    friend ostream &operator<<(ostream &out, const mll &a) { out << a.val; return out; }
+    friend istream &operator>>(istream &in, mll &a) { in >> a.val; return in; }
 
-    friend bool operator==(MLL a, MLL b) { return a.val == b.val; }
-    friend bool operator!=(MLL a, MLL b) { return a.val != b.val; }
-    friend bool operator<(MLL a, MLL b)  { return a.val <  b.val; }
-    friend bool operator>(MLL a, MLL b)  { return a.val >  b.val; }
-}; template<> ll MLL<>::Mod = MOD;
+    friend bool operator==(mll a, mll b) { return a.val == b.val; }
+    friend bool operator!=(mll a, mll b) { return a.val != b.val; }
+    friend bool operator<(mll a, mll b)  { return a.val <  b.val; }
+    friend bool operator>(mll a, mll b)  { return a.val >  b.val; }
+}; template<> ll mll<>::Mod = MOD;
 void solve()
 {
     ll n;cin >> n ;
@@ -114,7 +114,7 @@ void solve()
         cin >> a[i] >> s[i];
         a[i]--;
     }
-    MLL ans=1;
+    mll ans=1;
     vector<int> vis(n,-1);
     FORLL(i,0,n-1){
         ll j=i;

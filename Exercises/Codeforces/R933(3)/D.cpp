@@ -93,16 +93,37 @@ using namespace CCLIB;
 
 #define ONLINE_JUDGE
 #define FAST_IO
-// #define MUTIPLE_JUDGE
+#define MUTIPLE_JUDGE
 //#define CHECK_OUT_TIME
 
 typedef MODLL<ll(1e9+7)> mll;
 
 /*----------Code Area----------*/
 const ll N = 200005;
+ll getmod(ll x,ll mod){return (x%mod+mod)%mod;}
 void solve()
 {
-    
+    ll n,m,x;cin >> n >> m >> x;
+    ll t;char c;
+    set<ll> st[2]; st[0].insert(x);
+    int fl=0;
+    while(m--){
+        cin >> t >> c;
+        for(auto &y:st[fl]){
+            if(c=='0'){
+                st[fl^1].insert(getmod(y+t-1,n)+1);
+            }else if(c=='1'){
+                st[fl^1].insert(getmod(y-t-1,n)+1);
+            }else{
+                st[fl^1].insert(getmod(y-t-1,n)+1);
+                st[fl^1].insert(getmod(y+t-1,n)+1);
+            }
+        }
+        st[fl].clear();
+        fl^=1;
+    }cout << st[fl].size() << endl;
+    for(auto &y:st[fl]) cout << y << ' ';
+    cout << endl;
 }
 /*----------Code Area----------*/
 
