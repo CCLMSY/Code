@@ -101,9 +101,67 @@ typedef MODLL<ll(1e9+7)> mll;
 
 /*----------Code Area----------*/
 const ll N = 200005;
+void mov(pll& pos,char c){
+    if(c=='E') pos.first++;
+    if(c=='W') pos.first--;
+    if(c=='N') pos.second++;
+    if(c=='S') pos.second--;
+}
+void rmov(pll& pos,char c){
+    if(c=='E') pos.first--;
+    if(c=='W') pos.first++;
+    if(c=='N') pos.second--;
+    if(c=='S') pos.second++;
+}
+bool check(string &s,string &ans){
+    pll posR,posH;
+    posR = posH = {0,0};
+    ll n=s.length();
+    FORLL(i,0,n-1){
+        if(ans[i]=='R') mov(posR,s[i]);
+        if(ans[i]=='H') mov(posH,s[i]);
+    }
+    return posR==posH;
+}
 void solve()
 {
-    
+    ll n;cin >> n;
+    string s;cin >> s;
+    pll totp = {0,0};
+    for(auto c:s){
+        mov(totp,c);
+    }
+    if(totp.first%2||totp.second%2||
+        n==2&&(
+        s[0]=='N'&&s[1]=='S'||
+        s[0]=='S'&&s[1]=='N'||
+        s[0]=='E'&&s[1]=='W'||
+        s[0]=='W'&&s[1]=='E')
+    ){
+        cout << "NO" << endl;
+        return;
+    }
+    totp.first/=2; totp.second/=2;
+    string ans(n,0);
+    rmov(totp,s[0]); ans[0]='R';
+    FORLL(i,1,n-1){
+        if(totp.first>0&&s[i]=='E'){
+            ans[i]='R';
+            totp.first--;
+        }else if(totp.first<0&&s[i]=='W'){
+            ans[i]='R';
+            totp.first++;
+        }else if(totp.second>0&&s[i]=='N'){
+            ans[i]='R';
+            totp.second--;
+        }else if(totp.second<0&&s[i]=='S'){
+            ans[i]='R';
+            totp.second++;
+        }else{
+            ans[i]='H';
+        }
+    }
+    cout << ans << endl;
 }
 /*----------Code Area----------*/
 

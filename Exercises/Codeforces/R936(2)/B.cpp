@@ -20,20 +20,19 @@ namespace DEFINITION
     #define ALL(A) (A).begin(),(A).end()
     #define SORT(A) sort(ALL(A))
     #define SORT_REV(A) sort((A).rbegin(),(A).rend())
-    //SORT BEFORE UNIQUE!!
-    #define UNIQUE(A) A.erase(unique(ALL(A)),A.end())
+    #define UNIQUE(A) unique(ALL(A))
     #define Presentation(i,r) " \n"[i==r]
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)-(a)/MOD*MOD+MOD)%MOD)
     #define NO cout << "NO\n"
     #define YES cout << "YES\n"
-    #define endl '\n' //交互题不启用！
+    #define endl '\n'
 }
 
 namespace CCLIB
 {
-    #define create_vec(v,n) vector<ll> v(n);for(auto &x:v) cin >> x;
+    #define create_vec(A,n) vector<ll> A(n);for(auto &x:A) cin >> x;
     ostream& operator<<(ostream &out, const pair<ll,ll> &p) {out << '(' << p.first << ',' << p.second << ')';return out;}
 
     //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解;通解为x=x0+k*b/d,y=y0-k*a/d;
@@ -55,10 +54,10 @@ namespace CCLIB
 }
 
 template<const ll P>
-class MODLL{//所有运算皆为右值！！！
+class MODLL{
 private:
     constexpr ll norm(ll x) const { return (x%MOD+MOD)%MOD; }
-    constexpr ll mult(ll x,ll y) const { return norm(x*y); }
+    constexpr ll mult(ll x,ll y) const { return norm(x*y-x*y/Mod*Mod); }
 
 public:
     ll val; const static ll Mod=P;
@@ -70,7 +69,14 @@ public:
     constexpr MODLL inv() const { ll a=val,b=Mod,u=1,v=0;
         while(b!=0){ ll t=a/b; a-=t*b; swap(a,b); u-=t*v; swap(u,v); }
         return MODLL(u);}
-    constexpr MODLL pow(ll b) { MODLL res = 1,a = *this; for(;b;b>>=1,a*=a) if(b&1) res*=a; return res; }
+    constexpr MODLL pow(ll b)
+    {
+        MODLL res = 1, a = *this;
+        for (; b; b >>= 1, a *= a)
+            if (b & 1)
+                res *= a;
+        return res;
+    }
     constexpr MODLL &operator+=(MODLL rhs) & { val = norm(val+rhs.val); return *this; }
     constexpr MODLL &operator-=(MODLL rhs) & { val = norm(val-rhs.val); return *this; }
     constexpr MODLL &operator*=(MODLL rhs) & { val = mult(val,rhs.val); return *this; }
@@ -103,7 +109,35 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n,k;cin >> n >> k;
+    create_vec(v,n);
+    ll t=0,mx=-INF,mxi=-1,mxj=-1,ti=0;
+    FORLL(i,0,n-1)
+    {
+        t+=v[i];
+        if(t>mx)
+        {
+            mx=t;
+            mxi=ti;
+            mxj=i;
+        }
+        if(t<0)
+        {
+            t=0;
+            ti=i+1;
+        }
+    }
+    if(mx>0){
+        mll ans(0),mmx(mx),p2(2);
+        p2=p2.pow(k);
+        FORLL(i,0,n-1) if(i<mxi||i>mxj) ans+=v[i];
+        cout << ans+mmx*p2 << endl;
+    }else{
+        mll ans(0);
+        FORLL(i,0,n-1) 
+            ans+=v[i];
+        cout << ans << endl;
+    }
 }
 /*----------Code Area----------*/
 

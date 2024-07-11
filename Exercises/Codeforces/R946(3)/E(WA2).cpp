@@ -103,7 +103,50 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll m,x;cin >> m >> x;
+    struct node{
+        ll cost,val;
+        bool operator<(const node &rhs) const {
+            double a=1.*val/cost,b=1.*rhs.val/rhs.cost;
+            return a<b;
+        }
+        bool operator<=(const node &rhs) const {
+            double a=1.*val/cost,b=1.*rhs.val/rhs.cost;
+            return a<=b;
+        }
+    } t;
+    priority_queue<node,vector<node>,less<node>> pq;
+    ll c,v,mny=0,ans=0;
+    FORLL(i,1,m){
+        cin >> t.cost >> t.val;
+        if(mny>=t.cost){
+            pq.push(t);
+            mny-=t.cost;
+            ans+=t.val;
+        }else if(!pq.empty()){
+            vector<node> tmp;
+            ll tc=0,tv=0;
+            int fl=0;
+            while(!pq.empty()&&pq.top()<=t){
+                tc+=pq.top().cost;
+                tv+=pq.top().val;
+                tmp.push_back(pq.top());
+                pq.pop();
+                if(mny+tc>=t.cost){
+                    fl=1;
+                    break;
+                }
+            }
+            if(fl&&(t.val>tv||(t.val==tv&&t.cost<tc))){
+                pq.push(t);
+                mny+=tc-t.cost;
+                ans+=t.val-tv;
+            }else{
+                for(auto &x:tmp) pq.push(x);
+            }
+        }
+        mny+=x;
+    } cout << ans << endl;
 }
 /*----------Code Area----------*/
 

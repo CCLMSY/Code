@@ -103,7 +103,27 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    set<ll> st;
+    ll n,t;cin >> n;
+    FORLL(i,1,n){
+        cin >> t;
+        st.insert(t);
+    }
+    vector<ll> v(ALL(st)),d;
+    n=v.size();
+    d.emplace_back(v[0]);
+    FORLL(i,1,n-1) d.emplace_back(v[i]-v[i-1]);
+    n=d.size();
+    FORLL(i,0,n-1){
+        if(d[i]>1){
+            if(i&1) cout << "Bob\n";
+            else cout << "Alice\n";
+            return ;
+        }
+    }
+    if(n&1) cout << "Alice\n";
+    else cout << "Bob\n";
+    return ;
 }
 /*----------Code Area----------*/
 

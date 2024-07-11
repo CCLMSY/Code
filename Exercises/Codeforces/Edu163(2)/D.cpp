@@ -20,20 +20,19 @@ namespace DEFINITION
     #define ALL(A) (A).begin(),(A).end()
     #define SORT(A) sort(ALL(A))
     #define SORT_REV(A) sort((A).rbegin(),(A).rend())
-    //SORT BEFORE UNIQUE!!
-    #define UNIQUE(A) A.erase(unique(ALL(A)),A.end())
+    #define UNIQUE(A) unique(ALL(A))
     #define Presentation(i,r) " \n"[i==r]
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)-(a)/MOD*MOD+MOD)%MOD)
     #define NO cout << "NO\n"
     #define YES cout << "YES\n"
-    #define endl '\n' //交互题不启用！
+    #define endl '\n'
 }
 
 namespace CCLIB
 {
-    #define create_vec(v,n) vector<ll> v(n);for(auto &x:v) cin >> x;
+    #define create_vec(A,n) vector<ll> A(n);for(auto &x:A) cin >> x;
     ostream& operator<<(ostream &out, const pair<ll,ll> &p) {out << '(' << p.first << ',' << p.second << ')';return out;}
 
     //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解;通解为x=x0+k*b/d,y=y0-k*a/d;
@@ -41,7 +40,7 @@ namespace CCLIB
     ll qcpow(ll a,ll b,ll p=INF){ll ret=1;a=Get_Mod(a);for (;b;b>>=1,a=a*a%p) if(b&1) ret=ret*a%p;return ret;}
 
     vector<ll> Fac,Fac_inv;
-    void Prepare_Factorium(ll n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=qcpow(Fac[i],MOD-2,MOD);}}void Prepare_Combination(ll n){Prepare_Factorium(n);}
+    void Prepare_Factorium(ll n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=qcpow(Fac[i],MOD-2);}}void Prepare_Combination(ll n){Prepare_Factorium(n);}
     ll Get_Combination(ll m,ll n) {return Get_Mod(Get_Mod(Fac[m]*Fac_inv[m-n])*Fac_inv[n]);}
 
     vector<ll> Nums;
@@ -55,10 +54,10 @@ namespace CCLIB
 }
 
 template<const ll P>
-class MODLL{//所有运算皆为右值！！！
+class MODLL{
 private:
-    constexpr ll norm(ll x) const { return (x%MOD+MOD)%MOD; }
-    constexpr ll mult(ll x,ll y) const { return norm(x*y); }
+    constexpr ll norm(ll x) const { return x<0?x+Mod:x; }
+    constexpr ll mult(ll x,ll y) const { return norm(x*y-x*y/Mod*Mod); }
 
 public:
     ll val; const static ll Mod=P;
@@ -74,7 +73,7 @@ public:
     constexpr MODLL &operator+=(MODLL rhs) & { val = norm(val+rhs.val); return *this; }
     constexpr MODLL &operator-=(MODLL rhs) & { val = norm(val-rhs.val); return *this; }
     constexpr MODLL &operator*=(MODLL rhs) & { val = mult(val,rhs.val); return *this; }
-    constexpr MODLL &operator/=(MODLL rhs) & { val = mult(val,ll(rhs.inv())); return *this; }
+    constexpr MODLL &operator/=(MODLL rhs) & { val = mult(val,rhs.inv()); return *this; }
     constexpr MODLL &operator%=(MODLL rhs) & { val = norm(val%rhs.val); return *this; }
     friend constexpr MODLL operator+(MODLL lhs, MODLL rhs) { MODLL res = lhs; res += rhs; return res; }
     friend constexpr MODLL operator-(MODLL lhs, MODLL rhs) { MODLL res = lhs; res -= rhs; return res; }
@@ -103,7 +102,19 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    string s;cin >> s;
+    ll n=s.length();
+    ll mx=0;
+    for(ll i=0;n-i>mx;i++)
+    {
+        FORLL(len,1,(n-i)/2){
+            ll ri=i+len;
+            FORLL(j,0,len-1){
+                if(s[i+j]!=s[ri+j]&&s[i+j]!='?'&&s[ri+j]!='?') break;
+                if(j==len-1) mx=max(mx,len*2);
+            }
+        }
+    }cout << mx << endl;
 }
 /*----------Code Area----------*/
 

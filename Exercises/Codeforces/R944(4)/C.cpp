@@ -103,7 +103,27 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll a,b,c,d;
+    cin >> a >> b >> c >> d;
+    if(a>b) swap(a,b);
+    if(c>d) swap(c,d);
+    if(a>c){
+        if(a<d&&b>d){
+            cout << "YES\n";
+            return ;
+        }else{
+            cout << "NO\n";
+            return ;
+        }
+    }else{
+        if(b>c&&b<d){
+            cout << "YES\n";
+            return ;
+        }else{
+            cout << "NO\n";
+            return ;
+        }
+    }
 }
 /*----------Code Area----------*/
 

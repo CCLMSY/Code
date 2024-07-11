@@ -103,7 +103,17 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n;cin >> n;
+    map<ll,ll> mp;
+    ll t;
+    FORLL(i,1,n){
+        cin >> t;
+        mp[t]++;
+    }
+    ll ans=0;
+    for(auto x:mp){
+        ans+=x.second/3;
+    }cout << ans << endl;
 }
 /*----------Code Area----------*/
 

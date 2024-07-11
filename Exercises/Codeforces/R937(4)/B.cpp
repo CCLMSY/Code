@@ -20,15 +20,14 @@ namespace DEFINITION
     #define ALL(A) (A).begin(),(A).end()
     #define SORT(A) sort(ALL(A))
     #define SORT_REV(A) sort((A).rbegin(),(A).rend())
-    //SORT BEFORE UNIQUE!!
-    #define UNIQUE(A) A.erase(unique(ALL(A)),A.end())
+    #define UNIQUE(A) unique(ALL(A))
     #define Presentation(i,r) " \n"[i==r]
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)-(a)/MOD*MOD+MOD)%MOD)
     #define NO cout << "NO\n"
     #define YES cout << "YES\n"
-    #define endl '\n' //交互题不启用！
+    #define endl '\n'
 }
 
 namespace CCLIB
@@ -103,7 +102,24 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n;cin >> n;
+    string s1,s2;
+    FORLL(i,1,n){
+        if(i&1){
+            s1+="##";
+            s2+="..";
+        }else{
+            s1+="..";
+            s2+="##";
+        }
+    }
+    FORLL(i,1,n){
+        if(i&1){
+            cout << s1 << endl << s1 << endl;
+        }else{
+            cout << s2 << endl << s2 << endl;
+        }
+    }
 }
 /*----------Code Area----------*/
 

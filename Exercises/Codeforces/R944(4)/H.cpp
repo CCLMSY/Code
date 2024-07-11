@@ -100,10 +100,100 @@ using namespace CCLIB;
 typedef MODLL<ll(1e9+7)> mll;
 
 /*----------Code Area----------*/
-const ll N = 200005;
-void solve()
-{
+const ll N = 1000;
+struct Edge{
+    int to,next;
+}edge[N*2];
+int head[N],tot;
+int n,m;
+int dfn[N],low[N];
+bool vis[N];//标记数组
+int scc[N];//记录结点i属于哪个强连通分量
+int block_cnt;//时间戳
+int sig;//记录强连通分量个数
+stack<int> S;
+void init(){
+    tot=0;
+    sig=0;
+    block_cnt=0;
+    memset(head,-1,sizeof(head));
+    memset(vis,0,sizeof(vis));
+    memset(dfn,0,sizeof(dfn));
+    memset(low,0,sizeof(low));
+    memset(scc,0,sizeof(scc));
+}
+void addEdge(int from,int to){
+    edge[++tot].to=to;
+    edge[tot].next=head[from];
+    head[from]=tot;
+}
+void Tarjan(int x) {
+    vis[x]=true;
+    dfn[x]=low[x]=++block_cnt;//每找到一个新点，纪录当前节点的时间戳
+    S.push(x);//当前结点入栈
+ 
+    for(int i=head[x]; i!=-1; i=edge[i].next) { //遍历整个栈
+        int y=edge[i].to;//当前结点的下一结点
+        if(!dfn[y]) {
+            Tarjan(y);
+            low[x]=min(low[x],low[y]);
+        }
+        else if(vis[y])
+            low[x]=min(low[x],dfn[y]);
+    }
+ 
+    if(dfn[x]==low[x]) { //满足强连通分量要求
+        sig++;//记录强连通分量个数
+ 
+        while(true) { //记录元素属于第几个强连通分量
+            int temp=S.top();
+            S.pop();
+            vis[temp]=false;
+            scc[temp]=sig;
+            if(temp==x)
+                break;
+        }
+    }
+}
+bool twoSAT(){
+    for(int i=1;i<=2*n;i++)//找强连通分量
+        if(!dfn[i])
+            Tarjan(i);
+    for(int i=1;i<=n;i++)
+        if(scc[i]==scc[i+n])//条件a与!a属于同一连通分量，无解
+            return false;
+    return true;
+}
+void solve(){
+    init();
+ 
+    ll n;cin >> n;
+    vector<vector<ll>> v(3,vector<ll>(n));
+    FORLL(i,0,2) FORLL(j,0,n-1) cin >> v[i][j]; 
+    ll t;
     
+    FORLL(i,0,n-1){
+        FORLL(j,0,2){
+            FORLL(k,0,2) if(j!=k) {
+                if(v[j][i]>0){
+                    t = (v[k][i]>0)?v[k][i]:-v[k][i]+n;
+                    addEdge(v[j][i]+n,t);
+                }else{
+                    t = (v[k][i]>0)?v[k][i]:-v[k][i]+n;
+                    addEdge(-v[j][i],t);
+                }
+            }
+        }
+    }
+ 
+    bool flag=twoSAT();
+    if(!flag)
+        cout << "NO\n";
+    else{
+        cout << "YES\n";
+    }
+ 
+    return ;
 }
 /*----------Code Area----------*/
 

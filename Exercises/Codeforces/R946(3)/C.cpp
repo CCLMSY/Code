@@ -103,7 +103,32 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n;cin >> n;
+    vector<ll> v(n);
+    FORLL(i,0,n-1) cin >> v[i];
+    unordered_map<ll,ll> mp[3];
+    unordered_map<ll,unordered_map<ll,ll>> mp2[3];
+    ll t;
+    FORLL(i,0,n-3){
+        t=v[i]*1000001+v[i+1];
+        mp[0][t]++;
+        mp2[0][t][v[i+2]]++;
+        t=v[i]*1000001+v[i+2];
+        mp[1][t]++;
+        mp2[1][t][v[i+1]]++;
+        t=v[i+1]*1000001+v[i+2];
+        mp[2][t]++;
+        mp2[2][t][v[i]]++;
+    }
+    ll ans=0;
+    FORLL(i,0,2){
+        for(auto [x,cnt]:mp[i]){
+            for(auto [y,cnt2]:mp2[i][x]){
+                ans+=(cnt-cnt2)*cnt2;
+            }
+        }
+    }
+    cout << ans/2 << endl;
 }
 /*----------Code Area----------*/
 

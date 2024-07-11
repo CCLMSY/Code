@@ -103,7 +103,8 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll x,y;cin >> x >> y;
+    cout << min(x,y) << ' ' << max(x,y) << endl;
 }
 /*----------Code Area----------*/
 

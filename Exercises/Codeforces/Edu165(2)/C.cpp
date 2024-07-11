@@ -103,7 +103,29 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n,k,t;
+    cin >> n >> k;
+    vector<ll> a(n+1,0);
+    FORLL(i,1,n) cin >> a[i];
+    vector<vector<ll>> dp(n+1,vector<ll>(k+1,INF));
+    // dp[i][j]：前i个数，使用j次操作的最小值
+    ll mn;
+    dp[0][0] = 0;
+    FORLL(i,1,n)
+    {
+        FORLL(j,0,k){
+            dp[i][j] = dp[i-1][j]+a[i];
+            mn = a[i];
+            FORLL(l,1,j)
+            {
+                if(i-l<1) break;
+                mn = min(mn,a[i-l]);
+                dp[i][j] = min(dp[i][j],dp[i-1-l][j-l]+mn*(l+1));
+            }
+        }
+    }
+    SORT(dp[n]);
+    cout << dp[n][0] << endl;
 }
 /*----------Code Area----------*/
 

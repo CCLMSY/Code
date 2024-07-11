@@ -103,7 +103,56 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll lx,ly,rx,ry,n,m,x,y,t;
+    cin >> rx >> ry >> n >> m;
+    set<pll> px,py;
+    FORLL(i,0,n-1){
+        cin >> x >> y;
+        px.insert({x,y});
+        py.insert({y,x});
+    }
+    char op; lx=ly=1;
+    ll scr[2]={0,0};
+    FORLL(i,0,m-1){ //m
+        cin >> op >> t;
+        if(op=='U'){
+            lx+=t;
+            while(!px.empty() && (px.begin()->first)<lx){
+                scr[i%2]++;
+                auto [x,y] = *px.begin();
+                px.erase(px.begin());
+                py.erase({y,x});
+            }
+        }else
+        if(op=='D'){
+            rx-=t;
+            while(!px.empty() && (px.rbegin()->first)>rx){
+                scr[i%2]++;
+                auto [x,y]=*px.rbegin();
+                px.erase(*px.rbegin());
+                py.erase({y,x});
+            }
+        }else
+        if(op=='L'){
+            ly+=t;
+            while(!py.empty() && (py.begin()->first)<ly){
+                scr[i%2]++;
+                auto [y,x]=*py.begin();
+                py.erase(py.begin());
+                px.erase({x,y});
+            }
+        }else
+        if(op=='R'){
+            ry-=t;
+            while(!py.empty() && (py.rbegin()->first)>ry){
+                scr[i%2]++;
+                auto [y,x]=*py.rbegin();
+                py.erase(*py.rbegin());
+                px.erase({x,y});
+            }
+        }
+    }
+    cout << scr[0] << ' ' << scr[1] << endl;
 }
 /*----------Code Area----------*/
 

@@ -103,7 +103,17 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll r;cin >> r;
+    ll sum = 0;
+    FORLL(x,1,r){
+        ll r_1 = r+1;
+        ll y,y1;
+        y = sqrt(r*r-x*x)+eps;
+        if(y*y+x*x==r*r) y--;
+        y1 = sqrt(r_1*r_1-x*x)+eps;
+        if(y1*y1+x*x==r_1*r_1) y1--;
+        sum += y1-y;
+    }cout << sum*4 << endl;
 }
 /*----------Code Area----------*/
 

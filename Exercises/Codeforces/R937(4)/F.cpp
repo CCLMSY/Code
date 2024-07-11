@@ -20,15 +20,14 @@ namespace DEFINITION
     #define ALL(A) (A).begin(),(A).end()
     #define SORT(A) sort(ALL(A))
     #define SORT_REV(A) sort((A).rbegin(),(A).rend())
-    //SORT BEFORE UNIQUE!!
-    #define UNIQUE(A) A.erase(unique(ALL(A)),A.end())
+    #define UNIQUE(A) unique(ALL(A))
     #define Presentation(i,r) " \n"[i==r]
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)-(a)/MOD*MOD+MOD)%MOD)
     #define NO cout << "NO\n"
     #define YES cout << "YES\n"
-    #define endl '\n' //交互题不启用！
+    #define endl '\n'
 }
 
 namespace CCLIB
@@ -100,10 +99,28 @@ using namespace CCLIB;
 typedef MODLL<ll(1e9+7)> mll;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+const ll N = 500005;
+vector<ll> v,pow2;
+void pre(){
+    ll t=1;
+    while(t<=N) {
+        pow2.emplace_back(t);
+        t<<=1;
+        v.emplace_back(t-1);
+    }
+}
 void solve()
 {
-    
+    ll a,b,c;cin >> a >> b >> c;
+    if(c!=1+a) {cout << "-1" << endl;return;}
+    if(c==1){cout << b << endl;return;}
+    ll t=a,cnta=0,cnt=0;
+    while(t) {cnta++;t>>=1;}
+    cnt=cnta; t=v[cnta-1]-a;
+    b-=t; ll tt=pow2[cnta-1]-t;
+    tt=pow2[cnta-1]+tt;
+    cnt+=(b+tt-1)/tt;
+    cout << cnt << endl;
 }
 /*----------Code Area----------*/
 
@@ -119,6 +136,8 @@ signed main(){
     ios::sync_with_stdio(false);
     cin.tie(nullptr); cout.tie(nullptr);
 #endif
+
+pre();
 
 #ifdef MUTIPLE_JUDGE
     long T; cin >> T;

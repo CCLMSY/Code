@@ -103,7 +103,39 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n,m;cin >> n >> m;
+    vector<string> v(n);
+    for(auto &x:v) cin >> x;
+    if( v[0][0]==v[n-1][m-1] || 
+        v[n-1][0]==v[0][m-1] ){
+            cout << "YES" << endl;
+            return ; 
+        }
+    if(v[0][0]==v[0][m-1]){
+        FORLL(i,0,m-1) if(v[n-1][i]==v[0][0]){
+            cout << "YES" << endl;
+            return ;
+        }
+    }
+    if(v[n-1][0]==v[n-1][m-1]){
+        FORLL(i,0,m-1) if(v[0][i]==v[n-1][0]){
+            cout << "YES" << endl;
+            return ;
+        }
+    }
+    if(v[0][0]==v[n-1][0]){
+        FORLL(i,0,n-1) if(v[i][m-1]==v[0][0]){
+            cout << "YES" << endl;
+            return ;
+        }
+    }
+    if(v[0][m-1]==v[n-1][m-1]){
+        FORLL(i,0,n-1) if(v[i][0]==v[0][m-1]){
+            cout << "YES" << endl;
+            return ;
+        }
+    }
+    cout << "NO" << endl;
 }
 /*----------Code Area----------*/
 

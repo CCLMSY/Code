@@ -103,7 +103,12 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n;cin >> n;
+    string s;cin >> s;
+    ll cntU=0;
+    FORLL(i,0,n-1) if(s[i]=='U') cntU++;
+    if(cntU&1) cout << "YES" << endl;
+    else cout << "NO" << endl;
 }
 /*----------Code Area----------*/
 

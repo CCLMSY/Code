@@ -20,20 +20,19 @@ namespace DEFINITION
     #define ALL(A) (A).begin(),(A).end()
     #define SORT(A) sort(ALL(A))
     #define SORT_REV(A) sort((A).rbegin(),(A).rend())
-    //SORT BEFORE UNIQUE!!
-    #define UNIQUE(A) A.erase(unique(ALL(A)),A.end())
+    #define UNIQUE(A) unique(ALL(A))
     #define Presentation(i,r) " \n"[i==r]
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)-(a)/MOD*MOD+MOD)%MOD)
     #define NO cout << "NO\n"
     #define YES cout << "YES\n"
-    #define endl '\n' //交互题不启用！
+    #define endl '\n'
 }
 
 namespace CCLIB
 {
-    #define create_vec(v,n) vector<ll> v(n);for(auto &x:v) cin >> x;
+    #define create_vec(A,n) vector<ll> A(n);for(auto &x:A) cin >> x;
     ostream& operator<<(ostream &out, const pair<ll,ll> &p) {out << '(' << p.first << ',' << p.second << ')';return out;}
 
     //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解;通解为x=x0+k*b/d,y=y0-k*a/d;
@@ -55,10 +54,10 @@ namespace CCLIB
 }
 
 template<const ll P>
-class MODLL{//所有运算皆为右值！！！
+class MODLL{
 private:
-    constexpr ll norm(ll x) const { return (x%MOD+MOD)%MOD; }
-    constexpr ll mult(ll x,ll y) const { return norm(x*y); }
+    constexpr ll norm(ll x) const { return x<0?x+Mod:x; }
+    constexpr ll mult(ll x,ll y) const { return norm(x*y-x*y/Mod*Mod); }
 
 public:
     ll val; const static ll Mod=P;
@@ -103,7 +102,14 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n;cin >> n;
+    create_vec(v,n);
+    SORT(v);
+    ll cnt = 0;
+    ll i=(n-1)/2;
+    ll m=v[i];
+    while(i<n&&v[i]==m) i++,cnt++;
+    cout << cnt << endl;
 }
 /*----------Code Area----------*/
 

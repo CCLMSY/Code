@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=5e-9;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -100,10 +100,37 @@ using namespace CCLIB;
 typedef MODLL<ll(1e9+7)> mll;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+const ll N = 1e5+3;
+ll pre[31][N][2],suf[31][N][2],t;
 void solve()
 {
-    
+    ll n;cin >> n;
+    create_vec(v,n);
+    FORLL(i,0,30){
+        pre[i][0][0] = pre[i][0][1] = 0;
+        suf[i][n+1][0] = suf[i][n+1][1] = 0;
+    }
+    // pre[i][j][k]：前j个数的二进制第i位，k=0表示它们异或和为0的前缀区间数，k=1表示它们异或和为1的前缀区间数
+    FORLL(i,0,30){
+        FORLL(j,1,n){
+            t = ((v[j-1]>>i)&1);
+            pre[i][j][0] = (t==0) + pre[i][j-1][t^0];
+            pre[i][j][1] = (t==1) + pre[i][j-1][t^1];
+        }
+        FORLL_rev(j,n,1){
+            t = ((v[j-1]>>i)&1);  
+            suf[i][j][0] = (t==0) + suf[i][j+1][t^0];
+            suf[i][j][1] = (t==1) + suf[i][j+1][t^1];
+        }
+    }
+    ll ans = 0;
+    FORLL(i,1,n){
+        t = 0;
+        while((1<<(t+1))<=v[i-1]) t++;  // 找到v[i-1]的最高位
+        ans += pre[t][i-1][1] * (suf[t][i+1][0] + 1);
+        ans += (pre[t][i-1][0] + 1) * suf[t][i+1][1];
+    }
+    cout << ans << endl;
 }
 /*----------Code Area----------*/
 

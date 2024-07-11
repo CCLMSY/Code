@@ -103,7 +103,34 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
+    ll n;cin >> n;
+    ll t;
+    map<ll,ll> mp;
+    FORLL(i,1,n)
+    {
+        cin >> t;
+        mp[t]++;
+    }
+    vector<ll> v;
+    for(auto &x:mp) v.emplace_back(x.second);
+    n=v.size();
+
+    vector<ll> dp(n + 1, INF),tdp; // dp_k表示清除k个数的最小代价
+    dp[0] = 0;
     
+    FORLL(i,0,n-1){
+        tdp = dp;
+        FORLL(k,1,n){
+            t=dp[k-1]+v[i];
+            if(t<=i+1-k){
+                tdp[k]=min(t,tdp[k]);
+            }
+        }
+        dp=tdp;
+    }
+    ll ans=n;
+    while(dp[ans]>=INF) ans--;
+    cout << n-ans << endl;
 }
 /*----------Code Area----------*/
 

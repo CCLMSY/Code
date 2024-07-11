@@ -103,7 +103,27 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n;cin >> n;
+    map<ll,vector<ll>> mpos,suff;
+    ll t;
+    FORLL(i,0,n-1){
+        cin >> t;
+        mpos[t/4].emplace_back(i);
+        suff[t/4].emplace_back(t%4);
+    }
+    vector<ll> vans(n);
+    for(auto &p:mpos){
+        ll pre = p.first;
+        vector<ll> &suf = suff[pre];
+        vector<ll> &pos = p.second;
+        t = pos.size();
+        SORT(suf);
+        FORLL(i,0,t-1){
+            vans[pos[i]] = pre*4+suf[i];
+        }
+    }
+    for(auto &x:vans) cout << x << ' ';
+    cout << endl;
 }
 /*----------Code Area----------*/
 

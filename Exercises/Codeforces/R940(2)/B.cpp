@@ -93,7 +93,7 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 #define ONLINE_JUDGE
-#define FAST_IO
+// #define FAST_IO
 #define MUTIPLE_JUDGE
 // #define CHECK_OUT_TIME
 
@@ -103,7 +103,17 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n,k;cin >> n >> k;
+    vector<ll> v(n,0);
+    if(n==1){
+        cout << k << endl;
+        return;
+    }
+    ll x=log2(k+1);
+    v.back()=(1<<x)-1;
+    k-=(1<<x)-1;
+    v.front()=k;
+    FORLL(i,0,n-1) cout << v[i] << " \n"[i==n-1];
 }
 /*----------Code Area----------*/
 

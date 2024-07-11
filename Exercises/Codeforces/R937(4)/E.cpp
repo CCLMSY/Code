@@ -3,7 +3,7 @@ using namespace std;
 
 /*----------Consts----------*/
 const long long MOD=1e9+7;
-const double eps=1e-6;
+const double eps=1e-7;
 
 const double pi = acos(-1.0);
 const long long INF=0x3fffffffffffffff;
@@ -20,15 +20,14 @@ namespace DEFINITION
     #define ALL(A) (A).begin(),(A).end()
     #define SORT(A) sort(ALL(A))
     #define SORT_REV(A) sort((A).rbegin(),(A).rend())
-    //SORT BEFORE UNIQUE!!
-    #define UNIQUE(A) A.erase(unique(ALL(A)),A.end())
+    #define UNIQUE(A) unique(ALL(A))
     #define Presentation(i,r) " \n"[i==r]
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)-(a)/MOD*MOD+MOD)%MOD)
     #define NO cout << "NO\n"
     #define YES cout << "YES\n"
-    #define endl '\n' //交互题不启用！
+    #define endl '\n'
 }
 
 namespace CCLIB
@@ -101,9 +100,44 @@ typedef MODLL<ll(1e9+7)> mll;
 
 /*----------Code Area----------*/
 const ll N = 200005;
+ll n;
+string s;
+bool check(ll c){//长度c一段
+    ll l=n/c;
+    int dif=0,curdif;
+    FORLL(j,0,c-1){
+        curdif = 0;
+        FORLL(i,0,l-1)
+            if(s[i*c+j]!=s[j])
+                curdif++;
+        if(l>2&&curdif==l-1){
+            curdif=0;
+            FORLL(i,0,l-1)
+                if(s[i*c+j]!=s[c+j])
+                    curdif++;
+        }
+        dif+=curdif;
+        if(dif>1) return false;
+    }return true;
+}
+
 void solve()
 {
-    
+    cin >> n >> s;
+    ll ub=sqrt(n)+1;
+    ll ans=n,t;
+    int fl=0;
+    FORLL(i,1,ub){ 
+        if(n%i==0){ //i是因子
+            t=n/i; //t是另一个因子
+            if(check(i)){
+                cout << i << endl;
+                return ;
+            }else if(check(t)){
+                ans = min(ans,t);
+            }
+        }
+    }cout << ans << endl;
 }
 /*----------Code Area----------*/
 

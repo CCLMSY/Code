@@ -101,9 +101,25 @@ typedef MODLL<ll(1e9+7)> mll;
 
 /*----------Code Area----------*/
 const ll N = 200005;
+
+unordered_map<ll,ll> mp;
+ll dfs(ll n){
+    if(n<=1) return 1;
+    if(n==2) return 3;
+    if(mp.count(n)) return mp[n];
+    return mp[n]=Get_Mod(dfs(n-1)+Get_Mod(dfs(n-2)*Get_Mod((n-1)*2)));
+}
+
 void solve()
 {
-    
+    ll n,k;cin >> n >> k;
+    ll x,y;
+    FORLL(i,1,k){
+        cin >> x >> y;
+        if(x==y) n--;
+        else n-=2;
+    }
+    cout << dfs(n) << endl;
 }
 /*----------Code Area----------*/
 

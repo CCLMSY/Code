@@ -103,7 +103,23 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll m,x;cin >> m >> x;
+    priority_queue<ll,vector<ll>,less<ll>> pq;
+    ll mny,cnt,t; mny=cnt=0;
+    FORLL(i,1,m)
+    {
+        cin >> t;
+        if(mny>=t){
+            mny-=t;
+            cnt++;
+            pq.push(t);
+        }else if(!pq.empty()&&pq.top()>t){
+            mny+=pq.top()-t;
+            pq.pop();
+            pq.push(t);
+        }
+        mny+=x;
+    }cout << cnt << endl;
 }
 /*----------Code Area----------*/
 

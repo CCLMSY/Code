@@ -20,15 +20,14 @@ namespace DEFINITION
     #define ALL(A) (A).begin(),(A).end()
     #define SORT(A) sort(ALL(A))
     #define SORT_REV(A) sort((A).rbegin(),(A).rend())
-    //SORT BEFORE UNIQUE!!
-    #define UNIQUE(A) A.erase(unique(ALL(A)),A.end())
+    #define UNIQUE(A) unique(ALL(A))
     #define Presentation(i,r) " \n"[i==r]
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
     #define Get_Mod(a) (((a)-(a)/MOD*MOD+MOD)%MOD)
     #define NO cout << "NO\n"
     #define YES cout << "YES\n"
-    #define endl '\n' //交互题不启用！
+    #define endl '\n'
 }
 
 namespace CCLIB
@@ -101,9 +100,26 @@ typedef MODLL<ll(1e9+7)> mll;
 
 /*----------Code Area----------*/
 const ll N = 200005;
+vector<ll> d={10,11,101,111,1001,1011,1101,1111,10001,10011,10101,10111,11001,11011,11101,11111,100000};
+
+bool pending(ll x){
+    ll i=0;
+    while(x>1&&i<d.size()){
+        while(x>1&&x%d[i]==0){
+            auto it = lower_bound(ALL(d),x);
+            if(it!=d.end()&&(*it)==x) return 1;
+            x/=d[i];
+            if(x<=1) return 1;
+        }
+        i++;
+    }
+    return x<=1;
+}
 void solve()
 {
-    
+    ll x;cin >> x;
+    if(pending(x)) cout << "YES\n";
+    else cout << "NO\n";
 }
 /*----------Code Area----------*/
 

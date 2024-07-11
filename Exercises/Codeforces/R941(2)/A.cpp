@@ -103,7 +103,16 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    map<ll,ll> mp;
+    ll n,k;cin >> n >> k;
+    ll t,mx=0;
+    FORLL(i,1,n){
+        cin >> t;
+        mp[t]++;
+        mx = max(mx,mp[t]);
+    }
+    if(mx>=k) cout << k-1 << endl;
+    else cout << n << endl;
 }
 /*----------Code Area----------*/
 

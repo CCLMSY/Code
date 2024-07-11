@@ -103,7 +103,16 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n,m;cin >> n >> m;
+    ll cnt=0;
+    FORLL(b,1,m){
+        for(ll j=1;j*b<=n;j++){
+            ll a=j*b;
+            if((a+b)%(b*b)==0){
+                cnt++;
+            }
+        }
+    }cout << cnt << endl;
 }
 /*----------Code Area----------*/
 

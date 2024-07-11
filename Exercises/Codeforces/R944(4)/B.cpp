@@ -103,7 +103,18 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    string s;cin >> s;
+    map<char,ll> mp;
+    for(auto &c:s) mp[c]++;
+    if(mp.size()<2) {cout << "NO" << endl;return;}
+    cout << "YES" << endl;
+    FORLL(i,0,s.length()){
+        if(s[i]!=s[i+1]){
+            swap(s[i],s[i+1]);
+            cout << s << endl;
+            return;
+        }
+    }
 }
 /*----------Code Area----------*/
 

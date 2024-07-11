@@ -103,7 +103,16 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n;cin >> n;
+    create_vec(a,n);
+    create_vec(b,n);
+    ll t,ans=0;
+    FORLL(i,0,n-1){
+        auto it = lower_bound(ALL(b),a[i]);
+        t = distance(b.begin(),it);
+        ans = max(ans,t-i);
+    }
+    cout << ans << endl;
 }
 /*----------Code Area----------*/
 

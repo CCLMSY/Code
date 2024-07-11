@@ -11,7 +11,7 @@ const long long INF=0x3fffffffffffffff;
 
 typedef long long ll;
 typedef long double ld;
-typedef pair<ll,ll> pll;
+typedef pair<int,int> pll;
 
 namespace DEFINITION
 {
@@ -20,32 +20,31 @@ namespace DEFINITION
     #define ALL(A) (A).begin(),(A).end()
     #define SORT(A) sort(ALL(A))
     #define SORT_REV(A) sort((A).rbegin(),(A).rend())
-    //SORT BEFORE UNIQUE!!
-    #define UNIQUE(A) A.erase(unique(ALL(A)),A.end())
+    #define UNIQUE(A) (A).erase(unique(ALL(A)),(A).end())
     #define Presentation(i,r) " \n"[i==r]
-    #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
-    #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
+    #define FORLL(i,l,r) for(int i=l;i<=r;i++)
+    #define FORLL_rev(i,r,l) for(int i=r;i>=l;i--)
     #define Get_Mod(a) (((a)-(a)/MOD*MOD+MOD)%MOD)
     #define NO cout << "NO\n"
     #define YES cout << "YES\n"
-    #define endl '\n' //交互题不启用！
+    #define endl '\n'
 }
 
 namespace CCLIB
 {
-    #define create_vec(v,n) vector<ll> v(n);for(auto &x:v) cin >> x;
-    ostream& operator<<(ostream &out, const pair<ll,ll> &p) {out << '(' << p.first << ',' << p.second << ')';return out;}
+    #define create_vec(v,n) vector<int> v(n);for(auto &x:v) cin >> x;
+    ostream& operator<<(ostream &out, const pair<int,int> &p) {out << '(' << p.first << ',' << p.second << ')';return out;}
 
     //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解;通解为x=x0+k*b/d,y=y0-k*a/d;
-    ll Exgcd(ll a,ll b,ll &x,ll &y) {if(a==0&&b==0) return -1; if(b==0) {x=1;y=0;return a;} ll d=Exgcd(b,a%b,y,x); y-=a/b*x; return d;}
-    ll qcpow(ll a,ll b,ll p=INF){ll ret=1;a=Get_Mod(a);for (;b;b>>=1,a=a*a%p) if(b&1) ret=ret*a%p;return ret;}
+    int Exgcd(int a,int b,int &x,int &y) {if(a==0&&b==0) return -1; if(b==0) {x=1;y=0;return a;} int d=Exgcd(b,a%b,y,x); y-=a/b*x; return d;}
+    int qcpow(int a,int b,int p){int ret=1;a=Get_Mod(a);for (;b;b>>=1,a=a*a%p) if(b&1) ret=ret*a%p;return ret;}
 
-    vector<ll> Fac,Fac_inv;
-    void Prepare_Factorium(ll n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=qcpow(Fac[i],MOD-2,MOD);}}void Prepare_Combination(ll n){Prepare_Factorium(n);}
-    ll Get_Combination(ll m,ll n) {return Get_Mod(Get_Mod(Fac[m]*Fac_inv[m-n])*Fac_inv[n]);}
+    vector<int> Fac,Fac_inv;
+    void Prepare_Factorium(int n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=qcpow(Fac[i],MOD-2,MOD);}}void Prepare_Combination(int n){Prepare_Factorium(n);}
+    int Get_Combination(int m,int n) {return Get_Mod(Get_Mod(Fac[m]*Fac_inv[m-n])*Fac_inv[n]);}
 
-    vector<ll> Nums;
-    void Get_Nums(string s){ Nums.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){Nums.emplace_back(t);t=0;flag=0;} if(flag){Nums.emplace_back(t);t=0;flag=0;}}
+    vector<int> Nums;
+    void Get_Nums(string s){ Nums.clear(); int n=s.length();int t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){Nums.emplace_back(t);t=0;flag=0;} if(flag){Nums.emplace_back(t);t=0;flag=0;}}
 
     template<class T>
     void print_vec(const T &A){for(auto &x:A) cout << x << ' ';cout << endl;}
@@ -54,27 +53,27 @@ namespace CCLIB
     
 }
 
-template<const ll P>
+template<const int P>
 class MODLL{//所有运算皆为右值！！！
 private:
-    constexpr ll norm(ll x) const { return (x%MOD+MOD)%MOD; }
-    constexpr ll mult(ll x,ll y) const { return norm(x*y); }
+    constexpr int norm(int x) const { return (x%MOD+MOD)%MOD; }
+    constexpr int mult(int x,int y) const { return norm(x*y); }
 
 public:
-    ll val; const static ll Mod=P;
+    int val; const static int Mod=P;
     constexpr MODLL():val(0){}
-    constexpr MODLL(ll x):val(norm(x)){}
-    constexpr static void setMod(ll Mod_){ Mod=Mod_; }
-    explicit constexpr operator ll() const { return val; }
+    constexpr MODLL(int x):val(norm(x)){}
+    constexpr static void setMod(int Mod_){ Mod=Mod_; }
+    explicit constexpr operator int() const { return val; }
     constexpr MODLL operator-() const { MODLL res; res.val = norm(Mod-val); return res; }
-    constexpr MODLL inv() const { ll a=val,b=Mod,u=1,v=0;
-        while(b!=0){ ll t=a/b; a-=t*b; swap(a,b); u-=t*v; swap(u,v); }
+    constexpr MODLL inv() const { int a=val,b=Mod,u=1,v=0;
+        while(b!=0){ int t=a/b; a-=t*b; swap(a,b); u-=t*v; swap(u,v); }
         return MODLL(u);}
-    constexpr MODLL pow(ll b) { MODLL res = 1,a = *this; for(;b;b>>=1,a*=a) if(b&1) res*=a; return res; }
+    constexpr MODLL pow(int b) { MODLL res = 1,a = *this; for(;b;b>>=1,a*=a) if(b&1) res*=a; return res; }
     constexpr MODLL &operator+=(MODLL rhs) & { val = norm(val+rhs.val); return *this; }
     constexpr MODLL &operator-=(MODLL rhs) & { val = norm(val-rhs.val); return *this; }
     constexpr MODLL &operator*=(MODLL rhs) & { val = mult(val,rhs.val); return *this; }
-    constexpr MODLL &operator/=(MODLL rhs) & { val = mult(val,ll(rhs.inv())); return *this; }
+    constexpr MODLL &operator/=(MODLL rhs) & { val = mult(val,int(rhs.inv())); return *this; }
     constexpr MODLL &operator%=(MODLL rhs) & { val = norm(val%rhs.val); return *this; }
     friend constexpr MODLL operator+(MODLL lhs, MODLL rhs) { MODLL res = lhs; res += rhs; return res; }
     friend constexpr MODLL operator-(MODLL lhs, MODLL rhs) { MODLL res = lhs; res -= rhs; return res; }
@@ -97,13 +96,47 @@ using namespace CCLIB;
 #define MUTIPLE_JUDGE
 // #define CHECK_OUT_TIME
 
-typedef MODLL<ll(1e9+7)> mll;
+typedef MODLL<int(1e9+7)> mll;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+const int N = 200005;
 void solve()
 {
-    
+    int n;cin >> n;
+    vector<string> g(n),w(n),vals;
+    vector<int> gi(n),wi(n);
+    FORLL(i,0,n-1){
+        cin >> g[i] >> w[i];
+        vals.push_back(g[i]);
+        vals.push_back(w[i]);
+    }
+    SORT(vals);
+    UNIQUE(vals);
+    FORLL(i,0,n-1){
+        gi[i] = lower_bound(ALL(vals),g[i])-vals.begin();
+        wi[i] = lower_bound(ALL(vals),w[i])-vals.begin();
+    }
+    vector<vector<int>> dp(1<<n,vector<int>(n,0)); //dp[mask][lst]表示mask状态下，以lst结尾的方案是否合法
+    FORLL(i,0,n-1) dp[1<<i][i] = 1;
+    FORLL(mask,0,(1<<n)-1){
+        FORLL(lst,0,n-1){
+            if(!dp[mask][lst]) continue; //当前状态无法达到
+            FORLL(nxt,0,n-1){
+                if((mask>>nxt)&1) continue; //当前状态已经包含了nxt
+                if(gi[lst]==gi[nxt] || wi[lst]==wi[nxt]){  //可以转移
+                    dp[mask|(1<<nxt)][nxt] |= dp[mask][lst]; //实际是置1
+                }
+            }
+        }
+    }
+    int ans = 0;
+    FORLL(mask,0,(1<<n)-1){
+        FORLL(lst,0,n-1){
+            if(dp[mask][lst])
+                ans = max(ans,__builtin_popcount(mask));
+        }
+    }
+    cout << n-ans << endl;
 }
 /*----------Code Area----------*/
 

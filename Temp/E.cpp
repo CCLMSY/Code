@@ -93,7 +93,7 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 #define ONLINE_JUDGE
-#define FAST_IO
+// #define FAST_IO
 #define MUTIPLE_JUDGE
 // #define CHECK_OUT_TIME
 
@@ -103,7 +103,39 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n;cin >> n;
+    vector<ll> v(n+1,0);
+    FORLL(i,1,n) cin >> v[i];
+    vector<vector<ll>> G(n+1);
+    vector<ll> fa(n+1,0);
+    FORLL(i,2,n){
+        cin >> fa[i];
+        G[fa[i]].emplace_back(i);
+    }
+    vector<ll> vdfs;
+    function<void(ll)> dfs = [&](ll x){
+        vdfs.emplace_back(x);
+        for(auto &y:G[x]) dfs(y);
+    }; dfs(1);
+    reverse(ALL(vdfs));
+    // print_vec(vdfs);
+    vector<ll> pl(n+1,1),en(n+1,0);
+    ll ans=0,t,s;
+    for(auto u:vdfs){
+        t = G[u].size()==0?0:INF; // 修改u的倍率
+        s = 0;
+        for(auto w:G[u]){
+            t = min(t,pl[w]);
+            s+= v[w];
+        }
+        pl[u] = t+1;
+
+        t = v[u]-s;
+        en[u] = t<0? -t:0;
+        t = t>0 ? t:0;
+        ans+=t*(pl[u]-1);
+    }
+    cout << ans << endl;
 }
 /*----------Code Area----------*/
 

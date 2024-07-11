@@ -103,7 +103,21 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n,k,q;
+    cin >> n >> k >> q;
+    vector<ll> a(k+1,0),b(k+1,0);
+    FORLL(i,1,k) cin >> a[i];
+    FORLL(i,1,k) cin >> b[i];
+    while(q--){
+        ll d;cin >> d;
+        auto it = upper_bound(ALL(a),d);
+        auto i = distance(a.begin(),it);
+        ll ans;
+        if(d==n) ans=b[k];
+        else if(d==0) ans=0;
+        else ans = b[i-1]+(b[i]-b[i-1])*(d-a[i-1])/(a[i]-a[i-1]);
+        cout << ans << ' ';
+    }cout << endl;
 }
 /*----------Code Area----------*/
 

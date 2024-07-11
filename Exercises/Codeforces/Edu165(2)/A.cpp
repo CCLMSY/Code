@@ -103,7 +103,24 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    
+    ll n;cin >> n;
+    create_vec(a,n);
+    vector<ll> cnt(n,0);
+    ll mn=INF,t;
+    FORLL(i,0,n-1)
+    {
+        if(cnt[i]==0){
+            t=i;
+            cnt[t]=1;
+            while(cnt[a[t]-1]==0){
+                cnt[a[t]-1]=cnt[t]+1;
+                t=a[t]-1;
+            }
+        }
+        mn = min(mn,cnt[t]);
+    }
+    mn = min(mn,3ll);
+    cout << mn << endl;
 }
 /*----------Code Area----------*/
 
