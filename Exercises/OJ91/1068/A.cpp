@@ -2,7 +2,7 @@
 using namespace std;
 
 /*----------Consts----------*/
-const long long MOD=1e9+7;
+const long long MOD=998244353;
 const double eps=1e-6;
 
 const double pi = acos(-1.0);
@@ -93,17 +93,52 @@ using namespace DEFINITION;
 using namespace CCLIB;
 
 #define ONLINE_JUDGE
-#define FAST_IO
+// #define FAST_IO
 #define MUTIPLE_JUDGE
 // #define CHECK_OUT_TIME
 
 typedef MODLL<ll(1e9+7)> mll;
 
 /*----------Code Area----------*/
-const ll N = 200005;
-void solve()
-{
-    
+ll BSGS(ll a, ll b, ll mod, ll op){
+    if(b==1) return 0;
+    unordered_map<ll, ll> mp;
+    ll cur=1, t=sqrt(mod)+1;
+
+    FORLL(k,1,t){
+        cur=cur*a%mod;
+        mp[b*cur%mod]=k;
+    }
+
+    ll now = cur;
+
+    FORLL(k,1,t){
+        if(mp.count(now)&&(k*t-mp[now])%2==op) return k*t-mp[now];
+        now=now*cur%mod;
+    }
+
+    return -1;
+}
+void solve(){
+    ll n,x;
+    cin >> n >> x;
+    if(x==0){
+        cout << 1 << endl;
+        return ;
+    }else if(x==1){
+        cout << 0 << endl;
+        return ;
+    }else if(x==n-1){
+        cout << 2 << endl;
+        return ;
+    }
+    ll t = Get_Mod(n*x);
+    ll t1= BSGS(n-1,Get_Mod(t+(n-1)),MOD,1);
+    ll t2= BSGS(n-1,Get_Mod(t-(n-1)),MOD,0);
+    if (t1!=-1&&t2!=-1)
+        cout << min(t1,t2) << endl;
+    else
+        cout << max(t1,t2) << endl;
 }
 /*----------Code Area----------*/
 
@@ -111,8 +146,8 @@ signed main(){
     int clk = clock();
 
 #ifndef ONLINE_JUDGE
-    if(freopen("in.txt", "r", stdin)==NULL) {cout << "Fail opening in.txt!" << endl;return 0;}
-    if(freopen("out.txt", "w", stdout)==NULL) {cout << "Fail opening out.txt!" << endl;return 0;}
+    if(freopen("1.in", "r", stdin)==NULL) {cout << "Fail opening in.txt!" << endl;return 0;}
+    if(freopen("1my.out", "w", stdout)==NULL) {cout << "Fail opening out.txt!" << endl;return 0;}
 #endif
 
 #ifdef FAST_IO

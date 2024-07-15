@@ -103,19 +103,7 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    ll n;cin >> n;
-    create_vec(v,n);
-    ll mx=0,sum = 0;
-    FORLL(i,1,n-1)
-    {
-        if(v[i]<v[i-1])
-        {
-            sum+=v[i-1]-v[i];
-            mx=max(mx,v[i-1]-v[i]);
-            v[i]=v[i-1];
-        }
-    }
-    cout << sum+mx << endl;
+    
 }
 /*----------Code Area----------*/
 

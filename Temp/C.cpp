@@ -103,13 +103,7 @@ typedef MODLL<ll(1e9+7)> mll;
 const ll N = 200005;
 void solve()
 {
-    ll n;cin >> n;
-    vector<ll> v(n);
-    for(auto &x:v) cin >> x;
-    for(ll i=n-2;i>=0;i--){
-        v[i]=max(v[i],v[i+1]+1);
-    }
-    cout << v[0] << endl;
+    
 }
 /*----------Code Area----------*/
 
