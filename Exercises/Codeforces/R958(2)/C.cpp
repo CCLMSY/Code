@@ -101,9 +101,54 @@ typedef MODLL<ll(1e9+7)> mll;
 
 /*----------Code Area----------*/
 const ll N = 200005;
+
+ll btod(string s)
+{
+    ll res = 0;
+    for(auto &c:s)
+    {
+        res = res*2 + c-'0';
+    }
+    return res;
+}
+string dtob(ll n)
+{
+    string s = "";
+    while(n)
+    {
+        s += (n%2)+'0';
+        n /= 2;
+    }
+    reverse(ALL(s));
+    return s;
+}
+
 void solve()
 {
-    
+    ll n;cin >> n;
+    vector<ll> ans;
+    // n转为2进制
+    string s = dtob(n);
+    ll len = s.length(),t;
+    for(ll i=0;i<len;i++)
+    {
+        if(s[i]=='1')
+        {
+            string ts=s;
+            ts[i]='0';
+            t = btod(ts);
+            if(t) ans.emplace_back(t);
+        }
+    }
+    ans.emplace_back(n);
+    SORT(ans);
+    len = ans.size();
+    cout << len << endl;
+    for(ll i=0;i<len;i++)
+    {
+        cout << ans[i] << Presentation(i,len-1);
+    }
+
 }
 /*----------Code Area----------*/
 

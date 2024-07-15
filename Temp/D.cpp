@@ -100,10 +100,64 @@ using namespace CCLIB;
 typedef MODLL<ll(1e9+7)> mll;
 
 /*----------Code Area----------*/
-const ll N = 200005;
+const ll N = 300005;
+vector<ll> val;
+vector<vector<ll>> G;
+vector<array<ll,2>> dp;
+set<ll> vis;
+ll n;
+void dfs(ll cur, ll fa, set<ll> &vis0, set<ll> &vis1){
+    for(auto &x:G[cur]){
+        if(x==fa) continue;
+        set<ll> tvis0,tvis1;
+        dfs(x,cur,tvis0,tvis1);
+        if (dp[x][0]>dp[x][1]+val[x]){
+            dp[cur][0]+=dp[x][0];
+            vis0.merge(tvis0);
+        }else{
+            dp[cur][0]+=dp[x][1];
+            vis0.merge(tvis1);
+        }
+        dp[cur][1]+=dp[x][0];
+        vis1.merge(tvis0);
+    }
+    if(vis.count(cur)) dp[cur][1]=-INF;
+    else dp[cur][1]+=val[cur];
+    vis1.insert(cur);
+}
 void solve()
 {
-    
+    val.clear();
+    G.clear();
+    vis.clear();
+    cin >> n;
+    val.resize(n+1);
+    G.resize(n+1);
+    FORLL(i,1,n) cin >> val[i];
+    ll u,v;
+    FORLL(i,1,n-1){
+        cin >> u >> v;
+        G[u].emplace_back(v);
+        G[v].emplace_back(u);
+    }
+    ll sum=0;
+    for(auto x:val) sum+=x;
+    ll ans=sum;
+    while(vis.size()<n){
+        dp.clear();
+        dp.resize(n+1,{0,0});
+        set<ll> tvis0,tvis1;
+        dfs(1,0,tvis0,tvis1);
+        if(dp[1][0]>dp[1][1]){
+            sum-=dp[1][0];
+            vis.merge(tvis0);
+        }else{
+            sum-=dp[1][1];
+            vis.merge(tvis1);
+        }
+        ans+=sum;
+    }
+    cout << ans << endl;
 }
 /*----------Code Area----------*/
 
