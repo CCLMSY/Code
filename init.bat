@@ -7,7 +7,7 @@ if exist Temp\.cph rmdir /s /q Temp\.cph
 if exist .cph rmdir /s /q .cph
 
 rem 复制 0_Cpp_Head.cpp 的内容到 1.cpp - 9.cpp
-for %%i in (A B C D E F G H I J) do (
+for %%i in (A B C D E F G H I J K L M N) do (
     copy 0_Cpp_Head.cpp Temp\%%i.cpp
 )
 
