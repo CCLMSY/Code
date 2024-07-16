@@ -39,6 +39,7 @@ namespace CCLIB
     //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解;通解为x=x0+k*b/d,y=y0-k*a/d;
     ll Exgcd(ll a,ll b,ll &x,ll &y) {if(a==0&&b==0) return -1; if(b==0) {x=1;y=0;return a;} ll d=Exgcd(b,a%b,y,x); y-=a/b*x; return d;}
     ll qcpow(ll a,ll b,ll p=INF){ll ret=1;a=Get_Mod(a);for (;b;b>>=1,a=a*a%p) if(b&1) ret=ret*a%p;return ret;}
+    ll inv(ll a,ll p=MOD){ll x,y,d; d=Exgcd(a,p,x,y);if(d==1) return Get_Mod(x);else return -1;}
 
     vector<ll> Fac,Fac_inv;
     void Prepare_Factorium(ll n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=qcpow(Fac[i],MOD-2,MOD);}}void Prepare_Combination(ll n){Prepare_Factorium(n);}
