@@ -45,10 +45,10 @@ namespace CCLIB
     template<class T>
     void print_vec(const T &A){for(auto &x:A) cout << x << ' ';cout << endl;}
     template<class T>
-    void print_float(T value,int digit=10){cout << fixed << setprecision(digit) << value;}
+    void print_float(T value,ll digit=10){cout << fixed << setprecision(digit) << value;}
 
     vector<ll> snums;
-    void Get_Nums(string s){ snums.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){snums.emplace_back(t);t=0;flag=0;} if(flag){snums.emplace_back(t);t=0;flag=0;}}
+    void Get_Nums(string s){ snums.clear(); ll n=s.length();ll t=0;ll flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){snums.emplace_back(t);t=0;flag=0;} if(flag){snums.emplace_back(t);t=0;flag=0;}}
 
 }
 
@@ -71,7 +71,110 @@ namespace MODULE
     vector<vector<ll>> C;
     void Prepare_Combination(ll n){ C.clear(); C.resize(n+1); C[0].emplace_back(0); FORLL(i,1,n){ C[i].emplace_back(1); FORLL(j,1,i-1) C[i].emplace_back(add(C[i-1][j-1],C[i-1][j])); C[i].emplace_back(1); } }
 }
+struct DSU
+{
+    vector<ll> parents, size;
+    explicit DSU(ll n) : parents(n + 1), size(n + 1, 1) { iota(parents.begin(), parents.end(), 0); }
+    ll find(ll x) { return (parents[x] == x) ? x : (parents[x] = find(parents[x])); }
+    void merge(ll a, ll b)
+    { // merge a into b
+        a = find(a);
+        b = find(b);
+        if (a == b) return;
+        if (size[a] > size[b]) swap(a, b);
+        parents[a] = b;
+        size[b] += size[a];
+    }
+};
+//最小生成树
+struct MSTree{
+private:
+    struct Edge{
+        ll u,v,w;
+        bool operator>(const Edge &e) const{
+            return w > e.w;
+        }
+    };
+    ll n;
+    DSU dsu;
+    priority_queue<Edge,vector<Edge>,greater<Edge>> Q;
+public:
+    ll ans=0;
+    vector<vector<pll>> G;
+    vector<ll> fa;
+    MSTree(ll _n):n(_n),dsu(_n),G(_n+1),fa(n+1,0){}
+    void add_edge(ll u,ll v,ll w){
+        Q.push({u,v,w});
+    }
+    void solve(){
+        ans = 0;
+        while(!Q.empty()){
+            auto e = Q.top();Q.pop();
+            if(dsu.find(e.u) != dsu.find(e.v)){
+                dsu.merge(e.u,e.v);
+                G[e.u].emplace_back(e.v,e.w);
+                G[e.v].emplace_back(e.u,e.w);
+                ans += e.w;
+            }
+        }
+        //dfs求fa
+        auto DFS = [&](auto &&self, ll u=1,ll f=0) -> void{
+            fa[u] = f;
+            for(auto &p:G[u]){
+                ll v = p.first;
+                if(v == f) continue;
+                self(self,v,u);
+            }
+        };
+        DFS(DFS);
+        // DFS(); //求fa
+    }
+    //判断是否连通
+    bool connected(){
+        return dsu.size[dsu.find(1)] == n;
+    }
+};
 
+const ll N = 1e5+5;
+ll k,n,m,cnt,sum,ai,bi,ci,head[N],dis[N],vis[N];
+
+struct Edge
+{
+    ll v,w,next;
+}e[N];
+
+void add(ll u,ll v,ll w)
+{
+    e[++k].v=v;
+    e[k].w=w;
+    e[k].next=head[u];
+    head[u]=k;
+}
+
+priority_queue <pll,vector<pll>,greater<pll> > q;
+void prim()
+{
+    dis[1]=0;
+    q.push(make_pair(0,1));
+    while(!q.empty()&&cnt<n)
+    {
+        int d=q.top().first,u=q.top().second;
+        q.pop();
+        if(vis[u]) continue;
+        cnt++;
+        sum+=d;
+        vis[u]=1;
+        for(register ll i=head[u];i!=-1;i=e[i].next)
+            if(e[i].w<dis[e[i].v])
+                dis[e[i].v]=e[i].w,q.push(make_pair(dis[e[i].v],e[i].v));
+    }
+}
+void preprim(){
+    FORLL(i,0,N-1){
+        head[i] = -1;
+        dis[i] = INF;
+    } 
+}
 
 using namespace DEFINITION;
 using namespace CCLIB;
@@ -82,14 +185,25 @@ using namespace CCLIB;
 #define MUTIPLE_JUDGE
 
 /*----------Code Area----------*/
-const ll N = 200005;
 void prepare(){
     // Prepare_Combination(5005);
     // MOD = 1e9+7;
 }
 void solve()
 {
-    
+    ll n,m,q;cin >> n >> m >> q;
+    vector<tuple<ll,ll,ll>> edges;
+    ll u,v,w;
+    FORLL(i,1,m){
+        cin >> u >> v >> w;
+        edges.emplace_back(w,u,v);
+    }
+    ll nn;
+    while(q--){
+        cin >> nn;
+        create_vec(vv,nn);
+        
+    }
 }
 /*----------Code Area----------*/
 

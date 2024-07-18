@@ -75,11 +75,11 @@ namespace MODULE
 
 using namespace DEFINITION;
 using namespace CCLIB;
-using namespace MODULE;
+// using namespace MODULE;
 
 #define ONLINE_JUDGE
-// #define FAST_IO
-#define MUTIPLE_JUDGE
+#define FAST_IO
+// #define MUTIPLE_JUDGE
 
 /*----------Code Area----------*/
 const ll N = 200005;
@@ -87,66 +87,51 @@ void prepare(){
     // Prepare_Combination(5005);
     // MOD = 1e9+7;
 }
-array<string, 2> s;
-ll n,ans=1;
-ll getstat(ll col){
-    if(s[0][col]=='W'&&s[1][col]=='W') return 0;
-    if(s[0][col]=='W'&&s[1][col]=='R') return 1;
-    if(s[0][col]=='R'&&s[1][col]=='W') return 2;
-    if(s[0][col]=='R'&&s[1][col]=='R') return 3;
+//                W  S  D  A
+const int dx[] = {0, 0, 1, -1};
+const int dy[] = {1, -1, 0, 0};
+ll conv(char c){
+    if(c=='W') return 0;
+    if(c=='S') return 1;
+    if(c=='D') return 2;
+    if(c=='A') return 3;
     return -1;
-}
-ll getcnt(ll col){
-    if(s[0][col]=='W'&&s[1][col]=='W') return 0;
-    if(s[0][col]=='W'&&s[1][col]=='R') return 1;
-    if(s[0][col]=='R'&&s[1][col]=='W') return 1;
-    if(s[0][col]=='R'&&s[1][col]=='R') return 2;
-    return -1;
-}
-void pre2(){
-    ll cnt=0,pre=0,cur;
-    if(getcnt(0)==1) pre=getstat(0);
-    FORLL(i,1,n-1){
-        cur = getcnt(i);
-        if(cur==1){
-            cur=getstat(i);
-            if(pre&&cur&&cnt){
-                if((cnt%2==0)&&((pre&cur)==0)) s[cur-1][i-1]='W';
-                if((cnt%2)&&((pre&cur))) s[cur-1][i-1]='W';
-            }
-            pre=cur;
-            cnt=0;
-        }else if(cur==2){
-            cnt++;
-        }else{
-            cnt=0;
-        }
-    }
-}
-void getans(){
-    ll cnt=getcnt(0),pre=getstat(0),cur;
-    FORLL(i,1,n-1){
-        cur = getstat(i);
-        if(cur&pre){
-            cnt+=getcnt(i);
-        }else{
-            chmax(ans,cnt);
-            cnt=getcnt(i);
-        }pre=cur;
-    }
-    chmax(ans,cnt);
 }
 void solve()
 {
-    // cin >> n;
-    cin >> s[0] >> s[1];
-    n = s[0].length();
-    ans=1;
-    pre2();
-    cout << s[0] << endl;
-    cout << s[1] << endl;
-    getans();
-    cout << ans-1 << endl;
+    ll n,x,y; cin >> n >> x >> y;
+    string s; cin >> s;
+    if(x==0&&y==0){
+        cout << n*(n+1)/2 << endl;
+        return ;
+    }
+    map<pll,vector<ll>> mp;
+    ll cx,cy,dir; cx=cy=0;
+    mp[{cx,cy}].emplace_back(0);
+    for(ll i=0;i<n;i++){
+        char c = s[i];
+        dir = conv(c);
+        cx += dx[dir];
+        cy += dy[dir];
+        mp[{cx,cy}].emplace_back(i+1);
+    }
+    
+    ll ans = 0;
+    cx=cy=0;
+    for(ll i=0;i<n;i++){
+        auto v = mp[{cx+x,cy+y}];
+        auto it = lower_bound(ALL(v),i+1);
+        if(it!=v.end()) ans+=n-(*it)+1;
+        char c = s[i];
+        dir = conv(c);
+        cx += dx[dir];
+        cy += dy[dir];
+    }
+    auto v = mp[{cx+x,cy+y}];
+    auto it = lower_bound(ALL(v),n);
+    if(it!=v.end()) ans+=n-(*it)+1;
+
+    cout << ans << endl;
 }
 /*----------Code Area----------*/
 

@@ -75,11 +75,11 @@ namespace MODULE
 
 using namespace DEFINITION;
 using namespace CCLIB;
-// using namespace MODULE;
+using namespace MODULE;
 
 #define ONLINE_JUDGE
 #define FAST_IO
-#define MUTIPLE_JUDGE
+// #define MUTIPLE_JUDGE
 
 /*----------Code Area----------*/
 const ll N = 200005;
@@ -87,9 +87,66 @@ void prepare(){
     // Prepare_Combination(5005);
     // MOD = 1e9+7;
 }
+array<string, 2> s;
+ll n,ans=1;
+ll getstat(ll col){
+    if(s[0][col]=='W'&&s[1][col]=='W') return 0;
+    if(s[0][col]=='W'&&s[1][col]=='R') return 1;
+    if(s[0][col]=='R'&&s[1][col]=='W') return 2;
+    if(s[0][col]=='R'&&s[1][col]=='R') return 3;
+    return -1;
+}
+ll getcnt(ll col){
+    if(s[0][col]=='W'&&s[1][col]=='W') return 0;
+    if(s[0][col]=='W'&&s[1][col]=='R') return 1;
+    if(s[0][col]=='R'&&s[1][col]=='W') return 1;
+    if(s[0][col]=='R'&&s[1][col]=='R') return 2;
+    return -1;
+}
+void preprocess(){
+    ll cnt=0,pre=0,cur;
+    if(getcnt(0)==1) pre=getstat(0);
+    FORLL(i,1,n-1){
+        cur = getcnt(i);
+        if(cur==1){
+            cur=getstat(i);
+            if(pre&&cur&&cnt){
+                if((cnt%2==0)&&((pre&cur)==0)) s[cur-1][i-1]='W';
+                if((cnt%2)&&((pre&cur))) s[cur-1][i-1]='W';
+            }
+            pre=cur;
+            cnt=0;
+        }else if(cur==2){
+            cnt++;
+        }else{
+            cnt=0; pre=0;
+        }
+    }
+}
+void getans(){
+    ll cnt=getcnt(0),pre=getstat(0),cur;
+    FORLL(i,1,n-1){
+        cur = getstat(i);
+        if(cur&pre){
+            cnt+=getcnt(i);
+        }else{
+            chmax(ans,cnt);
+            cnt=getcnt(i);
+        }pre=cur;
+    }
+    chmax(ans,cnt);
+}
 void solve()
 {
-    
+    cin >> n;
+    cin >> s[0] >> s[1];
+    // n = s[0].length();
+    ans=1;
+    preprocess();
+    // cout << s[0] << endl;
+    // cout << s[1] << endl;
+    getans();
+    cout << ans-1 << endl;
 }
 /*----------Code Area----------*/
 
