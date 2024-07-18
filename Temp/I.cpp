@@ -2,7 +2,6 @@
 using namespace std;
 
 /*----------Consts----------*/
-const long long MOD=1e9+7;
 const double eps=1e-6;
 
 const double pi = acos(-1.0);
@@ -38,70 +37,56 @@ namespace CCLIB
 
     //扩欧返回d=gcd(a,b);x,y对应ax+by=d的解;通解为x=x0+k*b/d,y=y0-k*a/d;
     ll Exgcd(ll a,ll b,ll &x,ll &y) {if(a==0&&b==0) return -1; if(b==0) {x=1;y=0;return a;} ll d=Exgcd(b,a%b,y,x); y-=a/b*x; return d;}
-    ll qcpow(ll a,ll b,ll p=INF){ll ret=1;a=Get_Mod(a);for (;b;b>>=1,a=a*a%p) if(b&1) ret=ret*a%p;return ret;}
-    ll inv(ll a,ll p=MOD){ll x,y,d; d=Exgcd(a,p,x,y);if(d==1) return Get_Mod(x);else return -1;}
 
-    vector<ll> Fac,Fac_inv;
-    void Prepare_Factorium(ll n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=qcpow(Fac[i],MOD-2,MOD);}}void Prepare_Combination(ll n){Prepare_Factorium(n);}
-    ll Get_Combination(ll m,ll n) {return Get_Mod(Get_Mod(Fac[m]*Fac_inv[m-n])*Fac_inv[n]);}
-
-    vector<ll> Nums;
-    void Get_Nums(string s){ Nums.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){Nums.emplace_back(t);t=0;flag=0;} if(flag){Nums.emplace_back(t);t=0;flag=0;}}
-
+    template<typename T>
+    void chmax(T &a,T b){if(a<b) a=b;}
+    template<typename T>
+    void chmin(T &a,T b){if(a>b) a=b;}
     template<class T>
     void print_vec(const T &A){for(auto &x:A) cout << x << ' ';cout << endl;}
     template<class T>
     void print_float(T value,int digit=10){cout << fixed << setprecision(digit) << value;}
-    
+
+    vector<ll> snums;
+    void Get_Nums(string s){ snums.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){snums.emplace_back(t);t=0;flag=0;} if(flag){snums.emplace_back(t);t=0;flag=0;}}
+
 }
 
-template<const ll P>
-class MODLL{//所有运算皆为右值！！！
-private:
-    constexpr ll norm(ll x) const { return (x%MOD+MOD)%MOD; }
-    constexpr ll mult(ll x,ll y) const { return norm(x*y); }
+namespace MODULE
+{
+    ll MOD = 1e9+7;
+    ll qcpow(ll a,ll b,ll p=MOD){ll ret=1;a=Get_Mod(a);for (;b;b>>=1,a=a*a%p) if(b&1) ret=ret*a%p;return ret;}
+    ll inv(ll a,ll p=MOD){return qcpow(a,p-2,p);}
 
-public:
-    ll val; const static ll Mod=P;
-    constexpr MODLL():val(0){}
-    constexpr MODLL(ll x):val(norm(x)){}
-    constexpr static void setMod(ll Mod_){ Mod=Mod_; }
-    explicit constexpr operator ll() const { return val; }
-    constexpr MODLL operator-() const { MODLL res; res.val = norm(Mod-val); return res; }
-    constexpr MODLL inv() const { ll a=val,b=Mod,u=1,v=0;
-        while(b!=0){ ll t=a/b; a-=t*b; swap(a,b); u-=t*v; swap(u,v); }
-        return MODLL(u);}
-    constexpr MODLL pow(ll b) { MODLL res = 1,a = *this; for(;b;b>>=1,a*=a) if(b&1) res*=a; return res; }
-    constexpr MODLL &operator+=(MODLL rhs) & { val = norm(val+rhs.val); return *this; }
-    constexpr MODLL &operator-=(MODLL rhs) & { val = norm(val-rhs.val); return *this; }
-    constexpr MODLL &operator*=(MODLL rhs) & { val = mult(val,rhs.val); return *this; }
-    constexpr MODLL &operator/=(MODLL rhs) & { val = mult(val,ll(rhs.inv())); return *this; }
-    constexpr MODLL &operator%=(MODLL rhs) & { val = norm(val%rhs.val); return *this; }
-    friend constexpr MODLL operator+(MODLL lhs, MODLL rhs) { MODLL res = lhs; res += rhs; return res; }
-    friend constexpr MODLL operator-(MODLL lhs, MODLL rhs) { MODLL res = lhs; res -= rhs; return res; }
-    friend constexpr MODLL operator*(MODLL lhs, MODLL rhs) { MODLL res = lhs; res *= rhs; return res; }
-    friend constexpr MODLL operator/(MODLL lhs, MODLL rhs) { MODLL res = lhs; res /= rhs; return res; }
-    friend constexpr MODLL operator%(MODLL lhs, MODLL rhs) { MODLL res = lhs; res %= rhs; return res; }
-    friend ostream &operator<<(ostream &out, const MODLL &a) { out << a.val; return out; }
-    friend istream &operator>>(istream &in, MODLL &a) { in >> a.val; return in; }
-    friend bool operator==(MODLL a, MODLL b) { return a.val == b.val; }
-    friend bool operator!=(MODLL a, MODLL b) { return a.val != b.val; }
-    friend bool operator<(MODLL a, MODLL b)  { return a.val <  b.val; }
-    friend bool operator>(MODLL a, MODLL b)  { return a.val >  b.val; }
-};
+    ll add(ll a,ll b){return Get_Mod(a+b);}
+    ll sub(ll a,ll b){return Get_Mod(a-b);}
+    ll mul(ll a,ll b){return Get_Mod(a*b);}
+    ll div(ll a,ll b){return Get_Mod(a*inv(b));}
+
+    void addto(ll &a,ll b){a=Get_Mod(a+b);}
+    void subto(ll &a,ll b){a=Get_Mod(a-b);}
+    void multo(ll &a,ll b){a=Get_Mod(a*b);}
+    void divto(ll &a,ll b){a=Get_Mod(a*inv(b));}
+
+    vector<vector<ll>> C;
+    void Prepare_Combination(ll n){ C.clear(); C.resize(n+1); C[0].emplace_back(0); FORLL(i,1,n){ C[i].emplace_back(1); FORLL(j,1,i-1) C[i].emplace_back(add(C[i-1][j-1],C[i-1][j])); C[i].emplace_back(1); } }
+}
+
 
 using namespace DEFINITION;
 using namespace CCLIB;
+// using namespace MODULE;
 
 #define ONLINE_JUDGE
 #define FAST_IO
 #define MUTIPLE_JUDGE
-// #define CHECK_OUT_TIME
-
-typedef MODLL<ll(1e9+7)> mll;
 
 /*----------Code Area----------*/
 const ll N = 200005;
+void prepare(){
+    // Prepare_Combination(5005);
+    // MOD = 1e9+7;
+}
 void solve()
 {
     
@@ -109,26 +94,34 @@ void solve()
 /*----------Code Area----------*/
 
 signed main(){
-    int clk = clock();
 
 #ifndef ONLINE_JUDGE
-    if(freopen("in.txt", "r", stdin)==NULL) {cout << "Fail opening in.txt!" << endl;return 0;}
-    if(freopen("out.txt", "w", stdout)==NULL) {cout << "Fail opening out.txt!" << endl;return 0;}
+    clock_t clk = clock();
+    ifstream ifs("1.in");
+    ofstream ofs("1.out");
+    streambuf *cinbackup;
+    cinbackup = cin.rdbuf(ifs.rdbuf());
+    streambuf *coutbackup;
+    coutbackup = cout.rdbuf(ofs.rdbuf());
 #endif
 
 #ifdef FAST_IO
+#ifdef ONLINE_JUDGE
     ios::sync_with_stdio(false);
     cin.tie(nullptr); cout.tie(nullptr);
 #endif
-
-#ifdef MUTIPLE_JUDGE
-    long T; cin >> T;
-    while(T--) solve();
-#else
-    solve();
 #endif
 
-#ifdef CHECK_OUT_TIME
+long long T = 1;
+#ifdef MUTIPLE_JUDGE
+    cin >> T;
+#endif
+prepare();
+while(T--) solve();
+
+#ifndef ONLINE_JUDGE
+    cin.rdbuf(cinbackup);
+    cout.rdbuf(coutbackup);
     cout << clock() - clk << " ms\n";
 #endif
     return 0;

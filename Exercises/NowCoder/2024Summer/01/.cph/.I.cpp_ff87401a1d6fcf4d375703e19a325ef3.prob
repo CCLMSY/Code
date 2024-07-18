@@ -1,1 +1,0 @@
-{"name":"Local: I","url":"d:\\VSC\\CodeSpace\\Exercises\\NowCoder\\2024Summer\\01\\I.cpp","tests":[{"id":1721138390866,"input":"2 3\n/\\-\n\\/|\n2\n1 2 below\n2 2 right","output":"4\n2\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\VSC\\CodeSpace\\Exercises\\NowCoder\\2024Summer\\01\\I.cpp","group":"local","local":true}

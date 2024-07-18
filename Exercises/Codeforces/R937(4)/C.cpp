@@ -43,8 +43,8 @@ namespace CCLIB
     void Prepare_Factorium(ll n) {Fac.clear();Fac.resize(n+1);Fac[0]=Fac[1]=1; Fac_inv.clear();Fac_inv.resize(n+1);Fac_inv[0]=Fac_inv[1]=1; FORLL(i,2,n) {Fac[i]=Get_Mod(Fac[i-1]*i);Fac_inv[i]=qcpow(Fac[i],MOD-2,MOD);}}void Prepare_Combination(ll n){Prepare_Factorium(n);}
     ll Get_Combination(ll m,ll n) {return Get_Mod(Get_Mod(Fac[m]*Fac_inv[m-n])*Fac_inv[n]);}
 
-    vector<ll> Nums;
-    void Get_Nums(string s){ Nums.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){Nums.emplace_back(t);t=0;flag=0;} if(flag){Nums.emplace_back(t);t=0;flag=0;}}
+    vector<ll> snums;
+    void Get_Nums(string s){ snums.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){snums.emplace_back(t);t=0;flag=0;} if(flag){snums.emplace_back(t);t=0;flag=0;}}
 
     template<class T>
     void print_vec(const T &A){for(auto &x:A) cout << x << ' ';cout << endl;}
@@ -105,12 +105,12 @@ void solve()
     string s;cin >> s;
     Get_Nums(s);
     int nnnn;
-    if(Nums[0]>=12) nnnn=1;
+    if(snums[0]>=12) nnnn=1;
     else nnnn =0 ;
-    if(Nums[0]==0) Nums[0]=12;
-    if(Nums[0]>12) Nums[0]-=12;
+    if(snums[0]==0) snums[0]=12;
+    if(snums[0]>12) snums[0]-=12;
     s=nnnn?"PM":"AM";
-    cout << setw(2) << setfill('0') << Nums[0] << ':' << setw(2) << setfill('0') << Nums[1] << ' ' << s << endl;
+    cout << setw(2) << setfill('0') << snums[0] << ':' << setw(2) << setfill('0') << snums[1] << ' ' << s << endl;
 }
 /*----------Code Area----------*/
 
