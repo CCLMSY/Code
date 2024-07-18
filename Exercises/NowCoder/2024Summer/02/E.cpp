@@ -91,11 +91,7 @@ void solve()
 {
     ll n;cin >> n;
     ll ans=n-lowbit(n);
-    if(ans){
-        cout << ans << endl;
-    }else{
-        cout << "-1" << endl;
-    }
+    cout << (ans?ans:-1) << endl;
 }
 /*----------Code Area----------*/
 

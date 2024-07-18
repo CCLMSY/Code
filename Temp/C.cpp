@@ -75,10 +75,10 @@ namespace MODULE
 
 using namespace DEFINITION;
 using namespace CCLIB;
-using namespace MODULE;
+// using namespace MODULE;
 
 #define ONLINE_JUDGE
-// #define FAST_IO
+#define FAST_IO
 #define MUTIPLE_JUDGE
 
 /*----------Code Area----------*/
@@ -86,46 +86,6 @@ const ll N = 200005;
 void prepare(){
     // Prepare_Combination(5005);
     // MOD = 1e9+7;
-}
-array<string, 2> s;
-ll n,ans;
-ll getstat(ll col){
-    if(s[0][col]=='R'&&s[1][col]=='R') return 3;
-    if(s[0][col]=='R'&&s[1][col]=='W') return 2;
-    if(s[0][col]=='W'&&s[1][col]=='R') return 1;
-    return 0;
-}
-ll getcnt(ll col){
-    ll ret=0;
-    if(s[0][col]=='R') ret++;
-    if(s[1][col]=='R') ret++;
-    return ret;
-}
-void pre(){
-    ll lst=getcnt(0),cur,cnt=0;
-    if(lst==1) lst=getstat(0);
-    else lst=0;
-    FORLL(i,1,n-1){
-        cur = getcnt(i);
-        if(cur==0){
-            cnt=0;
-            lst=0;
-        }else if(cur==2){
-            cnt++;
-        }else{
-            cur = getstat(i);
-            if(lst&&cur&&cnt){
-                if((lst&cur)==0){
-                    s[cur-1][i-1]='W';
-                }
-            }
-            lst = getstat(i);
-            cnt=0;
-        }
-    }
-}
-void getans(){
-    
 }
 void solve()
 {

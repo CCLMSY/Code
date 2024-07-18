@@ -140,11 +140,8 @@ void solve()
 {
     cin >> n;
     cin >> s[0] >> s[1];
-    // n = s[0].length();
     ans=1;
     preprocess();
-    // cout << s[0] << endl;
-    // cout << s[1] << endl;
     getans();
     cout << ans-1 << endl;
 }

@@ -113,15 +113,15 @@ void solve()
         dir = conv(c);
         cx += dx[dir];
         cy += dy[dir];
-        mp[{cx,cy}].emplace_back(i+1);
+        mp[{cx,cy}].emplace_back(i);
     }
     
     ll ans = 0;
     cx=cy=0;
     for(ll i=0;i<n;i++){
         auto v = mp[{cx+x,cy+y}];
-        auto it = lower_bound(ALL(v),i+1);
-        if(it!=v.end()) ans+=n-(*it)+1;
+        auto it = lower_bound(ALL(v),i);
+        if(it!=v.end()) ans+=n-(*it);
         char c = s[i];
         dir = conv(c);
         cx += dx[dir];
@@ -129,7 +129,7 @@ void solve()
     }
     auto v = mp[{cx+x,cy+y}];
     auto it = lower_bound(ALL(v),n);
-    if(it!=v.end()) ans+=n-(*it)+1;
+    if(it!=v.end()) ans+=n-(*it);
 
     cout << ans << endl;
 }

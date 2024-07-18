@@ -89,9 +89,6 @@ void prepare(){
 }
 void solve()
 {
-    ll n;cin >> n;
-    vector<ll> v(n*2);
-    for(auto& x:v) cin >> x;
     
 }
 /*----------Code Area----------*/

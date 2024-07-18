@@ -75,7 +75,7 @@ namespace MODULE
 
 using namespace DEFINITION;
 using namespace CCLIB;
-using namespace MODULE;
+// using namespace MODULE;
 
 #define ONLINE_JUDGE
 #define FAST_IO
@@ -89,13 +89,7 @@ void prepare(){
 }
 void solve()
 {
-    ll n;cin >> n;
-    ll ans=n-lowbit(n);
-    if(ans){
-        cout << ans << endl;
-    }else{
-        cout << "-1" << endl;
-    }
+    
 }
 /*----------Code Area----------*/
 

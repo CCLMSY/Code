@@ -79,7 +79,7 @@ using namespace MODULE;
 
 #define ONLINE_JUDGE
 #define FAST_IO
-#define MUTIPLE_JUDGE
+// #define MUTIPLE_JUDGE
 
 /*----------Code Area----------*/
 const ll N = 200005;
@@ -89,7 +89,21 @@ void prepare(){
 }
 void solve()
 {
-    
+    ll n,m;cin >> n >> m >> MODULE::MOD;
+    Prepare_Combination(5005);
+    ll t,a,b,ans1=0,ans2=0;
+    FORLL(i,1,n){
+        t = qcpow(2,i,MOD)-1;
+        a = qcpow(t,m-1,MOD); // a = (2^i-1)^(m-1)
+        t = qcpow(2,m-1,MOD);
+        b = qcpow(t,n-i,MOD); // b = 2^(m-1)^(n-i)
+        t = mul(a,b);
+        t = mul(C[n][i],t);
+        addto(ans1,t);
+    }
+    FORLL(i,1,min(n,m)){
+        
+    }
 }
 /*----------Code Area----------*/
 
