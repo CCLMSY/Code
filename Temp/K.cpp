@@ -24,7 +24,6 @@ namespace DEFINITION
     #define Presentation(i,r) " \n"[i==r]
     #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
     #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
-    #define Get_Mod(a) (((a)-(a)/MOD*MOD+MOD)%MOD)
     #define NO cout << "NO\n"
     #define YES cout << "YES\n"
     #define endl '\n' //交互题不启用！
@@ -54,22 +53,24 @@ namespace CCLIB
 
 namespace MODULE
 {
-    ll MOD = 1e9+7;
+    ll MOD = INF;
+    inline ll Get_Mod(ll x){
+        if(x<0) return x-x/MOD*MOD+MOD;
+        else return x-x/MOD*MOD;
+    }
     ll qcpow(ll a,ll b,ll p=MOD){ll ret=1;a=Get_Mod(a);for (;b;b>>=1,a=a*a%p) if(b&1) ret=ret*a%p;return ret;}
     ll inv(ll a,ll p=MOD){return qcpow(a,p-2,p);}
 
-    ll add(ll a,ll b){return Get_Mod(a+b);}
-    ll sub(ll a,ll b){return Get_Mod(a-b);}
-    ll mul(ll a,ll b){return Get_Mod(a*b);}
-    ll div(ll a,ll b){return Get_Mod(a*inv(b));}
+    inline ll add(ll a,ll b){return Get_Mod(a+b);}
+    inline ll sub(ll a,ll b){return Get_Mod(a-b);}
+    inline ll mul(ll a,ll b){return Get_Mod(a*b);}
 
     void addto(ll &a,ll b){a=Get_Mod(a+b);}
     void subto(ll &a,ll b){a=Get_Mod(a-b);}
     void multo(ll &a,ll b){a=Get_Mod(a*b);}
-    void divto(ll &a,ll b){a=Get_Mod(a*inv(b));}
 
     vector<vector<ll>> C;
-    void Prepare_Combination(ll n){ C.clear(); C.resize(n+1); C[0].emplace_back(0); FORLL(i,1,n){ C[i].emplace_back(1); FORLL(j,1,i-1) C[i].emplace_back(add(C[i-1][j-1],C[i-1][j])); C[i].emplace_back(1); } }
+    void Prepare_Combination(ll n){ C.clear(); C.resize(n+1); C[0].emplace_back(1); FORLL(i,1,n){ C[i].emplace_back(1); FORLL(j,1,i-1) C[i].emplace_back(add(C[i-1][j-1],C[i-1][j])); C[i].emplace_back(1); } }
 }
 
 

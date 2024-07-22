@@ -2,8 +2,7 @@
 using namespace std;
 typedef long long ll;
 
-class DSU
-{
+class DSU{
 private:
     vector<ll> parents, size;
 public:
