@@ -7,15 +7,15 @@ const ll INF=0x3fffffffffffffff;
 //非负权值单源最短路Dijkstra O(mlogm)
 class Dijkstra{
 private:
-    struct Edge{ ll v, w; };
-    struct Node{
+    struct edge{ ll v, w; };
+    struct node{
         ll dis, u;
-        bool operator>(const Node &a) const { return dis > a.dis; }
+        bool operator>(const node &a) const { return dis > a.dis; }
     };
-    vector<vector<Edge>> G;
+    vector<vector<edge>> G;
     vector<int> vis;
     vector<ll> dis;
-    priority_queue<Node,vector<Node>,greater<Node>> Q;
+    priority_queue<node,vector<node>,greater<node>> Q;
     ll n=0;
     //换源前初始化
     void Init(){
@@ -27,11 +27,11 @@ private:
     }
 public:
     Dijkstra(ll _n):n(_n),G(_n+1),vis(_n+1,0),dis(_n+1,INF){}
-    void AddEdge(ll u,ll v,ll w){//加边
+    void addedge(ll u,ll v,ll w){//加边
         G[u].push_back({v,w});
     }
     //s为源点的单源最短路
-    void Solve(ll s){
+    void solve(ll s){
         Init();
         dis[s] = 0;
         Q.push({0, s});
@@ -50,7 +50,7 @@ public:
         }
     }
     //到t的最短路
-    ll getDis(ll t){
+    ll getdis(ll t){
         return dis[t];
     }
     //访问dis数组

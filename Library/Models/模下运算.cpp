@@ -2,22 +2,24 @@
 using namespace std;
 typedef long long ll;
 
-namespace MOLDULE
+namespace MODULE
 {
-    const ll MOD = 1e9 + 7;
-    inline ll Get_Mod(ll x) {return (x-x/MOD*MOD+MOD)%MOD;}
-    ll qcpow(ll x, ll y) {
-        ll res = 1; x = Get_Mod(x);
-        for (; y; y >>= 1, x = x * x % MOD)
-            if (y & 1) res = res * x % MOD;
-        return res;}
-    inline ll inv(ll x) {return qcpow(x,MOD-2);}
-    inline ll add(ll x, ll y) {return Get_Mod(x + y);}
-    inline ll addto(ll &x, ll y) {return x = add(x, y);}
-    inline ll sub(ll x, ll y) {return Get_Mod(x - y);}
-    inline ll subto(ll &x, ll y) {return x = sub(x, y);}
-    inline ll mul(ll x, ll y) {return Get_Mod(1ll*x * y);}
-    inline ll multo(ll &x, ll y) {return x = mul(x, y);}
-    inline ll mdiv(ll x, ll y) {return Get_Mod(1ll*x*inv(y));} 
-    inline ll mdivto(ll &x, ll y) {return x = mdiv(x, y);}
+    ll MOD = 998244353;
+    inline ll Get_Mod(ll x,ll mod=MOD){
+        if(x<0) return x-x/mod*mod+mod;
+        else return x-x/mod*mod;
+    }
+    ll qcpow(ll a,ll b,ll p=MOD){ll ret=1;a=Get_Mod(a);for (;b;b>>=1,a=a*a%p) if(b&1) ret=ret*a%p;return ret;}
+    ll inv(ll a,ll p=MOD){return qcpow(a,p-2,p);}
+
+    inline ll add(ll a,ll b){return Get_Mod(a+b);}
+    inline ll sub(ll a,ll b){return Get_Mod(a-b);}
+    inline ll mul(ll a,ll b){return Get_Mod(a*b);}
+
+    void addto(ll &a,ll b){a=Get_Mod(a+b);}
+    void subto(ll &a,ll b){a=Get_Mod(a-b);}
+    void multo(ll &a,ll b){a=Get_Mod(a*b);}
+
+    vector<vector<ll>> C;
+    void Prepare_Combination(ll n){ C.clear(); C.resize(n+1); C[0].emplace_back(1); for(ll i=1;i<=n;i++) { C[i].emplace_back(1); for(ll j=1;j<=n-1;j++) C[i].emplace_back(add(C[i-1][j-1],C[i-1][j])); C[i].emplace_back(1); } }
 }

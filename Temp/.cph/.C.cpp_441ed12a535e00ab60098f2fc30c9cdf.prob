@@ -1,1 +1,0 @@
-{"name":"Local: C","url":"d:\\VSC\\CodeSpace\\Temp\\C.cpp","tests":[{"id":1721623367343,"input":"3\n4\n1 2\n2 3\n1 4\n15 3 5 1\n5\n1 2\n2 3\n3 4\n3 5\n1 5 4 2 10\n5\n1 2\n1 3\n3 4\n3 5\n13 14 7 12 2","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\VSC\\CodeSpace\\Temp\\C.cpp","group":"local","local":true}
