@@ -37,7 +37,8 @@ bool Miller_Rabin(ll p)
 	}
 	return 1;
 }
-ll Pollard_Rho(ll x)//随机返回x的一个因子
+//随机返回x的一个非平凡因子
+ll Pollard_Rho(ll x)
 {
 	ll s = 0, t = 0;
 	ll c = (ll)rand() % (x - 1) + 1;

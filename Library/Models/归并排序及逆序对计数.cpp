@@ -23,7 +23,6 @@ ll mergeAndCount(vector<ll> &arr, ll l, ll m, ll r)
         temp[k++] = arr[j++];
     for (ll p = 0; p < temp.size(); p++)
         arr[l + p] = temp[p];
-
     return invCount;
 }
 
@@ -38,4 +37,11 @@ ll mergeSortAndCount(vector<ll> &arr, ll l, ll r)
         invCount += mergeAndCount(arr, l, m, r);
     }
     return invCount;
+}
+
+int main(){
+    ll n;cin >> n;
+    vector<ll> arr(n);
+    for(auto& i:arr)cin >> i;
+    cout << mergeSortAndCount(arr, 0, n - 1) << endl;
 }

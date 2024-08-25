@@ -92,10 +92,8 @@ void prepare(){
 }
 void solve()
 {
-    ll a,b,c;
-    cin >> a >> b >> c;
-    if(lowbit(a)==lowbit(b)&&lowbit(b)==lowbit(c)) {NO;return;}
-    YES;
+    ll a,b,c; cin >> a >> b >> c;
+    if(lowbit(a)==lowbit(b)&&lowbit(b)==lowbit(c))  NO; else YES;
 }
 /*----------Code Area----------*/
 

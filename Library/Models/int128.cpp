@@ -25,32 +25,40 @@ struct int128{
         putchar(x % 10 + '0');
     }
 
+    friend istream& operator>>(istream& in,int128& x){
+        string Input; in >> Input;
+        x=trans(Input);  return in;
+    }
+    friend ostream& operator<<(ostream& out,const int128& x){
+        x.print(); return out;
+    }
+
     int128 operator + (const int128 &b)const{return value+b.value;}
     int128 operator - (const int128 &b)const{return value-b.value;}
     int128 operator * (const int128 &b)const{return value*b.value;}
     int128 operator / (const int128 &b)const{return value/b.value;}
+    int128 operator % (const int128 &b)const{
+        if(value<0)return value-value/b.value*b.value+b.value;
+        return value-value/b.value*b.value;
+    }
+
+    bool operator < (const int128 &b)const{return value<b.value;}
+    bool operator > (const int128 &b)const{return value>b.value;}
+    bool operator == (const int128 &b)const{return value==b.value;}
+    bool operator != (const int128 &b)const{return value!=b.value;}
+    bool operator <= (const int128 &b)const{return value<=b.value;}
+    bool operator >= (const int128 &b)const{return value>=b.value;}
+
+    void operator = (const int128 &b){value=b.value;}
+    void operator = (const ll &b){value=b;}
+
+    operator bool()const{return value!=0;}
 };
 
-istream& operator>>(istream& in,int128& x){
-    string Input;
-    in >> Input;
-    x.trans(Input);
-    return in;
-}
-
-ostream& operator<<(ostream& out,const int128& x){
-    x.print();
-    return out;
-}
 
 int main(){
-    int128 i;
-    i=0x3fffffffffffffff;
-    ll t;cin >> t;
-    ll x;
-    while(t--){
-        cin >> x;i=i/x;
-        i.print();putchar('\n');
-    }
+    int128 a,b;
+    cin >> a >> b;
+    cout << a+b << endl << a-b << endl << a*b << endl << a/b << endl << a%b << endl;
     return 0;
 }

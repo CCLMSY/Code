@@ -75,7 +75,7 @@ int main()
 		}
 		dep[1]=1; p[1][0]=p[1][1]=0;
 		f[1]=0; dfs(1,0);
-		// for(int i=1;i<=n;i++) cout << f[i] << " \n"[i==n];
+		for(int i=1;i<=n;i++) cout << f[i] << " \n"[i==n];
 		dp(1,0);
 		// for(int i=1;i<=n;i++) cout << g[i] << " \n"[i==n];
 		cout<<fixed<<setprecision(12)<<1-g[1]<<endl;

@@ -19,7 +19,8 @@ struct DSU
         size[b] += size[a];
     }
 };
-//最小生成树
+//最小生成树 Kruskal算法
+
 struct MSTree{
 private:
     struct Edge{
@@ -33,12 +34,10 @@ private:
     priority_queue<Edge,vector<Edge>,greater<Edge>> Q;
 public:
     ll ans=0;
-    vector<vector<pll>> G;
-    vector<ll> fa;
+    vector<vector<pll>> G; //最小生成树的邻接表
+    vector<ll> fa; //最小生成树i的父节点
     MSTree(ll _n):n(_n),dsu(_n),G(_n+1),fa(n+1,0){}
-    void add_edge(ll u,ll v,ll w){
-        Q.push({u,v,w});
-    }
+    void add_edge(ll u,ll v,ll w){ Q.push({u,v,w}); }
     void solve(){
         ans = 0;
         while(!Q.empty()){
@@ -60,7 +59,6 @@ public:
             }
         };
         DFS(DFS);
-        // DFS(); //求fa
     }
     //判断是否连通
     bool connected(){

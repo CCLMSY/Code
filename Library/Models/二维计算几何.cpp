@@ -105,7 +105,7 @@ vector<Point> Convex_Hull(vector<Point> pvec)
     vector<bool> used(n + 1, false);
     FORLL(i, 1, n - 1)
     {
-        while (top > 1 && (pvec[stk[top]] - pvec[stk[top - 1]]).operator^(pvec[i] - pvec[stk[top]]) <= 0)
+        while (top > 1 && ((pvec[stk[top]] - pvec[stk[top - 1]])^(pvec[i] - pvec[stk[top]])) <= 0)
             used[stk[top--]] = false;
         stk[++top] = i;
         used[i] = true;
@@ -113,7 +113,7 @@ vector<Point> Convex_Hull(vector<Point> pvec)
     ll tmp = top;
     FORLL_rev(i, n - 2, 0) if (!used[i])
     {
-        while (top > tmp && (pvec[stk[top]] - pvec[stk[top - 1]]).operator^(pvec[i] - pvec[stk[top]]) <= 0)
+        while (top > tmp && ((pvec[stk[top]] - pvec[stk[top - 1]])^(pvec[i] - pvec[stk[top]])) <= 0)
             used[stk[top--]] = false;
         stk[++top] = i;
         used[i] = true;

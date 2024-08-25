@@ -1,7 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 typedef long long ll;
+
+// 二部图最大匹配 增广路算法
+// 解决的问题：给定一个二分图G，即分左右两部分，各部分之间的点没有边连接
+// 要求选出一些边，使得这些边没有公共顶点，且边的数量最大。
+// 时间复杂度O(nm)
 struct augment_path
 {
 	vector<vector<ll>> g;
@@ -11,7 +15,7 @@ struct augment_path
 	ll n, m;		// 两个点集中的顶点数量
 	ll dfn;			// 时间戳记
 	ll res;			// 匹配数
-	augment_path(ll _n, ll _m) : n(_n), m(_m){
+	augment_path(ll _n, ll _m) : n(_n+1), m(_m+1){
 		assert(0 <= n && 0 <= m);
 		pa = vector<ll>(n, -1);
 		pb = vector<ll>(m, -1);
@@ -20,8 +24,9 @@ struct augment_path
 		res = 0;
 		dfn = 0;
 	}
+	// 添加一条左部点from到右部点to的边
 	void add(ll from, ll to){
-		assert(0 <= from && from < n && 0 <= to && to < m);
+		assert(0 < from && from <= n && 0 < to && to <= m);
 		g[from].push_back(to);
 	}
 	bool dfs(ll v)
@@ -43,6 +48,7 @@ struct augment_path
 		}
 		return false;
 	}
+	// 返回最大匹配数
 	ll solve(){
 		while (true){
 			dfn++;
@@ -53,15 +59,15 @@ struct augment_path
 			res += cnt;
 		}
 		return res;
-	} // 返回最大匹配数
+	}
 };
 int main()
 {
-	ll n, m;
-	cin >> n >> m;
-	augment_path G(n, n);
+	ll n, m, e;
+	cin >> n >> m >> e;
+	augment_path G(n, m);
 	ll u, v;
-	for (ll i = 0; i < m; i++)
+	for (ll i = 0; i < e; i++)
 	{
 		cin >> u >> v;
 		G.add(u, v);

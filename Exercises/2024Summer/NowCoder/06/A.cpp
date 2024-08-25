@@ -90,43 +90,39 @@ void prepare(){
     // MOD = 1e9+7;
 }
 ll n;
-vector<vector<ll>> G;
-vector<int> val;
-vector<ld> pref; //前缀中0的占比
+vector<vector<pll>> G;
+vector<ld> pref; //前缀中0的最大占比
 void dfs(ll u=1,ll fa=0,ll cnt0=0,ll cnt1=0){
-    if(u!=1){
-        cnt0 += (val[u]==0);
-        cnt1 += (val[u]==1);
-        pref[u]=max(pref[fa],(ld)cnt0/(cnt0+cnt1));
-    }
-    for(auto v:G[u]) dfs(v,u,cnt0,cnt1);
+    if(u!=1) chmax(pref[u],(ld)cnt0/(cnt0+cnt1));//用当前节点的0占比更新前缀
+    for(auto [v,w]:G[u])
+        if(v!=fa){
+            pref[v]=pref[u];//继承父节点的pref
+            dfs(v,u,cnt0+(w==0),cnt1+(w==1));
+        }
 }
-vector<ld> dp;
-void dfs_dp(ll u=1,ll dep=1){
-    for(auto v:G[u]) dfs_dp(v,dep+1);
-    dp[u]=dep%2;
-    for(auto v:G[u])
-        if(dep%2) chmin(dp[u],dp[v]);
-        else chmax(dp[u],dp[v]);
-    if(G[u].empty()) dp[u]=pref[u];
+vector<ld> dp; //节点对执棋手的最优解
+void dfs_dp(ll u=1,ll fa=0, ll dep=1){
+    dp[u]=dep%2; 
+    if(u!=1&&G[u].size()==1) dp[u]=pref[u];
+    for(auto [v,w]:G[u]) if(v!=fa){
+        dfs_dp(v,u,dep+1);
+        if(dep%2) chmin(dp[u],dp[v]); //先手求pref小
+        else chmax(dp[u],dp[v]); //后手求pref大
+    }
 }
 void solve()
 {
     cin >> n;
     G.clear(); G.resize(n+1);
-    val.clear(); val.resize(n+1,0);
     pref.clear(); pref.resize(n+1,0);
     dp.clear(); dp.resize(n+1,0);
     ll u,v,w;
     FORLL(i,1,n-1){
         cin >> u >> v >> w;
-        G[u].emplace_back(v);
-        val[v] = w;
+        G[u].emplace_back(v,w);
+        G[v].emplace_back(u,w);
     }
-    dfs();
-    // print_vec(pref);
-    dfs_dp();
-    // print_vec(dp);
+    dfs(); dfs_dp();
     print_float(1.-dp[1],12);
     cout << endl;
 }

@@ -98,7 +98,7 @@ struct
     int x, l, r, L, R;
 } input[MAXN];
 
-class BIT
+class BiTree
 {
    private:
     vector<i64> _data;
@@ -122,7 +122,7 @@ class BIT
         }
     }
 
-    explicit BIT(size_t sz)
+    explicit BiTree(size_t sz)
     {
         _data.resize(sz + 1);
         _stk.resize(sz + 1);
@@ -177,8 +177,8 @@ void add_binary_query(const ALL_BINARY_DATA& data, queue<ALL_BINARY_DATA*>& que)
     bl++;
 }
 
-void all_binary(int l, int r, queue<ALL_BINARY_DATA*>& que, BIT& bit_w,
-                BIT& bit_v, LINE_DISCRETIZATIONER& lines)
+void all_binary(int l, int r, queue<ALL_BINARY_DATA*>& que, BiTree& bit_w,
+                BiTree& bit_v, LINE_DISCRETIZATIONER& lines)
 {
     //cout << "all binary " << l << " " << r << endl;
     if (l == r)
@@ -246,7 +246,7 @@ int main()
     queue<ALL_BINARY_DATA*> q_max, q_min;
     LINE_DISCRETIZATIONER line_max, line_min;
     scanf("%d %d", &n, &q);
-    BIT bit_v(n), bit_w(n);
+    BiTree bit_v(n), bit_w(n);
     for (int i = 1; i <= n; ++i)
     {
         scanf("%d %d %d %d", &a[i].l, &a[i].r, &a[i].L, &a[i].R);

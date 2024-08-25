@@ -24,10 +24,12 @@ namespace DEFINITION
     //SORT BEFORE UNIQUE!!
     #define UNIQUE(A) A.erase(unique(ALL(A)),A.end())
     #define Presentation(i,r) " \n"[i==r]
-    #define FORLL(i,l,r) for(ll i=l;i<=r;i++)
-    #define FORLL_rev(i,r,l) for(ll i=r;i>=l;i--)
+    #define FORLL(i,l,r) for(ll i=(l);i<=(r);i++)
+    #define FORLL_rev(i,r,l) for(ll i=(r);i>=(l);i--)
     #define NO cout << "No\n"
     #define YES cout << "Yes\n"
+    #define x first
+    #define y second
     #define endl '\n' //交互题不启用！
 }
 
@@ -43,10 +45,9 @@ namespace CCLIB
     void chmax(T &a,T b){if(a<b) a=b;}
     template<typename T>
     void chmin(T &a,T b){if(a>b) a=b;}
-    template<class T>
+    template<class T> //iterable
     void print_vec(const T &A){for(auto &x:A) cout << x << ' ';cout << endl;}
-    template<class T>
-    void print_float(T value,int digit=10){cout << fixed << setprecision(digit) << value;}
+    void print_float(ld value,int digit=10){cout << fixed << setprecision(digit) << value;}
 
     vector<ll> snums;
     void Get_Nums(string s){ snums.clear(); ll n=s.length();ll t=0;int flag=0; FORLL(i,0,n-1) if(s[i]<='9'&&s[i]>='0'){t*=10;t+=s[i]-'0';flag++;}else if(flag){snums.emplace_back(t);t=0;flag=0;} if(flag){snums.emplace_back(t);t=0;flag=0;}}
@@ -72,7 +73,8 @@ namespace MODULE
     void multo(ll &a,ll b){a=Get_Mod(a*b);}
 
     vector<ll> Fac;
-    void Prepare_Factorial(ll n){Fac.resize(n+1);Fac[0]=1;FORLL(i,1,n) Fac[i]=mul(Fac[i-1],i);}
+    void Prepare_Factorial(ll n){Fac.resize(n+1);Fac[0]=1;for(ll i=1;i<=n;i++) Fac[i]=mul(Fac[i-1],i);}
+    inline ll C(ll n,ll m){return n<m?0:mul(Fac[n],inv(mul(Fac[m],Fac[n-m])));}
 }
 
 
@@ -87,7 +89,7 @@ using namespace CCLIB;
 /*----------Code Area----------*/
 const ll N = 200005;
 void prepare(){
-    // Prepare_Combination(5005);
+    // Prepare_Factorial(5005);
     // MOD = 1e9+7;
 }
 void solve()

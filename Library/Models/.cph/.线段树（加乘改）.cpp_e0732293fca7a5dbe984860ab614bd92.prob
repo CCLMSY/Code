@@ -1,0 +1,1 @@
+{"name":"Local: 线段树（加乘改）","url":"d:\\VSC\\CodeSpace\\Library\\Models\\线段树（加乘改）.cpp","tests":[{"id":1724130554269,"input":"5 5\n1 5 4 2 3\n2 1 4 1\n3 2 5\n1 2 4 2\n2 3 5 5\n3 1 4","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\VSC\\CodeSpace\\Library\\Models\\线段树（加乘改）.cpp","group":"local","local":true}

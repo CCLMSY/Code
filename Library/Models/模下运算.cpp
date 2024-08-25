@@ -4,7 +4,7 @@ typedef long long ll;
 
 namespace MODULE
 {
-    ll MOD = 998244353;
+    ll MOD = 1e9+7;
     inline ll Get_Mod(ll x,ll mod=MOD){
         if(x<0) return x-x/mod*mod+mod;
         else return x-x/mod*mod;
@@ -20,6 +20,9 @@ namespace MODULE
     void subto(ll &a,ll b){a=Get_Mod(a-b);}
     void multo(ll &a,ll b){a=Get_Mod(a*b);}
 
-    vector<vector<ll>> C;
-    void Prepare_Combination(ll n){ C.clear(); C.resize(n+1); C[0].emplace_back(1); for(ll i=1;i<=n;i++) { C[i].emplace_back(1); for(ll j=1;j<=n-1;j++) C[i].emplace_back(add(C[i-1][j-1],C[i-1][j])); C[i].emplace_back(1); } }
+    vector<ll> Fac;
+    void Prepare_Factorial(ll n){Fac.resize(n+1);Fac[0]=1;for(ll i=1;i<=n;i++) Fac[i]=mul(Fac[i-1],i);}
+    inline ll C(ll n,ll m){return n<m?0:mul(Fac[n],inv(mul(Fac[m],Fac[n-m])));}
 }
+
+using namespace MODULE;
