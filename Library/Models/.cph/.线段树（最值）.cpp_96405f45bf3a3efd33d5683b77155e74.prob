@@ -1,1 +1,0 @@
-{"name":"Local: 线段树（最值）","url":"d:\\VSC\\CodeSpace\\Library\\Models\\线段树（最值）.cpp","tests":[{"id":1724133248460,"input":"2\n1 2\n2\n2 1 2 2\n4 1 2","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\VSC\\CodeSpace\\Library\\Models\\线段树（最值）.cpp","group":"local","local":true}
